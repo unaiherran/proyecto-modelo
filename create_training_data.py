@@ -8,7 +8,7 @@ import pandas as pd
 from secret import *
 
 DEBUG = True
-LOCAL = True
+LOCAL = False
 
 # Conectarse a la base de datos
 

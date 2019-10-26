@@ -77,9 +77,6 @@ def calcular_de_datos_trafico(cluster, fecha):
 
             df.to_csv('df.csv')
 
-            num_cars = df.groupby('id_camara').mean().mean()['num_cars']
-
-            print(num_cars)
 
     return intensidad, ocupacion, carga
 

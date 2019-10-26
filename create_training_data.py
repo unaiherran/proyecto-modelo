@@ -111,7 +111,7 @@ def poblar_train(cluster, fecha):
 
 
 def main():
-    fecha = datetime.strptime("22-10-2019 12:05", "%d-%m-%y %H:%M")
+    fecha = datetime.strptime("22-10-2019 12:05", "%d-%m-%Y %H:%M")
     cluster = 1
     poblar_train(cluster, fecha)
 

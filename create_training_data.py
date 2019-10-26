@@ -51,7 +51,7 @@ def calcular_de_datos_trafico(cluster, fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            print(df)
+            df.to_csv('df.csv')
 
     return intensidad, ocupacion, carga
 
@@ -111,7 +111,7 @@ def poblar_train(cluster, fecha):
 
 
 def main():
-    fecha = datetime.strptime("22-10-2019 12:05", "%d-%m-%Y %H:%M")
+    fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")
     cluster = 1
     poblar_train(cluster, fecha)
 

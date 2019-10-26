@@ -118,6 +118,8 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
 
             sql = f"SELECT * FROM train_1 WHERE fecha=str_to_date('{fecha_str}' and cluster={cluster}"
 
+            print(sql)
+
             cur.execute(sql)
 
             data = cur.fetchall()
@@ -141,21 +143,26 @@ def calculo_parametros_un_train(cluster, fecha):
     # Fecha es datetime
     # Cluster es int
 
+    print(datetime.now())
     # calculo de db_imagenes_camara
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
+    print(datetime.now())
     # calculo de db_datos_trafico
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
 
+    print(datetime.now())
     #calculo de db_festivos
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
 
+    print(datetime.now())
     # calculo de db_eventos
 
+    print(datetime.now())
     # escribir en bdd train_1
     insert_en_train_1_db(fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
                          carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo)
-
+    print(datetime.now())
 
 def main():
     fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")

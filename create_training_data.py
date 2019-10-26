@@ -116,7 +116,7 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
 
             fecha_str = fecha.strftime(format)
 
-            sql = f"SELECT * FROM train_1 WHERE fecha=str_to_date('{fecha_str}' and cluster={cluster}"
+            sql = f"SELECT * FROM train_1 WHERE fecha=str_to_date('{fecha_str}','%Y-%m-%d %H:%i') and cluster={cluster}"
 
             print(sql)
 

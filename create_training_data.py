@@ -24,13 +24,6 @@ if not LOCAL:
 
 def calcular_de_imagenes_camara(cluster, fecha):
     num_coches = 0
-    return num_coches
-
-
-def calcular_de_datos_trafico(cluster, fecha):
-    intensidad = 0
-    ocupacion = 0
-    carga = 0
 
     sig_fecha = fecha + timedelta(minutes=15)
 
@@ -50,6 +43,38 @@ def calcular_de_datos_trafico(cluster, fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i')) and (clu.id_cluster = {cluster});"
 
             df = pd.read_sql(sql, con=connection)
+            num_coches = df.groupby('id_camara').mean().mean()['num_cars']
+
+    return num_coches
+
+
+def calcular_de_datos_trafico(cluster, fecha):
+    intensidad = 0
+    ocupacion = 0
+    carga = 0
+
+    sig_fecha = fecha + timedelta(minutes=15)
+
+    format = '%Y-%m-%d %H:%M'
+
+    fecha_str = fecha.strftime(format)
+    sig_fecha_str = sig_fecha.strftime(format)
+
+    if not LOCAL:
+        if connection.is_connected():
+            cur = connection.cursor();
+
+            sql = f"SELECT sen.id , tra.fecha , tra.intensidad, tra.ocupacion, tra.carga, tra.error, clu.id_cluster " \
+                  f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id inner join Cluster" \
+                  f" clu on sen.cluster = clu.id_cluster " \
+                  f"where (tra.fecha BETWEEN str_to_date('2019-10-21 23:35', '%Y-%m-%d %H:%i') " \
+                  f"(tra.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND str_to_date('{sig_fecha_str}', " \
+                  f"'%Y-%m-%d %H:%i')) and (clu.id_cluster = {cluster}) and tra.error = 'N';"
+
+            df = pd.read_sql(sql, con=connection)
+
+            df.to_csv('df.csv')
+
             num_cars = df.groupby('id_camara').mean().mean()['num_cars']
 
             print(num_cars)

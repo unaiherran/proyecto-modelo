@@ -41,8 +41,7 @@ def calcular_de_eventos(cluster, fecha):
 def calcular_de_fecha(fecha):
     dia_semana = fecha.weekday()
     dia = fecha.day
-    mes = fecha.month
-    anyo = fecha.year
+    festivo = False
 
     if connection.is_connected():
         cur = connection.cursor();
@@ -53,9 +52,8 @@ def calcular_de_fecha(fecha):
 
         data = cur.fetchall()
 
-        print(data)
-
-    festivo = True
+        if data:
+            festivo = True
 
     return dia_semana, dia, festivo
 

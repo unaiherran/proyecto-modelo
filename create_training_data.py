@@ -128,7 +128,8 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
 
             if data:
                 # hay que hacer update
-                pass
+                sql = f"SELECT * FROM train_1"
+
             else:
                 # hay que insertar
                 sql = f"insert into train_1 (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
@@ -136,6 +137,12 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
                       f"{intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo};"
 
                 pass
+
+            print(sql)
+
+            cur.execute(sql)
+
+            connection.commit()
 
 
 

@@ -131,7 +131,7 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
                 print('id = ', data[0][0])
 
                 sql = f"update train_1 set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
-                      f"carga={carga}, dia_semana={dia_semana} dia_mes={dia_mes}, festivo={festivo} " \
+                      f"carga={carga}, dia_semana={dia_semana}, dia_mes={dia_mes}, festivo={festivo} " \
                       f"WHERE id_train_1={data[0][0]}"
 
             else:

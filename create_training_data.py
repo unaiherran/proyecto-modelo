@@ -134,7 +134,7 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
                 # hay que insertar
                 sql = f"insert into train_1 (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
                       f"dia_mes, festivo) values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), {num_coches}," \
-                      f"{intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo};"
+                      f"{intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo});"
 
                 pass
 

@@ -70,6 +70,7 @@ def poblar_train(cluster, fecha):
 
     #calculo de db_festivos
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
+    print(dia_semana, dia_mes, festivo)
 
     # calculo de db_eventos
 

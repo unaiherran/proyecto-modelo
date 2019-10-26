@@ -107,39 +107,60 @@ def calcular_de_fecha(fecha):
     return dia_semana, dia, festivo
 
 
-def poblar_train(cluster, fecha):
-    # Fecha es dattime
+def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
+                         dia_semana=0, dia_mes=0, festivo=False):
+    if not LOCAL:
+        if connection.is_connected():
+            cur = connection.cursor();
+            format = '%Y-%m-%d %H:%M'
+
+            fecha_str = fecha.strftime(format)
+
+            sql = f"SELECT * FROM train_1 WHERE fecha=str_to_date('{fecha_str}' and cluster={cluster}"
+
+            cur.execute(sql)
+
+            data = cur.fetchall()
+
+            print(data)
+
+            if data:
+                # hay que hacer update
+                pass
+            else:
+                # hay que insertar
+                sql = f"insert into train_1 (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
+                      f"dia_mes, festivo) values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), {num_coches}," \
+                      f"{intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo};"
+
+                pass
+
+
+
+def calculo_parametros_un_train(cluster, fecha):
+    # Fecha es datetime
     # Cluster es int
-    print (fecha, cluster)
 
     # calculo de db_imagenes_camara
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
     # calculo de db_datos_trafico
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
-    print (intensidad, ocupacion, carga)
 
     #calculo de db_festivos
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
-    print(dia_semana, dia_mes, festivo)
 
     # calculo de db_eventos
 
-    pass
-# calculo de parametros
-
-# q a  datos trafico
-# calculo de parametros
-
-# q a festivos
-
-# escribir en bdd train_1
+    # escribir en bdd train_1
+    insert_en_train_1_db(fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
+                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo)
 
 
 def main():
     fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")
     cluster = 1
-    poblar_train(cluster, fecha)
+    calculo_parametros_un_train(cluster, fecha)
 
 
 if __name__ == '__main__':

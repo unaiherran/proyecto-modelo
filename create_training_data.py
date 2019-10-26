@@ -128,6 +128,8 @@ def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0
 
             if data:
                 # hay que hacer update
+                print('id = ', data[0][0])
+
                 sql = f"SELECT * FROM train_1"
 
             else:

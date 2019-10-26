@@ -66,7 +66,7 @@ def calcular_de_datos_trafico(cluster, fecha):
 
             sql = f"SELECT sen.id , tra.fecha , tra.intensidad, tra.ocupacion, tra.carga, tra.error, clu.id_cluster " \
                   f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id inner join Cluster" \
-                  f" clu on sen.cluster = clu.id_cluster where tra.fecha BETWEEN " \
+                  f" clu on sen.cluster = clu.id_cluster where (tra.fecha BETWEEN " \
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
                   f"(clu.id_cluster = {cluster}) and tra.error = 'N';"

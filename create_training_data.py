@@ -71,8 +71,6 @@ def calcular_de_datos_trafico(cluster, fecha):
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
                   f"(clu.id_cluster = {cluster}) and tra.error = 'N';"
 
-            print (sql)
-
             df = pd.read_sql(sql, con=connection)
 
             df2 = df.groupby('id').mean().mean()

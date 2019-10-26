@@ -75,8 +75,10 @@ def calcular_de_datos_trafico(cluster, fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df.to_csv('df.csv')
-
+            df2 = df.groupby('id').mean().mean()
+            intensidad = df2['intensidad']
+            ocupacion = df2['ocupacion']
+            carga = df2['carga']
 
     return intensidad, ocupacion, carga
 
@@ -117,6 +119,7 @@ def poblar_train(cluster, fecha):
 
     # calculo de db_datos_trafico
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
+    print (intensidad, ocupacion, carga)
 
     #calculo de db_festivos
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)

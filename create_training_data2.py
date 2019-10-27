@@ -131,7 +131,7 @@ def calcular_de_eventos(fecha):
         if connection.is_connected():
             cur = connection.cursor();
 
-            sql = f"SELECT * from DatosEventos eve " \
+            sql = f"SELECT fecha, gratuito, cluster from DatosEventos eve " \
                   f"where (eve.fecha BETWEEN " \
                   f"str_to_date('{fecha_ini_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i'));"
@@ -139,29 +139,36 @@ def calcular_de_eventos(fecha):
             print(sql)
 
             df = pd.read_sql(sql, con=connection)
-            df.to_csv('q_eventos.csv')
-            # df = pd.read_csv('dfe.csv')
+
+            df['evento'] = 1
             df['fecha'] = pd.to_datetime(df['fecha'])
+            df = df.sort_values(by=['cluster'])
 
             # Eventos 3h (-120 -> +60)
-            eve_3h = df.count()['id']
-            eve_3h_g = df[(df['gratuito']==1)].count()['id']
+            df3h = df.groupby('cluster').sum()
 
             # Eventos 2h (-60 -> +60)
             start_date = fecha - timedelta(minutes=60)
             end_date = fecha + timedelta(minutes=60)
             mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
             df2 = df.loc[mask]
-            eve_2h = df2.count()['id']
-            eve_2h_g = df2[(df2['gratuito'] == 1)].count()['id']
+            df2h = df2.groupby('cluster').sum()
+            df2h.columns = ['eve_2h_g', 'eve_2h']
+            df2h['cluster'] = list(df2h.index.values)
 
             # Eventos 1h (-30 -> +30)
             start_date = fecha - timedelta(minutes=30)
             end_date = fecha + timedelta(minutes=30)
             mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
-            df2 = df.loc[mask]
-            eve_1h = df2.count()['id']
-            eve_1h_g = df2[(df2['gratuito'] == 1)].count()['id']
+            df1 = df.loc[mask]
+            df1h = df1.groupby('cluster').sum()
+            df1h.columns = ['eve_1h_g', 'eve_1h']
+            df1h['cluster'] = list(df1h.index.values)
+
+            # merge de todos los df
+            df3 = pd.merge(df3, df3h, on='cluster', how='outer')
+            df3 = pd.merge(df3, df2h, on='cluster', how='outer')
+            df3 = pd.merge(df3, df1h, on='cluster', how='outer')
 
     return df3
 

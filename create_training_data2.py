@@ -59,6 +59,8 @@ def calcular_de_imagenes_camara(fecha):
                 df = df.sort_values(by=['cluster'])
                 df2 = df.groupby('cluster').mean()
                 df2 = df2.drop(['id_camara'], axis=1)
+                print(empty_df.head())
+                print(df2.head())
                 df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
                 df3 = df3.fillna(0)
 

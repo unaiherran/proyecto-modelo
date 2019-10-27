@@ -139,7 +139,7 @@ def calcular_de_eventos(fecha):
             print(sql)
 
             df = pd.read_sql(sql, con=connection)
-
+            df.to_csv('q_eventos.csv')
             # df = pd.read_csv('dfe.csv')
             df['fecha'] = pd.to_datetime(df['fecha'])
 

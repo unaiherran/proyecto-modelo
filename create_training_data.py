@@ -111,7 +111,7 @@ def calcular_de_eventos(cluster, fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df = pd.read_csv('dfe.csv')
+            # df = pd.read_csv('dfe.csv')
             df['fecha'] = pd.to_datetime(df['fecha'])
 
             # Eventos 3h (-120 -> +60)
@@ -160,7 +160,9 @@ def calcular_de_fecha(fecha):
 
 
 def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
-                         dia_semana=0, dia_mes=0, festivo=False):
+                         dia_semana=0, dia_mes=0, festivo=False, eve_3h=0, eve_3h_g=0, eve_2h=0, eve_2h_g=0,
+                         eve_1h=0, eve_1h_g=0):
+
     if not LOCAL:
         if connection.is_connected():
             cur = connection.cursor()
@@ -178,18 +180,18 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
 
                 sql = f"update {tb} set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
                       f"carga={carga}, dia_semana={dia_semana}, dia_mes={dia_mes}, festivo={festivo} " \
-                      f"WHERE id_train={data[0][0]};"
+                      f"eve_3h={eve_3h}, eve_3h_g={eve_3h_g}, eve_2h={eve_2h}, eve_2h_g={eve_2h_g}, eve_1h={eve_1h}, " \
+                      f"eve_1h_g={eve_3h} WHERE id_train={data[0][0]};"
 
             else:
                 # hay que insertar
                 sql = f"insert into {tb} (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
-                      f"dia_mes, festivo) values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), " \
-                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo});"
+                      f"dia_mes, festivo, eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g ) " \
+                      f"values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), " \
+                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo}" \
+                      f"{eve_3h}, {eve_3h_g}, {eve_2h}, {eve_2h_g}, {eve_1h}, {eve_1h_g});"
 
-            print(sql)
-            print('Execue SQL')
             cur.execute(sql)
-            print('Commit')
             connection.commit()
 
 
@@ -213,7 +215,6 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     print('Calculando eventos')
     eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g = calcular_de_eventos(cluster, fecha)
 
-    print(eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g)
 
     # escribir en bdd train_1
     print('Escribiendo en dbb')

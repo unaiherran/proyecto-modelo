@@ -214,10 +214,15 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
 def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Fecha es datetime
     # Cluster es int
+    print('----')
+    print('Calculo de parametros un train')
+    print(fecha)
+    print(type(fecha))
 
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos para cluster: {cluster}, fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
+
     df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico

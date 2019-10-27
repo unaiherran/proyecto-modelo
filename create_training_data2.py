@@ -20,11 +20,18 @@ if not LOCAL:
         port=db_port
     )
 
+def dataframe_vacio_de_cluster():
+    cluster = list(range(200))
+    empty_df = pd.DataFrame(list(zip(cluster)),
+                            columns=['cluster'])
+    return empty_df
+
 
 def calcular_de_imagenes_camara(fecha):
-    num_coches = 0
 
     sig_fecha = fecha + timedelta(minutes=15)
+
+    empty_df = dataframe_vacio_de_cluster()
 
     format = '%Y-%m-%d %H:%M'
 
@@ -40,22 +47,25 @@ def calcular_de_imagenes_camara(fecha):
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 
-            print(sql)
-
             df = pd.read_sql(sql, con=connection)
-            df.to_csv('coches.csv')
             if df.empty:
-                num_coches = 0
+                cluster = list(range(200))
+                lst0 = [0] * 200
+                df3 = pd.DataFrame(list(zip(cluster, lst0)),
+                                   columns=['cluster', 'num_cars'])
             else:
-                num_coches = df.groupby('id_camara').mean().mean()['num_cars']
+                df = df.sort_values(by=['cluster'])
+                df2 = df.groupby('cluster').mean()
+                df2 = df2.drop(['id_camara'], axis=1)
+                df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
+                df3 = df3.fillna(0)
 
-    return num_coches
+    return df3
 
 
 def calcular_de_datos_trafico(cluster, fecha):
-    intensidad = 0
-    ocupacion = 0
-    carga = 0
+
+    empty_df = dataframe_vacio_de_cluster()
 
     sig_fecha = fecha + timedelta(minutes=15)
 
@@ -66,14 +76,16 @@ def calcular_de_datos_trafico(cluster, fecha):
 
     if not LOCAL:
         if connection.is_connected():
-            cur = connection.cursor();
+            cur = connection.cursor()
 
-            sql = f"SELECT sen.id , tra.fecha , tra.intensidad, tra.ocupacion, tra.carga, tra.error, clu.id_cluster " \
-                  f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id inner join Cluster" \
-                  f" clu on sen.cluster = clu.id_cluster where (tra.fecha BETWEEN " \
+            sql = f"SELECT sen.id , tra.fecha , tra.intensidad, tra.ocupacion, tra.carga, tra.error, sen.cluster " \
+                  f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id " \
+                  f"where (tra.fecha BETWEEN " \
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
-                  f"(clu.id_cluster = {cluster}) and tra.error = 'N';"
+                  f"tra.error = 'N';"
+
+            print(sql)
 
             df = pd.read_sql(sql, con=connection)
             if not df.empty:
@@ -204,11 +216,11 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos para cluster: {cluster}, fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
-    num_coches = calcular_de_imagenes_camara(fecha)
+    df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')
-    #intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
+    df_trafico = calcular_de_datos_trafico(cluster, fecha)
 
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos      ', end='\r')
@@ -230,10 +242,8 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
 def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
     fecha = fecha_ini
     while fecha <= fecha_fin:
-        clu = cluster_ini
-        while clu <= cluster_fin:
-            calculo_parametros_un_train(clu, fecha, tb)
-            clu += 1
+        calculo_parametros_un_train(fecha, tb)
+
         fecha = fecha + timedelta(minutes=15)
 
 

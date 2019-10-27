@@ -111,7 +111,7 @@ def calcular_de_eventos(cluster, fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df = pd.read_csv('df.csv')
+            df = pd.read_csv('dfe.csv')
             df['fecha'] = pd.to_datetime(df['fecha'])
 
             # Eventos 3h (-120 -> +60)

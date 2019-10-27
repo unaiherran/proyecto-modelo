@@ -29,11 +29,16 @@ def dataframe_vacio_de_cluster():
 
 def calcular_de_imagenes_camara(fecha):
 
-    print(fecha)
-    print(type(fecha))
     sig_fecha = fecha + timedelta(minutes=15)
 
     empty_df = dataframe_vacio_de_cluster()
+
+    # preparar respuesta si no funciona la consulta
+    cluster = list(range(200))
+    lst0 = [0] * 200
+    df3 = pd.DataFrame(list(zip(cluster, lst0)),
+                       columns=['cluster', 'num_cars'])
+
 
     format = '%Y-%m-%d %H:%M'
 
@@ -50,28 +55,20 @@ def calcular_de_imagenes_camara(fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 
             df = pd.read_sql(sql, con=connection)
-            if df.empty:
-                cluster = list(range(200))
-                lst0 = [0] * 200
-                df3 = pd.DataFrame(list(zip(cluster, lst0)),
-                                   columns=['cluster', 'num_cars'])
-            else:
+
+            if not df.empty:
                 df = df.sort_values(by=['cluster'])
                 df2 = df.groupby('cluster').mean()
                 df2 = df2.drop(['id_camara'], axis=1)
                 df2['cluster'] = list(df2.index.values)
 
-                print(empty_df.head())
-                print(df2.head())
-                print(empty_df.columns.tolist())
-                print(df2.columns.tolist())
                 df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
                 df3 = df3.fillna(0)
 
     return df3
 
 
-def calcular_de_datos_trafico(cluster, fecha):
+def calcular_de_datos_trafico(fecha):
 
     empty_df = dataframe_vacio_de_cluster()
 

@@ -224,6 +224,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)
+    df_coches.to_csv('coches.csv')
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')

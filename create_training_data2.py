@@ -211,7 +211,7 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
             connection.commit()
 
 
-def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
+def calculo_parametros_un_train(fecha, tb='train_1'):
     # Fecha es datetime
     # Cluster es int
     print('----')

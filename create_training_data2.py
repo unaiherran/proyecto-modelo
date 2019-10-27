@@ -208,9 +208,10 @@ def calcular_de_fecha(fecha):
     lst_dia_semana = [dia_semana] * 200
     lst_dia_mes = [dia] * 200
     lst_festivo = [festivo] * 200
+    lst_fecha =[fecha] * 200
 
-    df3 = pd.DataFrame(list(zip(cluster, lst_dia_semana, lst_dia_mes, lst_festivo)),
-                       columns=['cluster', 'dia_semmana', 'dia_mes', 'festivo'])
+    df3 = pd.DataFrame(list(zip(cluster, lst_dia_semana, lst_dia_mes, lst_festivo, lst_fecha)),
+                       columns=['cluster', 'dia_semana', 'dia_mes', 'festivo', 'fecha'])
 
     return df3
 

@@ -140,8 +140,6 @@ def calcular_de_eventos(fecha):
                   f"str_to_date('{fecha_ini_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i'));"
 
-            print(sql)
-
             df = pd.read_sql(sql, con=connection)
 
             df['evento'] = 1

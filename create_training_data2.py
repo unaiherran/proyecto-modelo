@@ -218,7 +218,7 @@ def calcular_de_fecha(fecha):
 def insert_en_train_1_db(tb, df):
     if not LOCAL:
         if connection.is_connected():
-            df.to_sql(name='train_1', con=connection, if_exists='append')
+            df.to_sql(name='train_1', con=engine, if_exists='append')
 
 
 def calculo_parametros_un_train(fecha, tb='train_1'):

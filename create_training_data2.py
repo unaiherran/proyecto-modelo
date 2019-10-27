@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 
 import mysql.connector
+from sqlalchemy import create_engine
 
 import pandas as pd
 
@@ -9,8 +10,8 @@ from secret import *
 
 DEBUG = True
 LOCAL = False
-# Conectarse a la base de datos
 
+# Conectarse a la base de datos
 if not LOCAL:
     connection = mysql.connector.connect(
         host=db_host,
@@ -19,6 +20,9 @@ if not LOCAL:
         database=db_database,
         port=db_port
     )
+
+    engine = create_engine('mysql+mysqlconnector://' + db_user + ':' + db_passwd + '@' + db_host + ':' + db_port +
+                           db_database, echo=False)
 
 def dataframe_vacio_de_cluster():
     cluster = list(range(200))

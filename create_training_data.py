@@ -8,7 +8,7 @@ import pandas as pd
 from secret import *
 
 DEBUG = True
-LOCAL = False
+LOCAL = True
 
 # Conectarse a la base de datos
 
@@ -82,6 +82,29 @@ def calcular_de_datos_trafico(cluster, fecha):
 
 
 def calcular_de_eventos(cluster, fecha):
+
+    fecha_ini = fecha - timedelta(minutes=120)
+    fecha_fin = fecha + timedelta(minutes=60)
+    format = '%Y-%m-%d %H:%M'
+
+    fecha_ini_str = fecha_ini.strftime(format)
+    fecha_fin_str = fecha_fin.strftime(format)
+
+    if not LOCAL:
+        if connection.is_connected():
+            cur = connection.cursor();
+
+            sql = f"SELECT * from DatosEvento eve inner join Cluster" \
+                  f" clu on eve.cluster = clu.id_cluster where (eve.fecha BETWEEN " \
+                  f"str_to_date('{fecha_ini_str}', '%Y-%m-%d %H:%i') AND " \
+                  f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i')) AND " \
+                  f"(clu.id_cluster = {cluster});"
+
+            df = pd.read_sql(sql, con=connection)
+
+            df.to_csv('df.csv')
+
+
     return True
 
 
@@ -107,78 +130,64 @@ def calcular_de_fecha(fecha):
     return dia_semana, dia, festivo
 
 
-def insert_en_train_1_db(fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
+def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
                          dia_semana=0, dia_mes=0, festivo=False):
     if not LOCAL:
         if connection.is_connected():
-            cur = connection.cursor();
+            cur = connection.cursor()
             format = '%Y-%m-%d %H:%M'
 
             fecha_str = fecha.strftime(format)
 
-            sql = f"SELECT * FROM train_1 WHERE fecha=str_to_date('{fecha_str}','%Y-%m-%d %H:%i') and cluster={cluster}"
-
-            print(sql)
+            sql = f"SELECT * FROM {tb} WHERE fecha=str_to_date('{fecha_str}','%Y-%m-%d %H:%i') and cluster={cluster}"
 
             cur.execute(sql)
-
             data = cur.fetchall()
-
-            print(data)
 
             if data:
                 # hay que hacer update
-                print('id = ', data[0][0])
 
-                sql = f"update train_1 set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
+                sql = f"update {tb} set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
                       f"carga={carga}, dia_semana={dia_semana}, dia_mes={dia_mes}, festivo={festivo} " \
-                      f"WHERE id_train_1={data[0][0]}"
+                      f"WHERE id_train={data[0][0]}"
 
             else:
                 # hay que insertar
-                sql = f"insert into train_1 (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
-                      f"dia_mes, festivo) values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), {num_coches}," \
-                      f"{intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo});"
-
-                pass
-
-            print(sql)
+                sql = f"insert into {tb} (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
+                      f"dia_mes, festivo) values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), " \
+                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo});"
 
             cur.execute(sql)
-
             connection.commit()
 
 
-
-def calculo_parametros_un_train(cluster, fecha):
+def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Fecha es datetime
     # Cluster es int
 
-    print(datetime.now())
     # calculo de db_imagenes_camara
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
-    print(datetime.now())
     # calculo de db_datos_trafico
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
 
-    print(datetime.now())
     #calculo de db_festivos
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
 
-    print(datetime.now())
     # calculo de db_eventos
+    eventos_3 = calcular_de_eventos(cluster, fecha)
 
-    print(datetime.now())
     # escribir en bdd train_1
     insert_en_train_1_db(fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
-                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo)
-    print(datetime.now())
+                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, tb=tb)
+
 
 def main():
     fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")
     cluster = 1
-    calculo_parametros_un_train(cluster, fecha)
+    tb= 'train_1'
+
+    calculo_parametros_un_train(cluster, fecha, tb)
 
 
 if __name__ == '__main__':

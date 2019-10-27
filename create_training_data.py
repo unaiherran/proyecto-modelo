@@ -201,19 +201,19 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Cluster es int
 
     # calculo de db_imagenes_camara
-    print('Calculando imagenes     \r',)
+    print('Calculando imagenes     ',end='\r')
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
     # calculo de db_datos_trafico
-    print('Calculando datos trafico\r',)
+    print('Calculando datos trafico', end='\r')
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
 
     #calculo de db_festivos
-    print('Calculando festivos      \r',)
+    print('Calculando festivos      ', end='\r')
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
 
     # calculo de db_eventos
-    print('Calculando eventos       \r',)
+    print('Calculando eventos       ', end='\r')
     eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g = calcular_de_eventos(cluster, fecha)
 
 

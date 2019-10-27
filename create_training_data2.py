@@ -142,44 +142,45 @@ def calcular_de_eventos(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df['evento'] = 1
-            df['fecha'] = pd.to_datetime(df['fecha'])
-            df = df.sort_values(by=['cluster'])
+            if not df.empty:
+                df['evento'] = 1
+                df['fecha'] = pd.to_datetime(df['fecha'])
+                df = df.sort_values(by=['cluster'])
 
-            # Eventos 3h (-120 -> +60)
-            df3h = df.groupby('cluster').sum()
-            print(df3h)
-            df3h.columns = ['eve_3h_g', 'eve_3h']
-            df3h['cluster'] = list(df3h.index.values)
+                # Eventos 3h (-120 -> +60)
+                df3h = df.groupby('cluster').sum()
+                print(df3h)
+                df3h.columns = ['eve_3h_g', 'eve_3h']
+                df3h['cluster'] = list(df3h.index.values)
 
-            # Eventos 2h (-60 -> +60)
-            start_date = fecha - timedelta(minutes=60)
-            end_date = fecha + timedelta(minutes=60)
-            mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
-            df2 = df.loc[mask]
-            df2h = df2.groupby('cluster').sum()
-            df2h.columns = ['eve_2h_g', 'eve_2h']
-            df2h['cluster'] = list(df2h.index.values)
+                # Eventos 2h (-60 -> +60)
+                start_date = fecha - timedelta(minutes=60)
+                end_date = fecha + timedelta(minutes=60)
+                mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
+                df2 = df.loc[mask]
+                df2h = df2.groupby('cluster').sum()
+                df2h.columns = ['eve_2h_g', 'eve_2h']
+                df2h['cluster'] = list(df2h.index.values)
 
-            # Eventos 1h (-30 -> +30)
-            start_date = fecha - timedelta(minutes=30)
-            end_date = fecha + timedelta(minutes=30)
-            mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
-            df1 = df.loc[mask]
-            df1h = df1.groupby('cluster').sum()
-            df1h.columns = ['eve_1h_g', 'eve_1h']
-            df1h['cluster'] = list(df1h.index.values)
+                # Eventos 1h (-30 -> +30)
+                start_date = fecha - timedelta(minutes=30)
+                end_date = fecha + timedelta(minutes=30)
+                mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
+                df1 = df.loc[mask]
+                df1h = df1.groupby('cluster').sum()
+                df1h.columns = ['eve_1h_g', 'eve_1h']
+                df1h['cluster'] = list(df1h.index.values)
 
-            # merge de todos los df
-            df3 = dataframe_vacio_de_cluster()
+                # merge de todos los df
+                df3 = dataframe_vacio_de_cluster()
 
-            df3 = pd.merge(df3, df3h, on='cluster', how='outer')
-            df3 = pd.merge(df3, df2h, on='cluster', how='outer')
-            df3 = pd.merge(df3, df1h, on='cluster', how='outer')
+                df3 = pd.merge(df3, df3h, on='cluster', how='outer')
+                df3 = pd.merge(df3, df2h, on='cluster', how='outer')
+                df3 = pd.merge(df3, df1h, on='cluster', how='outer')
 
-            df3 = df3.fillna(0)
-            df3 = df3.astype({"eve_3h": int, "eve_3h_g": int, "eve_2h": int,
-                              "eve_2h_g": int,"eve_1h": int, "eve_1h_g": int })
+                df3 = df3.fillna(0)
+                df3 = df3.astype({"eve_3h": int, "eve_3h_g": int, "eve_2h": int,
+                                  "eve_2h_g": int,"eve_1h": int, "eve_1h_g": int })
 
     return df3
 

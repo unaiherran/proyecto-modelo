@@ -219,7 +219,8 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # escribir en bdd train_1
     print('Escribiendo en dbb')
     insert_en_train_1_db(tb, fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
-                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo)
+                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, eve_3h=eve_3h,
+                         eve_3h_g=eve_3h_g, eve_2h=eve_2h, eve_2h_g=eve_2h_g, eve_1h=eve_1h, eve_1h_g=eve_1h_g)
 
 
 def main():

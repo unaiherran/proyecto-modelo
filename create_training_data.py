@@ -188,7 +188,7 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
                 sql = f"insert into {tb} (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
                       f"dia_mes, festivo, eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g ) " \
                       f"values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), " \
-                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo}" \
+                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo}, " \
                       f"{eve_3h}, {eve_3h_g}, {eve_2h}, {eve_2h_g}, {eve_1h}, {eve_1h_g});"
 
             print(sql)

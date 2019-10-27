@@ -93,7 +93,7 @@ def calcular_de_eventos(cluster, fecha):
         if connection.is_connected():
             cur = connection.cursor();
 
-            sql = f"SELECT * from DatosEvento eve inner join Cluster" \
+            sql = f"SELECT * from DatosEventos eve inner join Cluster" \
                   f" clu on eve.cluster = clu.id_cluster where (eve.fecha BETWEEN " \
                   f"str_to_date('{fecha_ini_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i')) AND " \

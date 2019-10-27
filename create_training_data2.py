@@ -29,6 +29,8 @@ def dataframe_vacio_de_cluster():
 
 def calcular_de_imagenes_camara(fecha):
 
+    print(fecha)
+    print(type(fecha))
     sig_fecha = fecha + timedelta(minutes=15)
 
     empty_df = dataframe_vacio_de_cluster()

@@ -88,23 +88,26 @@ def calcular_de_datos_trafico(fecha):
         if connection.is_connected():
             cur = connection.cursor()
 
-            sql = f"SELECT sen.id , tra.fecha , tra.intensidad, tra.ocupacion, tra.carga, tra.error, sen.cluster " \
+            sql = f"SELECT sen.id , tra.intensidad, tra.ocupacion, tra.carga, tra.error, sen.cluster " \
                   f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id " \
                   f"where (tra.fecha BETWEEN " \
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
                   f"tra.error = 'N';"
 
-            print(sql)
-
             df = pd.read_sql(sql, con=connection)
-            df.to_csv('trafico.csv')
+
+            df = df.dropna(how='any',axis=0)
 
             if not df.empty:
-                df2 = df.groupby('id').mean().mean()
-                intensidad = df2['intensidad']
-                ocupacion = df2['ocupacion']
-                carga = df2['carga']
+                df = df.sort_values(by=['cluster'])
+                df2 = df.groupby('cluster').mean()
+                df2 = df2.drop(['id'], axis=1)
+                df2['cluster'] = list(df2.index.values)
+                df2 = df2.astype({"cluster": int})
+
+                df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
+                df3 = df3.fillna(0)
 
     return df3
 
@@ -239,6 +242,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
+    df_trafico.to_csv('trafico.csv')
 
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos      ', end='\r')

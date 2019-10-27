@@ -201,24 +201,25 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
 
     # calculo de db_imagenes_camara
     print(f'Realizando calculos para cluster: {cluster}, fecha:{fecha}')
-    print('Calculando imagenes     ',end='\r')
+    print(datetime.now(), 'Calculando imagenes     ',end='\r')
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
     # calculo de db_datos_trafico
-    print('Calculando datos trafico', end='\r')
+    print(datetime.now(), ' Calculando datos trafico', end='\r')
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
 
     #calculo de db_festivos
-    print('Calculando festivos      ', end='\r')
+    print(datetime.now(), 'Calculando festivos      ', end='\r')
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
 
     # calculo de db_eventos
-    print('Calculando eventos       ', end='\r')
+    print(datetime.now(), 'Calculando eventos       ', end='\r')
     eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g = calcular_de_eventos(cluster, fecha)
 
 
     # escribir en bdd train_1
-    print('Escribiendo en dbb       \r',)
+    print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
+
     insert_en_train_1_db(tb, fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
                          carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, eve_3h=eve_3h,
                          eve_3h_g=eve_3h_g, eve_2h=eve_2h, eve_2h_g=eve_2h_g, eve_1h=eve_1h, eve_1h_g=eve_1h_g)
@@ -235,10 +236,10 @@ def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
 
 
 def main():
-    fecha_ini = datetime.strptime("25-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("26-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("30-09-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("27-10-2019 20:00", "%d-%m-%Y %H:%M")
     clu_ini = 0
-    clu_fin = 2
+    clu_fin = 199
     tb = 'train_1'
 
     bucle(fecha_ini, fecha_fin,clu_ini,clu_fin, tb)

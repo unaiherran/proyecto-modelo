@@ -178,7 +178,7 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
 
                 sql = f"update {tb} set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
                       f"carga={carga}, dia_semana={dia_semana}, dia_mes={dia_mes}, festivo={festivo} " \
-                      f"WHERE id_train={data[0][0]}"
+                      f"WHERE id_train={data[0][0]};"
 
             else:
                 # hay que insertar

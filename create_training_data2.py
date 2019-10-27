@@ -168,9 +168,13 @@ def calcular_de_eventos(fecha):
             df1h['cluster'] = list(df1h.index.values)
 
             # merge de todos los df
+            df3 = dataframe_vacio_de_cluster()
+
             df3 = pd.merge(df3, df3h, on='cluster', how='outer')
             df3 = pd.merge(df3, df2h, on='cluster', how='outer')
             df3 = pd.merge(df3, df1h, on='cluster', how='outer')
+
+            df3 = df3.fillna(0)
 
             df3h.to_csv('df3h.csv')
             df2h.to_csv('df2h.csv')

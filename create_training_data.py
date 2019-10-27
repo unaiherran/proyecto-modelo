@@ -201,24 +201,24 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Cluster es int
 
     # calculo de db_imagenes_camara
-    print('Calculando imagenes')
+    print('Calculando imagenes     ',)
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
     # calculo de db_datos_trafico
-    print('Calculando datos trafico')
+    print('Calculando datos trafico',)
     intensidad, ocupacion, carga = calcular_de_datos_trafico(cluster, fecha)
 
     #calculo de db_festivos
-    print('Calculando festivos')
+    print('Calculando festivos      ',)
     dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
 
     # calculo de db_eventos
-    print('Calculando eventos')
+    print('Calculando eventos       ',)
     eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g = calcular_de_eventos(cluster, fecha)
 
 
     # escribir en bdd train_1
-    print('Escribiendo en dbb')
+    print('Escribiendo en dbb       ',)
     insert_en_train_1_db(tb, fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
                          carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, eve_3h=eve_3h,
                          eve_3h_g=eve_3h_g, eve_2h=eve_2h, eve_2h_g=eve_2h_g, eve_1h=eve_1h, eve_1h_g=eve_1h_g)

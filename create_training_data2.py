@@ -72,6 +72,11 @@ def calcular_de_datos_trafico(fecha):
 
     empty_df = dataframe_vacio_de_cluster()
 
+    # preparar respuesta si no funciona la consulta
+    cluster = list(range(200))
+    lst0 = [0] * 200
+    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0)),
+                       columns=['cluster', 'intensidad', 'ocupacion', 'carga'])
     sig_fecha = fecha + timedelta(minutes=15)
 
     format = '%Y-%m-%d %H:%M'
@@ -93,13 +98,15 @@ def calcular_de_datos_trafico(fecha):
             print(sql)
 
             df = pd.read_sql(sql, con=connection)
+            df.to_csv('trafico.csv')
+
             if not df.empty:
                 df2 = df.groupby('id').mean().mean()
                 intensidad = df2['intensidad']
                 ocupacion = df2['ocupacion']
                 carga = df2['carga']
 
-    return intensidad, ocupacion, carga
+    return df3
 
 
 def calcular_de_eventos(cluster, fecha):

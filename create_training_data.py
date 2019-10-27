@@ -191,7 +191,6 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
                       f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo}, " \
                       f"{eve_3h}, {eve_3h_g}, {eve_2h}, {eve_2h_g}, {eve_1h}, {eve_1h_g});"
 
-            print(sql)
             cur.execute(sql)
             connection.commit()
 
@@ -201,6 +200,7 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Cluster es int
 
     # calculo de db_imagenes_camara
+    print(f'Realizando calculos para cluster: {cluster}, fecha:{fecha}')
     print('Calculando imagenes     ',end='\r')
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
@@ -224,12 +224,24 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
                          eve_3h_g=eve_3h_g, eve_2h=eve_2h, eve_2h_g=eve_2h_g, eve_1h=eve_1h, eve_1h_g=eve_1h_g)
 
 
+def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
+    fecha = fecha_ini
+    while fecha <= fecha_fin:
+        clu = cluster_ini
+        while clu <= cluster_fin:
+            calculo_parametros_un_train(clu, fecha, tb)
+            clu += 1
+        fecha = fecha + timedelta(minutes=15)
+
+
 def main():
-    fecha = datetime.strptime("25-10-2019 19:00", "%d-%m-%Y %H:%M")
-    cluster = 36
+    fecha_ini = datetime.strptime("25-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("26-10-2019 00:00", "%d-%m-%Y %H:%M")
+    clu_ini = 0
+    clu_fin = 199
     tb = 'train_1'
 
-    calculo_parametros_un_train(cluster, fecha, tb)
+    bucle(fecha_ini, fecha_fin,clu_ini,clu_fin, tb)
 
 
 if __name__ == '__main__':

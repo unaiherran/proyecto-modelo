@@ -74,11 +74,11 @@ def calcular_de_datos_trafico(cluster, fecha):
                   f"(clu.id_cluster = {cluster}) and tra.error = 'N';"
 
             df = pd.read_sql(sql, con=connection)
-
-            df2 = df.groupby('id').mean().mean()
-            intensidad = df2['intensidad']
-            ocupacion = df2['ocupacion']
-            carga = df2['carga']
+            if not df.empty:
+                df2 = df.groupby('id').mean().mean()
+                intensidad = df2['intensidad']
+                ocupacion = df2['ocupacion']
+                carga = df2['carga']
 
     return intensidad, ocupacion, carga
 

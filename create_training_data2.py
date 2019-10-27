@@ -36,10 +36,12 @@ def calcular_de_imagenes_camara(fecha):
             cur = connection.cursor();
 
             sql = f"SELECT num_cars, clu.id_cluster , cam.id_camara, ima.fecha from ImagenesCamarasTrafico ima " \
-                  f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara inner join " \
-                  f"Cluster clu on cam.Cluster = clu.id_cluster where " \
+                  f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara " \
+                  f"where " \
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
+
+            print(sql)
 
             df = pd.read_sql(sql, con=connection)
             df.to_csv('coches.csv')

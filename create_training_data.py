@@ -42,8 +42,10 @@ def calcular_de_imagenes_camara(cluster, fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i')) and (clu.id_cluster = {cluster});"
 
             df = pd.read_sql(sql, con=connection)
-            print(df)
-            num_coches = df.groupby('id_camara').mean().mean()['num_cars']
+            if df.empty:
+                num_coches = 0
+            else:
+                num_coches = df.groupby('id_camara').mean().mean()['num_cars']
 
     return num_coches
 

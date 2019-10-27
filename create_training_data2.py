@@ -220,7 +220,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(type(fecha))
 
     # calculo de db_imagenes_camara
-    print(f'{datetime.now()} -> Realizando cálculos para cluster: {cluster}, fecha:{fecha}')
+    print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)

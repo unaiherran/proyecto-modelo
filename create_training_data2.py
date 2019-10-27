@@ -178,10 +178,6 @@ def calcular_de_eventos(fecha):
             df3 = df3.astype({"eve_3h": int, "eve_3h_g": int, "eve_2h": int,
                               "eve_2h_g": int,"eve_1h": int, "eve_1h_g": int })
 
-            df3h.to_csv('df3h.csv')
-            df2h.to_csv('df2h.csv')
-            df1h.to_csv('df1h.csv')
-            df3.to_csv('df3.csv')
     return df3
 
 
@@ -215,40 +211,11 @@ def calcular_de_fecha(fecha):
     return df3
 
 
-def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
-                         dia_semana=0, dia_mes=0, festivo=False, eve_3h=0, eve_3h_g=0, eve_2h=0, eve_2h_g=0,
-                         eve_1h=0, eve_1h_g=0):
-
+def insert_en_train_1_db(tb, df):
     if not LOCAL:
         if connection.is_connected():
             cur = connection.cursor()
-            format = '%Y-%m-%d %H:%M'
-
-            fecha_str = fecha.strftime(format)
-
-            sql = f"SELECT * FROM {tb} WHERE fecha=str_to_date('{fecha_str}','%Y-%m-%d %H:%i') and cluster={cluster}"
-
-            cur.execute(sql)
-            data = cur.fetchall()
-
-            if data:
-                # hay que hacer update
-
-                sql = f"update {tb} set num_coches={num_coches}, intensidad={intensidad}, ocupacion={ocupacion}, " \
-                      f"carga={carga}, dia_semana={dia_semana}, dia_mes={dia_mes}, festivo={festivo}, " \
-                      f"eve_3h={eve_3h}, eve_3h_g={eve_3h_g}, eve_2h={eve_2h}, eve_2h_g={eve_2h_g}, eve_1h={eve_1h}, " \
-                      f"eve_1h_g={eve_3h} WHERE id_train={data[0][0]};"
-
-            else:
-                # hay que insertar
-                sql = f"insert into {tb} (cluster, fecha, num_coches, intensidad, ocupacion, carga, dia_semana, " \
-                      f"dia_mes, festivo, eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g ) " \
-                      f"values ({cluster}, str_to_date('{fecha_str}','%Y-%m-%d %H:%i'), " \
-                      f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo}, " \
-                      f"{eve_3h}, {eve_3h_g}, {eve_2h}, {eve_2h_g}, {eve_1h}, {eve_1h_g});"
-
-            cur.execute(sql)
-            connection.commit()
+            df.to_sql(tb, con=connection, if_exists='append')
 
 
 def calculo_parametros_un_train(fecha, tb='train_1'):
@@ -264,29 +231,28 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)
-    df_coches.to_csv('coches.csv')
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
-    df_trafico.to_csv('trafico.csv')
 
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos      ', end='\r')
     df_fecha = calcular_de_fecha(fecha)
-    df_fecha.to_csv('fecha.csv')
 
     # calculo de db_eventos
     print(datetime.now(), 'Calculando eventos       ', end='\r')
     df_eventos = calcular_de_eventos(fecha)
-    df_eventos.to_csv('eventos.csv')
+
+    # merge de todos los dataframes
+    df = pd.merge(df_coches, df_trafico, on='cluster', how='outer')
+    df = pd.merge(df, df_fecha, on='cluster', how='outer')
+    df = pd.merge(df, df_eventos, on='cluster', how='outer')
 
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
 
-    # insert_en_train_1_db(tb, fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
-    #                      carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, eve_3h=eve_3h,
-    #                      eve_3h_g=eve_3h_g, eve_2h=eve_2h, eve_2h_g=eve_2h_g, eve_1h=eve_1h, eve_1h_g=eve_1h_g)
+    insert_en_train_1_db(tb, df)
 
 
 def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):

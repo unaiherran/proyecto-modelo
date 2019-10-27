@@ -35,9 +35,8 @@ def calcular_de_imagenes_camara(fecha):
         if connection.is_connected():
             cur = connection.cursor();
 
-            sql = f"SELECT num_cars, clu.id_cluster , cam.id_camara, ima.fecha from ImagenesCamarasTrafico ima " \
-                  f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara " \
-                  f"where " \
+            sql = f"SELECT num_cars, cam.id_camara, ima.fecha, cam.cluster from ImagenesCamarasTrafico ima " \
+                  f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara where " \
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 

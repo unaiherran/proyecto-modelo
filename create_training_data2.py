@@ -112,18 +112,17 @@ def calcular_de_datos_trafico(fecha):
     return df3
 
 
-def calcular_de_eventos(cluster, fecha):
+def calcular_de_eventos(fecha):
 
     fecha_ini = fecha - timedelta(minutes=120)
     fecha_fin = fecha + timedelta(minutes=60)
     format = '%Y-%m-%d %H:%M'
 
-    eve_3h = 0
-    eve_2h = 0
-    eve_1h = 0
-    eve_3h_g = 0
-    eve_2h_g = 0
-    eve_1h_g = 0
+    # preparar respuesta si no funciona la consulta
+    cluster = list(range(200))
+    lst0 = [0] * 200
+    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0)),
+                       columns=['cluster', 'eve_3h', 'eve_3h_g', 'eve_2h', 'eve_2h_g', 'eve_1h', 'eve_1h_g'])
 
     fecha_ini_str = fecha_ini.strftime(format)
     fecha_fin_str = fecha_fin.strftime(format)
@@ -132,11 +131,12 @@ def calcular_de_eventos(cluster, fecha):
         if connection.is_connected():
             cur = connection.cursor();
 
-            sql = f"SELECT * from DatosEventos eve inner join Cluster" \
-                  f" clu on eve.cluster = clu.id_cluster where (eve.fecha BETWEEN " \
+            sql = f"SELECT * from DatosEventos eve " \
+                  f"where (eve.fecha BETWEEN " \
                   f"str_to_date('{fecha_ini_str}', '%Y-%m-%d %H:%i') AND " \
-                  f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i')) AND " \
-                  f"(clu.id_cluster = {cluster});"
+                  f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i'));"
+
+            print(sql)
 
             df = pd.read_sql(sql, con=connection)
 
@@ -163,13 +163,13 @@ def calcular_de_eventos(cluster, fecha):
             eve_1h = df2.count()['id']
             eve_1h_g = df2[(df2['gratuito'] == 1)].count()['id']
 
-    return eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g
+    return df3
 
 
 def calcular_de_fecha(fecha):
     dia_semana = fecha.weekday()
     dia = fecha.day
-    festivo = False
+    festivo = 0
 
     if not LOCAL:
         if connection.is_connected():
@@ -183,9 +183,17 @@ def calcular_de_fecha(fecha):
             data = cur.fetchall()
 
             if data:
-                festivo = True
+                festivo = 2
 
-    return dia_semana, dia, festivo
+    cluster = list(range(200))
+    lst_dia_semana = [dia_semana] * 200
+    lst_dia_mes = [dia] * 200
+    lst_festivo = [festivo] * 200
+
+    df3 = pd.DataFrame(list(zip(cluster, lst_dia_semana, lst_dia_mes, lst_festivo)),
+                       columns=['dia_semmana', 'dia_mes', 'festivo'])
+
+    return df3
 
 
 def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupacion=0, carga=0,
@@ -246,12 +254,13 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
 
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos      ', end='\r')
-    #dia_semana, dia_mes, festivo = calcular_de_fecha(fecha)
+    df_fecha = calcular_de_fecha(fecha)
+    df_fecha.to_csv('fecha.csv')
 
     # calculo de db_eventos
     print(datetime.now(), 'Calculando eventos       ', end='\r')
-    #eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g = calcular_de_eventos(cluster, fecha)
-
+    df_eventos = calcular_de_eventos(fecha)
+    df_eventos.to_csv('eventos.csv')
 
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')

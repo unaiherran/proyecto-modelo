@@ -238,8 +238,8 @@ def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
 
 
 def main():
-    fecha_ini = datetime.strptime("23-10-2019 11:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("23-10-2019 11:15", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("27-10-2019 11:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("27-10-2019 11:15", "%d-%m-%Y %H:%M")
     clu_ini = 30
     clu_fin = 31
     tb = 'train_1'

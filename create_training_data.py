@@ -200,7 +200,7 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     # Cluster es int
 
     # calculo de db_imagenes_camara
-    print(f'Realizando calculos para cluster: {cluster}, fecha:{fecha}')
+    print(f'{datetime.now()} -> Realizando cálculos para cluster: {cluster}, fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
     num_coches = calcular_de_imagenes_camara(cluster, fecha)
 
@@ -236,7 +236,7 @@ def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
 
 
 def main():
-    fecha_ini = datetime.strptime("30-09-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("12-10-2019 00:00", "%d-%m-%Y %H:%M")
     fecha_fin = datetime.strptime("27-10-2019 20:00", "%d-%m-%Y %H:%M")
     clu_ini = 0
     clu_fin = 199

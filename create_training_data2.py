@@ -223,10 +223,6 @@ def insert_en_train_1_db(tb, df):
 def calculo_parametros_un_train(fecha, tb='train_1'):
     # Fecha es datetime
     # Cluster es int
-    print('----')
-    print('Calculo de parametros un train')
-    print(fecha)
-    print(type(fecha))
 
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
@@ -257,7 +253,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     insert_en_train_1_db(tb, df)
 
 
-def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
+def bucle(fecha_ini, fecha_fin, tb):
     fecha = fecha_ini
     while fecha <= fecha_fin:
         calculo_parametros_un_train(fecha, tb)
@@ -266,13 +262,12 @@ def bucle(fecha_ini, fecha_fin, cluster_ini, cluster_fin, tb):
 
 
 def main():
-    fecha_ini = datetime.strptime("25-10-2019 11:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("25-10-2019 11:15", "%d-%m-%Y %H:%M")
-    clu_ini = 30
-    clu_fin = 31
+    fecha_ini = datetime.strptime("12-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("26-10-2019 00:00", "%d-%m-%Y %H:%M")
+
     tb = 'train_1'
 
-    bucle(fecha_ini, fecha_fin,clu_ini,clu_fin, tb)
+    bucle(fecha_ini, fecha_fin, tb)
 
 
 if __name__ == '__main__':

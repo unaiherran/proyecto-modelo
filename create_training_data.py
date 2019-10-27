@@ -187,8 +187,9 @@ def insert_en_train_1_db(tb, fecha, cluster, num_coches=0, intensidad=0, ocupaci
                       f"{num_coches}, {intensidad},{ocupacion},{carga}, {dia_semana}, {dia_mes}, {festivo});"
 
             print(sql)
-
+            print('Execue SQL')
             cur.execute(sql)
+            print('Commit')
             connection.commit()
 
 

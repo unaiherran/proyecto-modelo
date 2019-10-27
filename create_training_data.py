@@ -89,6 +89,13 @@ def calcular_de_eventos(cluster, fecha):
     fecha_fin = fecha + timedelta(minutes=60)
     format = '%Y-%m-%d %H:%M'
 
+    eve_3h = 0
+    eve_2h = 0
+    eve_1h = 0
+    eve_3h_g = 0
+    eve_2h_g = 0
+    eve_1h_g = 0
+
     fecha_ini_str = fecha_ini.strftime(format)
     fecha_fin_str = fecha_fin.strftime(format)
 
@@ -102,13 +109,31 @@ def calcular_de_eventos(cluster, fecha):
                   f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i')) AND " \
                   f"(clu.id_cluster = {cluster});"
 
-            print(sql)
             df = pd.read_sql(sql, con=connection)
-            print(df)
-            df.to_csv('df.csv')
 
+            df = pd.read_csv('df.csv')
 
-    return True
+            # Eventos 3h (-120 -> +60)
+            eve_3h = df.count()['id']
+            eve_3h_g = df[(df['gratuito']==1)].count()['id']
+
+            # Eventos 2h (-60 -> +60)
+            start_date = fecha - timedelta(minutes=60)
+            end_date = fecha + timedelta(minutes=60)
+            mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
+            df2 = df.loc[mask]
+            eve_2h = df2.count()['id']
+            eve_2h_g = df2[(df2['gratuito'] == 1)].count()['id']
+
+            # Eventos 1h (-30 -> +30)
+            start_date = fecha - timedelta(minutes=30)
+            end_date = fecha + timedelta(minutes=30)
+            mask = (df['fecha'] > start_date) & (df['fecha'] <= end_date)
+            df2 = df.loc[mask]
+            eve_1h = df2.count()['id']
+            eve_1h_g = df2[(df2['gratuito'] == 1)].count()['id']
+
+    return eve_3h, eve_3h_g, eve_2h, eve_2h_g, eve_1h, eve_1h_g
 
 
 def calcular_de_fecha(fecha):

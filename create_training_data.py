@@ -182,8 +182,8 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
 
 
 def main():
-    fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")
-    cluster = 1
+    fecha = datetime.strptime("25-10-2019 12:00", "%d-%m-%Y %H:%M")
+    cluster = 36
     tb = 'train_1'
 
     calculo_parametros_un_train(cluster, fecha, tb)

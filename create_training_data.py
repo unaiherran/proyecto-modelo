@@ -8,8 +8,7 @@ import pandas as pd
 from secret import *
 
 DEBUG = True
-LOCAL = True
-
+LOCAL = False
 # Conectarse a la base de datos
 
 if not LOCAL:
@@ -178,14 +177,14 @@ def calculo_parametros_un_train(cluster, fecha, tb='train_1'):
     eventos_3 = calcular_de_eventos(cluster, fecha)
 
     # escribir en bdd train_1
-    insert_en_train_1_db(fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
-                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo, tb=tb)
+    insert_en_train_1_db(tb, fecha, cluster, num_coches=num_coches, intensidad=intensidad, ocupacion=ocupacion,
+                         carga=carga, dia_semana=dia_semana, dia_mes=dia_mes, festivo=festivo)
 
 
 def main():
     fecha = datetime.strptime("22-10-2019 12:00", "%d-%m-%Y %H:%M")
     cluster = 1
-    tb= 'train_1'
+    tb = 'train_1'
 
     calculo_parametros_un_train(cluster, fecha, tb)
 

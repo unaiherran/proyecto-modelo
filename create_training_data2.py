@@ -149,7 +149,7 @@ def calcular_de_eventos(fecha):
 
                 # Eventos 3h (-120 -> +60)
                 df3h = df.groupby('cluster').sum()
-                print(df3h)
+
                 df3h.columns = ['eve_3h_g', 'eve_3h']
                 df3h['cluster'] = list(df3h.index.values)
 

@@ -175,6 +175,8 @@ def calcular_de_eventos(fecha):
             df3 = pd.merge(df3, df1h, on='cluster', how='outer')
 
             df3 = df3.fillna(0)
+            df3 = df3.astype({"eve_3h": int, "eve_3h_g": int, "eve_2h": int,
+                              "eve_2h_g": int,"eve_1h": int, "eve_1h_g": int })
 
             df3h.to_csv('df3h.csv')
             df2h.to_csv('df2h.csv')

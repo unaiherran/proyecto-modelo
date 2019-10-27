@@ -121,7 +121,7 @@ def calcular_de_eventos(fecha):
     # preparar respuesta si no funciona la consulta
     cluster = list(range(200))
     lst0 = [0] * 200
-    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0)),
+    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0, lst0, lst0, lst0)),
                        columns=['cluster', 'eve_3h', 'eve_3h_g', 'eve_2h', 'eve_2h_g', 'eve_1h', 'eve_1h_g'])
 
     fecha_ini_str = fecha_ini.strftime(format)

@@ -102,8 +102,9 @@ def calcular_de_eventos(cluster, fecha):
                   f"str_to_date('{fecha_fin_str}','%Y-%m-%d %H:%i')) AND " \
                   f"(clu.id_cluster = {cluster});"
 
+            print(sql)
             df = pd.read_sql(sql, con=connection)
-
+            print(df)
             df.to_csv('df.csv')
 
 

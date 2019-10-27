@@ -21,8 +21,8 @@ if not LOCAL:
         port=db_port
     )
 
-    engine = create_engine('mysql+mysqlconnector://' + db_user + ':' + db_passwd + '@' + db_host + ':' + db_port +
-                           db_database, echo=False)
+    engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:{db_port}/{db_database}',
+                           echo=False)
 
 def dataframe_vacio_de_cluster():
     cluster = list(range(200))

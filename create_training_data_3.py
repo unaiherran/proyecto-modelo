@@ -202,7 +202,7 @@ def calcular_de_fecha(fecha):
             data = cur.fetchall()
 
             if data:
-                festivo = 2
+                festivo = 1
 
     cluster = list(range(200))
     lst_dia_semana = [dia_semana] * 200

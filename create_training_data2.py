@@ -264,8 +264,8 @@ def bucle(fecha_ini, fecha_fin, tb):
 
 
 def main():
-    fecha_ini = datetime.strptime("12-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("26-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("26-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("28-10-2019 00:00", "%d-%m-%Y %H:%M")
 
     tb = 'train_1'
 

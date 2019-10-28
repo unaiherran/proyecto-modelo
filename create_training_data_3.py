@@ -66,7 +66,7 @@ def calcular_de_imagenes_camara(fecha):
                 df2 = df2.drop(['id_camara'], axis=1)
                 df2['cluster'] = list(df2.index.values)
 
-                df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
+                df3 = pd.merge(empty_df, df2, on='cluster', how='inner')
                 df3 = df3.fillna(999999)
 
     return df3

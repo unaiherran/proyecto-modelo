@@ -67,6 +67,7 @@ def calcular_de_imagenes_camara(fecha):
                 df_grouped = df.groupby('cluster').num_cars.agg(['min', 'max', 'mean', 'median'])
                 df_grouped.columns = ['num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median']
                 df_grouped['cluster'] = list(df_grouped.index.values)
+                df_grouped = df_grouped.rename_axis(None)
 
                 # En df2 quitamos los outliers de las medidas
                 df2 = df[df.groupby("cluster").num_cars.transform(
@@ -75,6 +76,7 @@ def calcular_de_imagenes_camara(fecha):
                 df2_grouped.columns = ['num_cars_min_woo', 'num_cars_max_woo', 'num_cars_mean_woo',
                                        'num_cars_median_woo']
                 df2_grouped['cluster'] = list(df2_grouped.index.values)
+                df2_grouped = df2_grouped.rename_axis(None)
 
                 # juntamos los dos dataframes
                 df3 = pd.merge(empty_df, df_grouped, on='cluster', how='outer')

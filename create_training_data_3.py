@@ -45,7 +45,6 @@ def calcular_de_imagenes_camara(fecha):
     df3 = pd.DataFrame(list(zip(cluster, lst0)),
                        columns=['cluster', 'num_cars'])
 
-
     format = '%Y-%m-%d %H:%M'
 
     fecha_str =  fecha.strftime(format)
@@ -59,8 +58,6 @@ def calcular_de_imagenes_camara(fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 
             df = pd.read_sql(sql, con=connection)
-
-            df.to_csv('df_coches_1.csv')
 
             if not df.empty:
                 df = df.sort_values(by=['cluster'])
@@ -115,7 +112,6 @@ def calcular_de_datos_trafico(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df.to_csv('trafico_.csv')
             df = df.dropna(how='any', axis=0)
 
             if not df.empty:
@@ -283,7 +279,6 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)
-    df_coches.to_csv('df__coches.csv')
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')
@@ -301,8 +296,6 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     df = pd.merge(df_coches, df_trafico, on='cluster', how='outer')
     df = pd.merge(df, df_fecha, on='cluster', how='outer')
     df = pd.merge(df, df_eventos, on='cluster', how='outer')
-
-    df = df[df['num_cars'] != 999999]
 
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')

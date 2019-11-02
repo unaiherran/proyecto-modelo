@@ -61,6 +61,7 @@ def calcular_de_imagenes_camara(fecha):
             df = pd.read_sql(sql, con=connection)
 
             df.to_csv('df_coches_1.csv')
+
             if not df.empty:
                 df = df.sort_values(by=['cluster'])
                 df2 = df.groupby('cluster').mean()

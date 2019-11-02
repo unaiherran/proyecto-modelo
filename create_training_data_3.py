@@ -60,6 +60,7 @@ def calcular_de_imagenes_camara(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
+            df.to_csv('df_coches_1.csv')
             if not df.empty:
                 df = df.sort_values(by=['cluster'])
                 df2 = df.groupby('cluster').mean()
@@ -231,7 +232,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)
-    df_coches.to_csv('df.coches.csv')
+    df_coches.to_csv('df__coches.csv')
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')

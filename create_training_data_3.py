@@ -106,9 +106,7 @@ def calcular_de_datos_trafico(fecha):
 
     if not LOCAL:
         if connection.is_connected():
-            cur = connection.cursor()
-
-            sql = f"SELECT sen.id , tra.intensidad, tra.ocupacion, tra.carga, tra.error, sen.cluster " \
+            sql = f"SELECT tra.intensidad, tra.ocupacion, tra.carga, tra.error, sen.cluster " \
                   f"from DatosTrafico tra INNER JOIN SensoresTrafico sen ON tra.id_sensor = sen.id " \
                   f"where (tra.fecha BETWEEN " \
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
@@ -121,13 +119,50 @@ def calcular_de_datos_trafico(fecha):
             df = df.dropna(how='any', axis=0)
 
             if not df.empty:
-                df = df.sort_values(by=['cluster'])
-                df2 = df.groupby('cluster').mean()
-                df2 = df2.drop(['id'], axis=1)
-                df2['cluster'] = list(df2.index.values)
-                df2 = df2.astype({"cluster": int})
+                df_grouped_int = df.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_int.columns = ['int_min', 'int_max', 'int_mean', 'int_median']
+                df_grouped_int['cluster'] = list(df_grouped_int.index.values)
+                df_grouped_int = df_grouped_int.rename_axis(None)
 
-                df3 = pd.merge(empty_df, df2, on='cluster', how='outer')
+                df_grouped_ocu = df.groupby('cluster').ocupacion.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_ocu.columns = ['ocu_min', 'ocu_max', 'ocu_mean', 'ocu_median']
+                df_grouped_ocu['cluster'] = list(df_grouped_ocu.index.values)
+                df_grouped_ocu = df_grouped_ocu.rename_axis(None)
+
+                df_grouped_car = df.groupby('cluster').carga.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_car.columns = ['car_min', 'car_max', 'car_mean', 'car_median']
+                df_grouped_car['cluster'] = list(df_grouped_car.index.values)
+                df_grouped_car = df_grouped_car.rename_axis(None)
+
+                df_int_woo = df[df.groupby("cluster").intensidad.transform(
+                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+                df_ocu_woo = df[df.groupby("cluster").ocupacion.transform(
+                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+                df_car_woo = df[df.groupby("cluster").carga.transform(
+                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+
+                df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
+                df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
+                df_grouped_int_woo = df_grouped_int_woo.rename_axis(None)
+
+                df_grouped_ocu_woo = df_ocu_woo.groupby('cluster').ocupacion.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_ocu_woo.columns = ['ocu_woo_min', 'ocu_woo_max', 'ocu_woo_mean', 'ocu_woo_median']
+                df_grouped_ocu_woo['cluster'] = list(df_grouped_ocu_woo.index.values)
+                df_grouped_ocu_woo = df_grouped_ocu_woo.rename_axis(None)
+
+                df_grouped_car_woo = df_car_woo.groupby('cluster').carga.agg(['min', 'max', 'mean', 'median'])
+                df_grouped_car_woo.columns = ['car_woo_min', 'car_woo_max', 'car_woo_mean', 'car_woo_median']
+                df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
+                df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
+
+                df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
+
                 df3 = df3.fillna(0)
 
     return df3

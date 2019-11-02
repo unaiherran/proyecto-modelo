@@ -11,6 +11,8 @@ from secret import *
 DEBUG = True
 LOCAL = False
 
+outliers = 0.02
+
 # Conectarse a la base de datos
 if not LOCAL:
     connection = mysql.connector.connect(
@@ -51,8 +53,6 @@ def calcular_de_imagenes_camara(fecha):
 
     if not LOCAL:
         if connection.is_connected():
-            cur = connection.cursor();
-
             sql = f"SELECT num_cars, cam.id_camara, ima.fecha, cam.cluster from ImagenesCamarasTrafico ima " \
                   f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara where " \
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \
@@ -64,11 +64,23 @@ def calcular_de_imagenes_camara(fecha):
 
             if not df.empty:
                 df = df.sort_values(by=['cluster'])
-                df2 = df.groupby('cluster').mean()
-                df2 = df2.drop(['id_camara'], axis=1)
-                df2['cluster'] = list(df2.index.values)
+                df_grouped = df.groupby('cluster').num_cars.agg(['min', 'max', 'mean', 'median'])
+                df_grouped.columns = ['num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median']
+                df_grouped['cluster'] = list(df_grouped.index.values)
 
-                df3 = pd.merge(empty_df, df2, on='cluster', how='inner')
+                # En df2 quitamos los outliers de las medidas
+                df2 = df[df.groupby("cluster").num_cars.transform(
+                    lambda x: (x < x.quantile(1-outliers)) & (x > (x.quantile(outliers)))).eq(1)]
+                df2_grouped = df2.groupby('cluster').num_cars.agg(['min', 'max', 'mean', 'median'])
+                df2_grouped.columns = ['num_cars_min_woo', 'num_cars_max_woo', 'num_cars_mean_woo',
+                                       'num_cars_median_woo']
+                df2_grouped['cluster'] = list(df2_grouped.index.values)
+
+                # juntamos los dos dataframes
+                df3 = pd.merge(empty_df, df_grouped, on='cluster', how='outer')
+                df3 = pd.merge(df3, df2_grouped, on='cluster', how='outer')
+
+                # convertimos los NaN en 999999
                 df3 = df3.fillna(999999)
 
     return df3
@@ -103,7 +115,8 @@ def calcular_de_datos_trafico(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df = df.dropna(how='any',axis=0)
+            df.to_csv('trafico_.csv')
+            df = df.dropna(how='any', axis=0)
 
             if not df.empty:
                 df = df.sort_values(by=['cluster'])

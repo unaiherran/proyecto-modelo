@@ -231,6 +231,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
 
     df_coches = calcular_de_imagenes_camara(fecha)
+    df_coches.to_csv('df.coches.csv')
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico', end='\r')
@@ -269,8 +270,8 @@ def main():
     # COge todos los datos desde el 12/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
-    fecha_ini = datetime.strptime("12-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("28-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("21-10-2019 00:15", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

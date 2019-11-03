@@ -315,7 +315,7 @@ def calcular_de_tiempo(fecha):
 
 def calcular_de_gran_evento(fecha):
     fecha_ini = fecha - timedelta(hours=12)
-    fecha_fin = fecha - timedelta(hours=12)
+    fecha_fin = fecha + timedelta(hours=12)
     format = '%Y-%m-%d %H:%M'
     if not LOCAL:
         if connection.is_connected():

@@ -279,15 +279,33 @@ def calcular_de_tiempo(fecha):
 
     if not LOCAL:
         if connection.is_connected():
-            sql = f"SELECT fecha, vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
+            sql = f"SELECT vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
                   f"WHERE tie.fecha = str_to_date('{fecha_str}', '%Y-%m-%d %H:%i');"
 
             df = pd.read_sql(sql, con=connection)
             df = df.dropna()
+            # rename column id_cluster a cluster
+            df = df.rename(columns={"id_cluster": "cluster"})
 
-            df.to_csv('tiempo__.csv')
+            if not df.empty:
+                df3 = df
+            else:
+                # fill df with 999999
+                cluster = list(range(200))
+                unknown = [999999] * 200
+                df['cluster'] = cluster
+                df['vmax'] = unknown
+                df['vv'] = unknown
+                df['dv'] = unknown
+                df['dmax'] = unknown
+                df['ta'] = unknown
+                df['tamin'] = unknown
+                df['tamax'] = unknown
+                df['prec'] = unknown
+                df3 = df
 
+    return df3
 
 
 

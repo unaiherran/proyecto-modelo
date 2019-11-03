@@ -314,17 +314,34 @@ def calcular_de_tiempo(fecha):
 
 
 def calcular_de_gran_evento(fecha):
+    cluster = list(range(200))
+    lst0 = [0] * 200
+    df3 = pd.DataFrame(list(zip(cluster, lst0)), columns=['cluster', 'gran_evento'))
+
     fecha_ini = fecha - timedelta(hours=12)
     fecha_fin = fecha + timedelta(hours=12)
     format = '%Y-%m-%d %H:%M'
+
     if not LOCAL:
         if connection.is_connected():
             sql = f"SELECT * FROM DatosGrandesEventos ge WHERE " \
                   f"(ge.fecha BETWEEN str_to_date('{fecha_ini.strftime(format)}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{fecha_fin.strftime(format)}','%Y-%m-%d %H:%i'));"
             df = pd.read_sql(sql, con=connection)
-            print(sql)
-            df.to_csv('granevento.csv')
+
+            for _, row in df.iterrows():
+                duracion = row['fechaFin'] - row['fecha']
+                fecha_inicio = row['fecha'] - timedelta(minutes=90)
+                fecha_final = row['fechaFin'] + timedelta(minutes=60)
+                if fecha > fecha_inicio and fecha < fecha_final:
+                    # el Evento afecta a el trafico en los clusters que esten en los alrededores
+                    clusters_afectados_lts_str = row['clusters_cercanos'].split(' ')
+                    clusters_afectados_lts_str.append(row['cluster'])
+                    for clu in clusters_afectados_lts_str:
+                        df3.iloc[int(clu)]['gran_evento'] += 1
+    return df3
+
+
 
 def insert_en_train_1_db(tb, df):
     if not LOCAL:

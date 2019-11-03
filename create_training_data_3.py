@@ -353,6 +353,9 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     df = pd.merge(df_coches, df_trafico, on='cluster', how='outer')
     df = pd.merge(df, df_fecha, on='cluster', how='outer')
     df = pd.merge(df, df_eventos, on='cluster', how='outer')
+    df = pd.merge(df, df_tiempo, on='cluster', how='outer')
+
+    df.to_csv('dataframe_1.csv')
 
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')

@@ -355,7 +355,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
 
     # calculo de db_grandes_Eventos
     print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
-    # df_eventos = calcular_de_grandes_eventos(fecha)
+    df_grandes_eventos = calcular_de_gran_evento(fecha)
 
     # calculo de db_contaminacion
     print(datetime.now(), 'Calculando contaminacion  ', end='\r')
@@ -391,8 +391,8 @@ def main():
     # COge todos los datos desde el 12/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
-    fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("21-10-2019 00:05", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("01-10-2019 05:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("01-10-2019 05:05", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

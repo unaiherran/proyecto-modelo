@@ -323,7 +323,7 @@ def calcular_de_gran_evento(fecha):
                   f"(ge.fecha BETWEEN str_to_date('{fecha_ini.strftime(format)}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{fecha_fin.strftime(format)}','%Y-%m-%d %H:%i'));"
             df = pd.read_sql(sql, con=connection)
-
+            print(sql)
             df.to_csv('granevento.csv')
 
 def insert_en_train_1_db(tb, df):

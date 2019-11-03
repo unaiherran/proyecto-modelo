@@ -373,7 +373,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     # calculo de db_grandes_Eventos
     print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
     df_grandes_eventos = calcular_de_gran_evento(fecha)
-    print(df_grandes_eventos)
+    df_grandes_eventos.to_csv('granevento.csv')
 
     # calculo de db_contaminacion
     print(datetime.now(), 'Calculando contaminacion  ', end='\r')

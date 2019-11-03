@@ -411,7 +411,7 @@ def main():
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("31-10-2019 23:59", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("03-11-2019 23:59", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

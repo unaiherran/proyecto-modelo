@@ -42,8 +42,13 @@ def calcular_de_imagenes_camara(fecha):
     # preparar respuesta si no funciona la consulta
     cluster = list(range(200))
     lst0 = [0] * 200
-    df3 = pd.DataFrame(list(zip(cluster, lst0)),
-                       columns=['cluster', 'num_cars'])
+    lst_unknowns = [999999] * 200
+    df3 = pd.DataFrame(list(zip(cluster, lst_unknowns, lst_unknowns, lst_unknowns, lst_unknowns, lst_unknowns,
+                                lst_unknowns, lst_unknowns, lst_unknowns)),
+                       columns=['cluster', 'num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median',
+                                'num_cars_min_woo', 'num_cars_max_woo', 'num_cars_mean_woo',
+                                'num_cars_median_woo'
+                                ])
 
     format = '%Y-%m-%d %H:%M'
 
@@ -308,6 +313,18 @@ def calcular_de_tiempo(fecha):
     return df3
 
 
+def calcular_de_gran_evento(fecha):
+    fecha_ini = fecha - timedelta(hours=12)
+    fecha_fin = fecha - timedelta(hours=12)
+    format = '%Y-%m-%d %H:%M'
+    if not LOCAL:
+        if connection.is_connected():
+            sql = f"SELECT * FROM DatosGrandesEventos ge WHERE " \
+                  f"(ge.fecha BETWEEN str_to_date('{fecha_ini.strftime(format)}', '%Y-%m-%d %H:%i') AND " \
+                  f"str_to_date('{fecha_fin.strftime(format)}','%Y-%m-%d %H:%i'));"
+            df = pd.read_sql(sql, con=connection)
+
+            df.to_csv('granevento.csv')
 
 def insert_en_train_1_db(tb, df):
     if not LOCAL:
@@ -322,7 +339,6 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
-
     df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico

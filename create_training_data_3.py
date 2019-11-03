@@ -80,6 +80,12 @@ def calcular_de_imagenes_camara(fecha):
                 df3 = pd.merge(df3, df2_grouped, on='cluster', how='outer')
 
                 # convertimos los NaN en 999999
+                # df3 = df3.fillna(999999)
+
+                #quitamos las filas que tienen NaN en num_cars_mean
+                df3 = df3.dropna(subset=['num_cars_mean'])
+
+                # convertimos los NaN en 999999
                 df3 = df3.fillna(999999)
 
     return df3
@@ -159,7 +165,8 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
 
-                df3 = df3.fillna(0)
+                df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
+                df3 = df3.fillna(999999)
 
     return df3
 
@@ -264,6 +271,26 @@ def calcular_de_fecha(fecha):
     return df3
 
 
+def calcular_de_tiempo(fecha):
+    format = '%Y-%m-%d %H:00'
+    fecha_str= fecha.strftime(format)
+
+    print(fecha)
+
+    if not LOCAL:
+        if connection.is_connected():
+            sql = f"SELECT fecha, vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
+                  f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
+                  f"WHERE tie.fecha = str_to_date('{fecha_str}', '%Y-%m-%d %H:%i');"
+
+            df = pd.read_sql(sql, con=connection)
+            df = df.dropna()
+
+            df.to_csv('tiempo__.csv')
+
+
+
+
 def insert_en_train_1_db(tb, df):
     if not LOCAL:
         if connection.is_connected():
@@ -281,16 +308,28 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico
-    print(datetime.now(), ' Calculando datos trafico', end='\r')
+    print(datetime.now(), ' Calculando datos trafico ', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
 
     #calculo de db_festivos
-    print(datetime.now(), 'Calculando festivos      ', end='\r')
+    print(datetime.now(), 'Calculando festivos       ', end='\r')
     df_fecha = calcular_de_fecha(fecha)
 
     # calculo de db_eventos
-    print(datetime.now(), 'Calculando eventos       ', end='\r')
+    print(datetime.now(), 'Calculando eventos        ', end='\r')
     df_eventos = calcular_de_eventos(fecha)
+
+    # calculo de db_grandes_Eventos
+    print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
+    df_eventos = calcular_de_grandes_eventos(fecha)
+
+    # calculo de db_contaminacion
+    print(datetime.now(), 'Calculando contaminacion  ', end='\r')
+    # df_contaminacion = calcular_de_contaminacion(fecha)
+
+    # calculo de db_tiempo
+    print(datetime.now(), 'Calculando tiempo         ', end='\r')
+    df_tiempo = calcular_de_tiempo(fecha)
 
     # merge de todos los dataframes
     df = pd.merge(df_coches, df_trafico, on='cluster', how='outer')

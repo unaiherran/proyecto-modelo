@@ -212,6 +212,7 @@ def calcular_de_eventos(fecha):
 
                 df3h.columns = ['eve_3h_g', 'eve_3h']
                 df3h['cluster'] = list(df3h.index.values)
+                df3h.index.name = None
 
                 # Eventos 2h (-60 -> +60)
                 start_date = fecha - timedelta(minutes=60)
@@ -221,6 +222,7 @@ def calcular_de_eventos(fecha):
                 df2h = df2.groupby('cluster').sum()
                 df2h.columns = ['eve_2h_g', 'eve_2h']
                 df2h['cluster'] = list(df2h.index.values)
+                df2h.index.name = None
 
                 # Eventos 1h (-30 -> +30)
                 start_date = fecha - timedelta(minutes=30)
@@ -230,6 +232,7 @@ def calcular_de_eventos(fecha):
                 df1h = df1.groupby('cluster').sum()
                 df1h.columns = ['eve_1h_g', 'eve_1h']
                 df1h['cluster'] = list(df1h.index.values)
+                df1h.index.name = None
 
                 # merge de todos los df
                 df3 = dataframe_vacio_de_cluster()

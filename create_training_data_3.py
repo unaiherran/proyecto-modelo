@@ -316,7 +316,7 @@ def calcular_de_tiempo(fecha):
 def calcular_de_gran_evento(fecha):
     cluster = list(range(200))
     lst0 = [0] * 200
-    df3 = pd.DataFrame(list(zip(cluster, lst0)), columns=['cluster', 'gran_evento'))
+    df3 = pd.DataFrame(list(zip(cluster, lst0)), columns=['cluster', 'gran_evento'])
 
     fecha_ini = fecha - timedelta(hours=12)
     fecha_fin = fecha + timedelta(hours=12)

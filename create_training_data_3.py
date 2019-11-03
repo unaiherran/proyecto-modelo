@@ -373,7 +373,6 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     # calculo de db_grandes_Eventos
     print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
     df_grandes_eventos = calcular_de_gran_evento(fecha)
-    df_grandes_eventos.to_csv('granevento.csv')
 
     # calculo de db_contaminacion
     print(datetime.now(), 'Calculando contaminacion  ', end='\r')
@@ -388,8 +387,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     df = pd.merge(df, df_fecha, on='cluster', how='outer')
     df = pd.merge(df, df_eventos, on='cluster', how='outer')
     df = pd.merge(df, df_tiempo, on='cluster', how='outer')
-
-    df.to_csv('dataframe_1.csv')
+    df = pd.merge(df, df_grandes_eventos, on='cluster', how='outer')
 
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
@@ -409,8 +407,8 @@ def main():
     # COge todos los datos desde el 12/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
-    fecha_ini = datetime.strptime("01-10-2019 15:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("01-10-2019 15:05", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("31-10-2019 23:59", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

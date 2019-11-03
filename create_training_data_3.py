@@ -354,8 +354,8 @@ def main():
     # COge todos los datos desde el 12/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
-    fecha_ini = datetime.strptime("27-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("27-10-2019 00:15", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("21-10-2019 00:05", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

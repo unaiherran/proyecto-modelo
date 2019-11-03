@@ -338,10 +338,13 @@ def calcular_de_gran_evento(fecha):
                 fecha_final = row['fechaFin'] + timedelta(minutes=60)
                 if fecha > fecha_inicio and fecha < fecha_final:
                     # el Evento afecta a el trafico en los clusters que esten en los alrededores
-                    clusters_afectados_lts_str = row['clusters_cercanos'].split(' ')
-                    clusters_afectados_lts_str.append(row['cluster'])
-                    for clu in clusters_afectados_lts_str:
-                        df3.iloc[int(clu)]['gran_evento'] += 1
+                    try:
+                        clusters_afectados_lts_str = row['clusters_cercanos'].split(' ')
+                        clusters_afectados_lts_str.append(row['cluster'])
+                        for clu in clusters_afectados_lts_str:
+                            df3.iloc[int(clu)]['gran_evento'] += 1
+                    except AttributeError:
+                        print('Cliuster no tiene eventos')
     return df3
 
 

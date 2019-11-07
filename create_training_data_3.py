@@ -145,6 +145,8 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
+
+                # Calculo de la carga para valores de + del 25% de la normal
                 low = 0.25
                 high = 1.00
                 res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
@@ -156,6 +158,35 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_25.columns = ['ocu_mean_25']
                 df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
                 df_ocu_mean_25 = df_grouped_car.rename_axis(None)
+
+
+                # Calculo de la carga para valores de + del 50% de la normal
+                low = 0.50
+                high = 1.00
+                res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
+                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
+
+                df_ocu_mean_50 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
+
+                df_ocu_mean_50.columns = ['ocu_mean_50']
+                df_ocu_mean_50['cluster'] = list(df_ocu_mean_50.index.values)
+                df_ocu_mean_50 = df_grouped_car.rename_axis(None)
+
+
+                # Calculo de la carga para valores de + del 75% de la normal
+                low = 0.75
+                high = 1.00
+                res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
+                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
+
+                df_ocu_mean_75 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
+
+                df_ocu_mean_75.columns = ['ocu_mean_75']
+                df_ocu_mean_75['cluster'] = list(df_ocu_mean_75.index.values)
+                df_ocu_mean_75 = df_grouped_car.rename_axis(None)
+
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo
@@ -190,6 +221,8 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
 
                 #df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)

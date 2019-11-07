@@ -191,35 +191,35 @@ def calcular_de_datos_trafico(fecha):
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo
 
-                df_int_woo = df[df.groupby("cluster").intensidad.transform(
-                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-                df_ocu_woo = df[df.groupby("cluster").ocupacion.transform(
-                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-                df_car_woo = df[df.groupby("cluster").carga.transform(
-                    lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-
-
-                df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
-                df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
-                df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
-                df_grouped_int_woo = df_grouped_int_woo.rename_axis(None)
-
-                df_grouped_ocu_woo = df_ocu_woo.groupby('cluster').ocupacion.agg(['min', 'max', 'mean', 'median'])
-                df_grouped_ocu_woo.columns = ['ocu_woo_min', 'ocu_woo_max', 'ocu_woo_mean', 'ocu_woo_median']
-                df_grouped_ocu_woo['cluster'] = list(df_grouped_ocu_woo.index.values)
-                df_grouped_ocu_woo = df_grouped_ocu_woo.rename_axis(None)
-
-                df_grouped_car_woo = df_car_woo.groupby('cluster').carga.agg(['min', 'max', 'mean', 'median'])
-                df_grouped_car_woo.columns = ['car_woo_min', 'car_woo_max', 'car_woo_mean', 'car_woo_median']
-                df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
-                df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
+                # df_int_woo = df[df.groupby("cluster").intensidad.transform(
+                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+                # df_ocu_woo = df[df.groupby("cluster").ocupacion.transform(
+                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+                # df_car_woo = df[df.groupby("cluster").carga.transform(
+                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
+                #
+                #
+                # df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
+                # df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
+                # df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
+                # df_grouped_int_woo = df_grouped_int_woo.rename_axis(None)
+                #
+                # df_grouped_ocu_woo = df_ocu_woo.groupby('cluster').ocupacion.agg(['min', 'max', 'mean', 'median'])
+                # df_grouped_ocu_woo.columns = ['ocu_woo_min', 'ocu_woo_max', 'ocu_woo_mean', 'ocu_woo_median']
+                # df_grouped_ocu_woo['cluster'] = list(df_grouped_ocu_woo.index.values)
+                # df_grouped_ocu_woo = df_grouped_ocu_woo.rename_axis(None)
+                #
+                # df_grouped_car_woo = df_car_woo.groupby('cluster').carga.agg(['min', 'max', 'mean', 'median'])
+                # df_grouped_car_woo.columns = ['car_woo_min', 'car_woo_max', 'car_woo_mean', 'car_woo_median']
+                # df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
+                # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
                 df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
-                df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
-                df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
-                df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
+                # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
+                # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
+                # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')

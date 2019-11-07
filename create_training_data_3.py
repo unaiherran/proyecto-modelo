@@ -145,6 +145,7 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
+                print(df_grouped_car.columns)
 
                 # Calculo de la carga para valores de + del 25% de la normal
                 low = 0.25
@@ -214,8 +215,8 @@ def calcular_de_datos_trafico(fecha):
                 # df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
                 # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
-                # df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
-                df3 = pd.merge(df_grouped_int, df_grouped_ocu, on='cluster', how='outer')
+                df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')

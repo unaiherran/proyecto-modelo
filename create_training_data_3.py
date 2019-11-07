@@ -103,7 +103,8 @@ def calcular_de_datos_trafico(fecha):
     # preparar respuesta si no funciona la consulta
     cluster = list(range(200))
     lst0 = [0] * 200
-    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0, lst0, lst0, lst0, lst0, lst0,lst0, lst0, lst0, lst0)),
+    df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0, lst0, lst0, lst0, lst0, lst0,lst0, lst0, lst0, lst0,
+                                lst0, lst0, lst0)),
                        columns=['cluster', 'int_min', 'int_max', 'int_mean', 'int_median',
                                 'ocu_min', 'ocu_max', 'ocu_mean', 'ocu_median',
                                 'car_min', 'car_max', 'car_mean', 'car_median',

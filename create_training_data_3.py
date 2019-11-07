@@ -214,8 +214,8 @@ def calcular_de_datos_trafico(fecha):
                 # df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
                 # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
-                df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
-                df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
+                # df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
+                df3 = pd.merge(df_grouped_int, df_grouped_ocu, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
@@ -422,7 +422,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), ' Calculando datos trafico ', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
 
-    print(df_trafico)
+
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos       ', end='\r')
     df_fecha = calcular_de_fecha(fecha)

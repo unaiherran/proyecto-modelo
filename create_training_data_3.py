@@ -152,8 +152,9 @@ def calcular_de_datos_trafico(fecha):
                                        (df.ocupacion.values < res.loc[df.cluster, high])).values]
 
                 df_ocu_mean_25 = df_ocupacion.groupby('cluster').ocupacion.mean()
-
-                print (df_ocu_mean_25)
+                df_ocu_mean_25.columns('ocu_mean_25')
+                df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
+                df_ocu_mean_25 = df_grouped_car.rename_axis(None)
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo
@@ -165,14 +166,6 @@ def calcular_de_datos_trafico(fecha):
                 df_car_woo = df[df.groupby("cluster").carga.transform(
                     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
 
-                df_ocu_mean_25 = df[df.groupby("cluster").ocupacion.transform(
-                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.25)))).eq(1)]
-
-
-                df_grouped_car_25 = df_ocu_mean_25.groupby('cluster').intensidad.agg(['mean'])
-                df_grouped_car_25.columns = ['ocu_mean_25']
-                df_grouped_car_25['cluster'] = list(df_grouped_car_25.index.values)
-                df_grouped_car_25 = df_grouped_car_25.rename_axis(None)
 
                 df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
                 df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
@@ -195,7 +188,7 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
-                df3 = pd.merge(df3, df_grouped_car_25, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
 
                 df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)

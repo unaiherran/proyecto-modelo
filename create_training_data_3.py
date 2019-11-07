@@ -224,7 +224,7 @@ def calcular_de_datos_trafico(fecha):
                 # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
-                print('3.5',df_ocu_mean_25.colums)
+                print('3.5',df_ocu_mean_25.columns)
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
                 print('4',df3.columns)
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')

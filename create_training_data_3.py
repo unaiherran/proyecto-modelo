@@ -422,6 +422,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), ' Calculando datos trafico ', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
 
+    print(df_trafico)
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos       ', end='\r')
     df_fecha = calcular_de_fecha(fecha)

@@ -153,7 +153,7 @@ def calcular_de_datos_trafico(fecha):
 
                 df_ocu_mean_25 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
 
-                df_ocu_mean_25.columns('ocu_mean_25')
+                df_ocu_mean_25.columns = ['ocu_mean_25']
                 df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
                 df_ocu_mean_25 = df_grouped_car.rename_axis(None)
 

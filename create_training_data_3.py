@@ -191,7 +191,7 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
 
-                df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
+                #df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)
 
     return df3

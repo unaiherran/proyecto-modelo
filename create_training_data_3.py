@@ -145,13 +145,15 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
-                low = 0.05
-                high = 0.95
+                low = 0.25
+                high = 1.00
                 res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
+                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
 
-                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) & (df.ocupacion.values < res.loc[df.cluster, high])).values]
+                df_ocu_mean_25 = df_ocupacion.groupby('cluster').ocupacion.mean
 
-                print (df_ocupacion)
+                print (df_ocu_mean_25)
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo

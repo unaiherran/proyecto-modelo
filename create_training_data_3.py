@@ -106,7 +106,8 @@ def calcular_de_datos_trafico(fecha):
     df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0, lst0, lst0, lst0, lst0, lst0,lst0, lst0, lst0, lst0)),
                        columns=['cluster', 'int_min', 'int_max', 'int_mean', 'int_median',
                                 'ocu_min', 'ocu_max', 'ocu_mean', 'ocu_median',
-                                'car_min', 'car_max', 'car_mean', 'car_median'])
+                                'car_min', 'car_max', 'car_mean', 'car_median',
+                                'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75'])
     sig_fecha = fecha + timedelta(minutes=15)
 
     format = '%Y-%m-%d %H:%M'
@@ -150,6 +151,20 @@ def calcular_de_datos_trafico(fecha):
                 df_car_woo = df[df.groupby("cluster").carga.transform(
                     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
 
+                df_ocu_mean_25 = df[df.groupby("cluster").ocupacion.transform(
+                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.25)))).eq(1)]
+
+                df_ocu_mean_50 = df[df.groupby("cluster").ocupacion.transform(
+                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.50)))).eq(1)]
+
+                df_ocu_mean_75 = df[df.groupby("cluster").ocupacion.transform(
+                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.75)))).eq(1)]
+
+                df_grouped_car_25 = df_ocu_mean_25.groupby('cluster').intensidad.agg(['mean'])
+                df_grouped_car_25.columns = ['ocu_mean_25']
+                df_grouped_car_25['cluster'] = list(df_grouped_car_25.index.values)
+                df_grouped_car_25 = df_grouped_car_25.rename_axis(None)
+
                 df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
                 df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
                 df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
@@ -171,6 +186,7 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_car_25, on='cluster', how='outer')
 
                 df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)
@@ -416,7 +432,7 @@ def main():
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     fecha_ini = datetime.strptime("21-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("03-11-2019 23:59", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("07-11-2019 23:59", "%d-%m-%Y %H:%M")
 
     tb = 'train_2'
 

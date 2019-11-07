@@ -145,6 +145,17 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
+                low = 0.05
+                high = 0.95
+                res = df.groupby("cluster")["ocu"].quantile([low, high]).unstack(level=1)
+
+                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) & (df.ocupacion.values < res.loc[df.cluster, high])).values]
+
+                print (df_ocupacion)
+
+                # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
+                # hay que cambairlo
+
                 df_int_woo = df[df.groupby("cluster").intensidad.transform(
                     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
                 df_ocu_woo = df[df.groupby("cluster").ocupacion.transform(
@@ -155,11 +166,6 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_25 = df[df.groupby("cluster").ocupacion.transform(
                     lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.25)))).eq(1)]
 
-                df_ocu_mean_50 = df[df.groupby("cluster").ocupacion.transform(
-                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.50)))).eq(1)]
-
-                df_ocu_mean_75 = df[df.groupby("cluster").ocupacion.transform(
-                    lambda x: (x < x.quantile(1)) & (x > (x.quantile(0.75)))).eq(1)]
 
                 df_grouped_car_25 = df_ocu_mean_25.groupby('cluster').intensidad.agg(['mean'])
                 df_grouped_car_25.columns = ['ocu_mean_25']

@@ -216,16 +216,22 @@ def calcular_de_datos_trafico(fecha):
                 # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
                 df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
+                print(df3.columns)
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
+                print(df3.columns)
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
+                print(df3.columns)
                 # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
+                print(df3.columns)
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
+                print(df3.columns)
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
+                print(df3.columns)
 
-                #df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
+                df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)
 
     return df3

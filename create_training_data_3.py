@@ -145,8 +145,6 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
-                print(df_grouped_car.columns)
-
                 # Calculo de la carga para valores de + del 25% de la normal
                 low = 0.25
                 high = 1.00
@@ -159,8 +157,6 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_25.columns = ['ocu_mean_25']
                 df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
                 df_ocu_mean_25 = df_ocu_mean_25.rename_axis(None)
-                print('1.5', df_ocu_mean_25.columns)
-
 
                 # Calculo de la carga para valores de + del 50% de la normal
                 low = 0.50
@@ -189,7 +185,6 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_75['cluster'] = list(df_ocu_mean_75.index.values)
                 df_ocu_mean_75 = df_ocu_mean_75.rename_axis(None)
 
-                print('5.5', df_ocu_mean_25.columns)
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo
@@ -218,21 +213,14 @@ def calcular_de_datos_trafico(fecha):
                 # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
                 df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
-                print('1', df3.columns)
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
-                print('2',df3.columns)
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
-                print('3',df3.columns)
                 # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
-                print('3.5',df_ocu_mean_25.columns)
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
-                print('4',df3.columns)
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
-                print('5',df3.columns)
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
-                print('6',df3.columns)
 
                 df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
                 df3 = df3.fillna(999999)

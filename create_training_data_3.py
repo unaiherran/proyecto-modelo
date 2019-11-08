@@ -149,7 +149,8 @@ def calcular_de_datos_trafico(fecha):
                 low = 0.25
                 high = 1.00
                 res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
+                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
                                        (df.ocupacion.values < res.loc[df.cluster, high])).values]
 
                 df_ocu_mean_25 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
@@ -162,7 +163,8 @@ def calcular_de_datos_trafico(fecha):
                 low = 0.50
                 high = 1.00
                 res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
+                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
                                        (df.ocupacion.values < res.loc[df.cluster, high])).values]
 
                 df_ocu_mean_50 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
@@ -176,7 +178,8 @@ def calcular_de_datos_trafico(fecha):
                 low = 0.75
                 high = 1.00
                 res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
+                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
+                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
                                        (df.ocupacion.values < res.loc[df.cluster, high])).values]
 
                 df_ocu_mean_75 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])

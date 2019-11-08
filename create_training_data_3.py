@@ -129,6 +129,7 @@ def calcular_de_datos_trafico(fecha):
 
             df = df.dropna(how='any', axis=0)
 
+            df.to_csv('sensores.csv')
             if not df.empty:
                 df_grouped_int = df.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
                 df_grouped_int.columns = ['int_min', 'int_max', 'int_mean', 'int_median']

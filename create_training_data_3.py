@@ -190,7 +190,6 @@ def calcular_de_datos_trafico(fecha):
                 low = 0.75
                 high = 1.
 
-
                 df_ocu_mean_75 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
 

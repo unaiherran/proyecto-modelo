@@ -159,6 +159,7 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_25.columns = ['ocu_mean_25']
                 df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
                 df_ocu_mean_25 = df_grouped_car.rename_axis(None)
+                print('1.5', df_ocu_mean_25.columns)
 
 
                 # Calculo de la carga para valores de + del 50% de la normal
@@ -188,6 +189,7 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_75['cluster'] = list(df_ocu_mean_75.index.values)
                 df_ocu_mean_75 = df_grouped_car.rename_axis(None)
 
+                print('5.5', df_ocu_mean_25.columns)
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
                 # hay que cambairlo

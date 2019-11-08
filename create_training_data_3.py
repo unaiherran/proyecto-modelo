@@ -186,7 +186,7 @@ def calcular_de_datos_trafico(fecha):
                 df_ocu_mean_50 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
                 # Calculo de la carga para valores de + del 75% de la normal
-                etiqueta = ['ocu_mean_50']
+                etiqueta = ['ocu_mean_75']
                 low = 0.75
                 high = 1.
 

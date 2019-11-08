@@ -96,6 +96,30 @@ def calcular_de_imagenes_camara(fecha):
     return df3
 
 
+def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high):
+    # variable -> que queremos calcular. Tiene que ser "ocupacion", "intensidad" o "carga"
+    # medidas -> lista con lo que se quiere medir ['mean', 'max', 'mean', 'median']
+    # etiqueta -> lista con las etiquetas de las columnas
+
+    quitar = ['ocupacion', 'intensidad', 'carga', 'error']
+    quitar.remove(variable)
+
+    df_quitando_outliers = df.drop(quitar, axis=1)
+
+    # Calculo de la carga para valores de + del 25% de la normal
+    res = df.groupby("cluster")[variable].quantile([low, high]).unstack(level=1)
+
+    df_quitando_outliers = df_quitando_outliers.loc[((res.loc[df.cluster, low] <= df[variable].values) &
+                                                     (df[variable].values <= res.loc[df.cluster, high])).values]
+
+    df_respuesta = df_quitando_outliers.groupby('cluster').ocupacion.agg(medidas)
+
+    df_respuesta.columns = etiqueta
+    df_respuesta['cluster'] = list(df_respuesta.index.values)
+    df_respuesta = df_respuesta.rename_axis(None)
+    return df_respuesta
+
+
 def calcular_de_datos_trafico(fecha):
 
     empty_df = dataframe_vacio_de_cluster()
@@ -146,47 +170,28 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
                 # Calculo de la carga para valores de + del 25% de la normal
+                variable = 'ocupacion'
+                medidas = ['mean']
+                etiqueta = ['ocu_mean_25']
                 low = 0.25
-                high = 1.00
-                res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
-                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
-                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
+                high = 1.
 
-                df_ocu_mean_25 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
-
-                df_ocu_mean_25.columns = ['ocu_mean_25']
-                df_ocu_mean_25['cluster'] = list(df_ocu_mean_25.index.values)
-                df_ocu_mean_25 = df_ocu_mean_25.rename_axis(None)
+                df_ocu_mean_25 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
                 # Calculo de la carga para valores de + del 50% de la normal
-                low = 0.50
-                high = 1.00
-                res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
-                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
-                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
+                etiqueta = ['ocu_mean_50']
+                low = 0.5
+                high = 1.
 
-                df_ocu_mean_50 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
-
-                df_ocu_mean_50.columns = ['ocu_mean_50']
-                df_ocu_mean_50['cluster'] = list(df_ocu_mean_50.index.values)
-                df_ocu_mean_50 = df_ocu_mean_50.rename_axis(None)
-
+                df_ocu_mean_50 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
                 # Calculo de la carga para valores de + del 75% de la normal
+                etiqueta = ['ocu_mean_50']
                 low = 0.75
-                high = 1.00
-                res = df.groupby("cluster")["ocupacion"].quantile([low, high]).unstack(level=1)
-                df_ocupacion = df.drop(['intensidad', 'carga', 'error'], axis=1)
-                df_ocupacion = df_ocupacion.loc[((res.loc[df.cluster, low] < df.ocupacion.values) &
-                                       (df.ocupacion.values < res.loc[df.cluster, high])).values]
+                high = 1.
 
-                df_ocu_mean_75 = df_ocupacion.groupby('cluster').ocupacion.agg(['mean'])
 
-                df_ocu_mean_75.columns = ['ocu_mean_75']
-                df_ocu_mean_75['cluster'] = list(df_ocu_mean_75.index.values)
-                df_ocu_mean_75 = df_ocu_mean_75.rename_axis(None)
+                df_ocu_mean_75 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
 
                 # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....

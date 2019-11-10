@@ -56,7 +56,9 @@ def calcular_de_imagenes_camara(fecha):
     sig_fecha_str = sig_fecha.strftime(format)
 
     if not LOCAL:
+        print('NOT LOCAL')
         if connection.is_connected():
+            print('connected')
             sql = f"SELECT num_cars, cam.id_camara, ima.fecha, cam.cluster from ImagenesCamarasTrafico ima " \
                   f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara where " \
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \

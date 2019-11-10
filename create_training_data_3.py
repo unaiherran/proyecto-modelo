@@ -65,10 +65,8 @@ def calcular_de_imagenes_camara(fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 
             df = pd.read_sql(sql, con=connection)
-            print(sql)
 
             if not df.empty:
-                print('df not empty')
                 df = df.sort_values(by=['cluster'])
                 df_grouped = df.groupby('cluster').num_cars.agg(['min', 'max', 'mean', 'median'])
                 df_grouped.columns = ['num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median']

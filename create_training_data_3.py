@@ -112,7 +112,7 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
     df_quitando_outliers = df_quitando_outliers.loc[((res.loc[df.cluster, low] <= df[variable].values) &
                                                      (df[variable].values <= res.loc[df.cluster, high])).values]
 
-    df_respuesta = df_quitando_outliers.groupby('cluster').ocupacion.agg(medidas)
+    df_respuesta = df_quitando_outliers.groupby('cluster')[variable].agg(medidas)
 
     df_respuesta.columns = etiqueta
     df_respuesta['cluster'] = list(df_respuesta.index.values)

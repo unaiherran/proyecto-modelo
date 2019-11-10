@@ -122,6 +122,7 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
     df_respuesta.columns = etiqueta
     df_respuesta['cluster'] = list(df_respuesta.index.values)
     df_respuesta = df_respuesta.rename_axis(None)
+
     return df_respuesta
 
 
@@ -214,7 +215,7 @@ def calcular_de_datos_trafico(fecha):
                 variable = 'intensidad'
                 etiqueta = ['int_woo_min','int_woo_max','int_woo_mean','int_woo_median']
 
-                medidas = ['mean']
+                medidas = ['min','max','mean','median']
                 low = 0.05
                 high = 0.95
 

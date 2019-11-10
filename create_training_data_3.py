@@ -114,11 +114,6 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
 
     df_respuesta = df_quitando_outliers.groupby('cluster')[variable].agg(medidas)
 
-    print ('--------------')
-    print(df_quitando_outliers)
-    print('--------------')
-    print(df_respuesta)
-
     df_respuesta.columns = etiqueta
     df_respuesta['cluster'] = list(df_respuesta.index.values)
     df_respuesta = df_respuesta.rename_axis(None)
@@ -211,15 +206,37 @@ def calcular_de_datos_trafico(fecha):
                 #
                 #
 
-                # Calculo de la carga para valores de + del 75% de la normal
+                # Calculo de la intensidad para valores quitando outliers
                 variable = 'intensidad'
-                etiqueta = ['int_woo_min','int_woo_max','int_woo_mean','int_woo_median']
+                etiqueta = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
 
-                medidas = ['min','max','mean','median']
+                medidas = ['min', 'max', 'mean', 'median']
                 low = 0.05
                 high = 0.95
 
                 df_grouped_int_woo = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
+
+
+                # Calculo de la carga para valores quitando outliers
+                variable = 'carga'
+                etiqueta = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
+
+                medidas = ['min', 'max', 'mean', 'median']
+                low = 0.05
+                high = 0.95
+
+                df_grouped_car_woo = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
+
+
+                # Calculo de la ocupacion para valores quitando outliers
+                variable = 'ocupacion'
+                etiqueta = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
+
+                medidas = ['min', 'max', 'mean', 'median']
+                low = 0.05
+                high = 0.95
+
+                df_grouped_ocu_woo = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
                 # df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
                 # df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
@@ -240,8 +257,8 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
-                # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
-                # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')

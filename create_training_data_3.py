@@ -56,9 +56,9 @@ def calcular_de_imagenes_camara(fecha):
     sig_fecha_str = sig_fecha.strftime(format)
 
     if not LOCAL:
-        print('NOT LOCAL')
+
         if connection.is_connected():
-            print('connected')
+
             sql = f"SELECT num_cars, cam.id_camara, ima.fecha, cam.cluster from ImagenesCamarasTrafico ima " \
                   f"INNER JOIN CamarasTrafico cam ON ima.id_camara = cam.id_camara where " \
                   f"(ima.fecha BETWEEN str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') " \
@@ -67,6 +67,7 @@ def calcular_de_imagenes_camara(fecha):
             df = pd.read_sql(sql, con=connection)
 
             if not df.empty:
+                print('df not empty')
                 df = df.sort_values(by=['cluster'])
                 df_grouped = df.groupby('cluster').num_cars.agg(['min', 'max', 'mean', 'median'])
                 df_grouped.columns = ['num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median']

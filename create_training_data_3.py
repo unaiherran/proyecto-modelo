@@ -106,17 +106,19 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
 
     df_quitando_outliers = df.drop(quitar, axis=1)
 
-    # Calculo de la carga para valores de + del 25% de la normal
+    # Calculo de la variable para valores de quitando los valores fuera de low & high
     res = df.groupby("cluster")[variable].quantile([low, high]).unstack(level=1)
 
     df_quitando_outliers = df_quitando_outliers.loc[((res.loc[df.cluster, low] <= df[variable].values) &
                                                      (df[variable].values <= res.loc[df.cluster, high])).values]
 
     df_respuesta = df_quitando_outliers.groupby('cluster')[variable].agg(medidas)
-    print ('--------------')
-    print('--------------')
 
+    print ('--------------')
+    print(df_quitando_outliers)
+    print('--------------')
     print(df_respuesta)
+
     df_respuesta.columns = etiqueta
     df_respuesta['cluster'] = list(df_respuesta.index.values)
     df_respuesta = df_respuesta.rename_axis(None)

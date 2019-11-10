@@ -65,6 +65,7 @@ def calcular_de_imagenes_camara(fecha):
                   f"AND str_to_date('{sig_fecha_str}', '%Y-%m-%d %H:%i'));"
 
             df = pd.read_sql(sql, con=connection)
+            print(sql)
 
             if not df.empty:
                 print('df not empty')

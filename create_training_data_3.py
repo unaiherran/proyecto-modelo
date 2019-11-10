@@ -42,7 +42,7 @@ def calcular_de_imagenes_camara(fecha):
     # preparar respuesta si no funciona la consulta
     cluster = list(range(200))
     lst0 = [0] * 200
-    lst_unknowns = [999999] * 200
+    lst_unknowns = [9999998] * 200
     df3 = pd.DataFrame(list(zip(cluster, lst_unknowns, lst_unknowns, lst_unknowns, lst_unknowns, lst_unknowns,
                                 lst_unknowns, lst_unknowns, lst_unknowns)),
                        columns=['cluster', 'num_cars_min', 'num_cars_max', 'num_cars_mean', 'num_cars_median',
@@ -133,7 +133,11 @@ def calcular_de_datos_trafico(fecha):
                        columns=['cluster', 'int_min', 'int_max', 'int_mean', 'int_median',
                                 'ocu_min', 'ocu_max', 'ocu_mean', 'ocu_median',
                                 'car_min', 'car_max', 'car_mean', 'car_median',
+                                'int_min_woo', 'int_max_woo', 'int_mean_woo', 'int_median_woo',
+                                'ocu_min_woo', 'ocu_max_woo', 'ocu_mean_woo', 'ocu_median_woo',
+                                'car_min_woo', 'car_max_woo', 'car_mean_woo', 'car_median_woo',
                                 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75'])
+
     sig_fecha = fecha + timedelta(minutes=15)
 
     format = '%Y-%m-%d %H:%M'
@@ -193,19 +197,6 @@ def calcular_de_datos_trafico(fecha):
 
                 df_ocu_mean_75 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
-
-                # todo esta mal calculado... calculo los outliers de todo antes y luego agrupo....
-                # hay que cambairlo
-
-                # df_int_woo = df[df.groupby("cluster").intensidad.transform(
-                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-                # df_ocu_woo = df[df.groupby("cluster").ocupacion.transform(
-                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-                # df_car_woo = df[df.groupby("cluster").carga.transform(
-                #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
-                #
-                #
-
                 # Calculo de la intensidad para valores quitando outliers
                 variable = 'intensidad'
                 etiqueta = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
@@ -237,21 +228,6 @@ def calcular_de_datos_trafico(fecha):
                 high = 0.95
 
                 df_grouped_ocu_woo = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
-
-                # df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
-                # df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
-                # df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
-                # df_grouped_int_woo = df_grouped_int_woo.rename_axis(None)
-                #
-                # df_grouped_ocu_woo = df_ocu_woo.groupby('cluster').ocupacion.agg(['min', 'max', 'mean', 'median'])
-                # df_grouped_ocu_woo.columns = ['ocu_woo_min', 'ocu_woo_max', 'ocu_woo_mean', 'ocu_woo_median']
-                # df_grouped_ocu_woo['cluster'] = list(df_grouped_ocu_woo.index.values)
-                # df_grouped_ocu_woo = df_grouped_ocu_woo.rename_axis(None)
-                #
-                # df_grouped_car_woo = df_car_woo.groupby('cluster').carga.agg(['min', 'max', 'mean', 'median'])
-                # df_grouped_car_woo.columns = ['car_woo_min', 'car_woo_max', 'car_woo_mean', 'car_woo_median']
-                # df_grouped_car_woo['cluster'] = list(df_grouped_car_woo.index.values)
-                # df_grouped_car_woo = df_grouped_car_woo.rename_axis(None)
 
                 df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')

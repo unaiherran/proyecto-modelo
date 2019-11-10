@@ -204,6 +204,17 @@ def calcular_de_datos_trafico(fecha):
                 #     lambda x: (x < x.quantile(0.95)) & (x > (x.quantile(0.05)))).eq(1)]
                 #
                 #
+
+                # Calculo de la carga para valores de + del 75% de la normal
+                variable = 'intensidad'
+                etiqueta = ['int_woo_min','int_woo_max','int_woo_mean','int_woo_median']
+
+                medidas = ['mean']
+                low = 0.05
+                high = 0.95
+
+                df_grouped_int_woo = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
+
                 # df_grouped_int_woo = df_int_woo.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])
                 # df_grouped_int_woo.columns = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
                 # df_grouped_int_woo['cluster'] = list(df_grouped_int_woo.index.values)
@@ -222,7 +233,7 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(empty_df, df_grouped_int, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_ocu, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_grouped_car, on='cluster', how='outer')
-                # df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
+                df3 = pd.merge(df3, df_grouped_int_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_ocu_woo, on='cluster', how='outer')
                 # df3 = pd.merge(df3, df_grouped_car_woo, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_25, on='cluster', how='outer')

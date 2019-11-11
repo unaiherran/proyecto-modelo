@@ -201,7 +201,7 @@ def calcular_de_datos_trafico(fecha):
 
                 # Calculo de la intensidad para valores quitando outliers
                 variable = 'intensidad'
-                etiqueta = ['int_woo_min', 'int_woo_max', 'int_woo_mean', 'int_woo_median']
+                etiqueta = ['int_min_woo', 'int_max_woo', 'int_mean_woo', 'int_median_woo']
 
                 medidas = ['min', 'max', 'mean', 'median']
                 low = 0.05
@@ -212,7 +212,7 @@ def calcular_de_datos_trafico(fecha):
 
                 # Calculo de la carga para valores quitando outliers
                 variable = 'carga'
-                etiqueta = ['car_woo_min', 'car_woo_max', 'car_woo_mean', 'car_woo_median']
+                etiqueta = ['car_min_woo', 'car_max_woo', 'car_mean_woo', 'car_median_woo']
 
                 medidas = ['min', 'max', 'mean', 'median']
                 low = 0.05
@@ -223,7 +223,7 @@ def calcular_de_datos_trafico(fecha):
 
                 # Calculo de la ocupacion para valores quitando outliers
                 variable = 'ocupacion'
-                etiqueta = ['ocu_woo_min', 'ocu_woo_max', 'ocu_woo_mean', 'ocu_woo_median']
+                etiqueta = ['ocu_min_woo', 'ocu_max_woo', 'ocu_mean_woo', 'ocu_median_woo']
 
                 medidas = ['min', 'max', 'mean', 'median']
                 low = 0.05

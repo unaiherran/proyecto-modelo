@@ -46,7 +46,8 @@ if not LOCAL:
                            echo=False)
 
 
-def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], etiqueta='label'):
+def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], label='label',
+                     var_obj='ocu_mean'):
     print('Entrenando')
 
     sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
@@ -166,16 +167,17 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     print(f'RMSE: {rmse}')
 
     # TODO Guardar resultados
+    stopped_epoch = es.stopped_epoch
+    model_name = f'{label}_cluster_{num_cluster}_obj_{var_obj}'
+    resultado_df = pd.read_csv('resultado.csv')
+
     # TODO Guardar modelo
 
     # Dataframe para evaluar
     df_y = pd.DataFrame(data=inv_y.tolist(), columns=['y'])
     df_y['y_pred'] = inv_yhat_1
 
-    pyplot.plot(inv_y, label='OCU')
-    pyplot.plot(inv_yhat_1, label='OCU PRED')
-    pyplot.legend()
-    pyplot.show()
+
 
 
 def main():

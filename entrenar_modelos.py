@@ -227,7 +227,7 @@ def main():
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
             entrenar_cluster(cl, var_obj=vobj)
-            time.sleep(10)
+            time.sleep(1)
 
 if __name__ == '__main__':
     main()

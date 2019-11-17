@@ -7,6 +7,9 @@ name = "pypi"
 mysql-connector = "*"
 pandas = "*"
 sqlalchemy = "*"
+keras = "*"
+matplotlib = "*"
+sklearn = "*"
 
 [dev-packages]
 

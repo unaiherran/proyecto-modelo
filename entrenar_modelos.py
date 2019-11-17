@@ -211,12 +211,12 @@ def main():
     args = parser.parse_args()
 
     if args.i:
-        initial = args.i
+        initial = int(args.i)
     else:
         initial = 0
 
     if args.e:
-        final = args.e
+        final = int(args.e)
     else:
         final = 200
     print(initial, final)

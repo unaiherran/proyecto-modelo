@@ -206,6 +206,7 @@ def main():
 
     entrenar_cluster(42)
     entrenar_cluster(43)
+    entrenar_cluster(42, var_obj='num_cars_mean')
 
 
 if __name__ == '__main__':

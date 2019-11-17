@@ -19,6 +19,7 @@ import mysql.connector
 from sqlalchemy import create_engine
 
 import time
+from datetime import datetime
 import argparse
 
 from math import sqrt
@@ -50,12 +51,9 @@ if not LOCAL:
 
 def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], label='label',
                      var_obj='ocu_mean'):
-    print('Entrenando')
 
     sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
-    print(sql)
-
     """Cluster e index no me aportan nada"""
 
     df.drop('cluster', axis=1, inplace=True)
@@ -134,7 +132,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     guarda_X = val_X
 
     # Modelo
-    es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=patience)
+    es = EarlyStopping(monitor='val_loss', mode='min', verbose=0, patience=patience)
 
     model = Sequential()
     model.add(LSTM(num_celdas_LSTM, input_shape=(train_X.shape[1], train_X.shape[2])))
@@ -224,9 +222,11 @@ def main():
     print(initial, final)
 
     variables_objetivo = ['ocu_mean', 'ocu_median', 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75']
-    for cl in range(0, 10):
+    for cl in range(initial, final):
         for vobj in variables_objetivo:
-            #entrenar_cluster(cl, var_obj=vobj)
+            now = datetime.now
+            print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
+            entrenar_cluster(cl, var_obj=vobj)
             time.sleep(10)
 
 if __name__ == '__main__':

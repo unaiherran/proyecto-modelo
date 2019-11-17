@@ -18,7 +18,8 @@ from numpy import concatenate
 import mysql.connector
 from sqlalchemy import create_engine
 
-from matplotlib import pyplot
+import time
+
 from math import sqrt
 
 from keras.models import Sequential
@@ -208,6 +209,7 @@ def main():
     for vobj in variables_objetivo:
         for cl in range(0,200):
             entrenar_cluster(cl, var_obj=vobj)
+            time.sleep(10)
 
 if __name__ == '__main__':
     main()

@@ -47,8 +47,11 @@ if not LOCAL:
 
 
 def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], etiqueta='label'):
+    print('Entrenando')
+
     sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
+    print(sql)
 
     """Cluster e index no me aportan nada"""
 

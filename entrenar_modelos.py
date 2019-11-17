@@ -88,8 +88,8 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         df1 = df[keep]
 
     """Campo objetivo es OCU+1"""
-
-    df1['ocu+1'] = df1.ocu_mean.shift(-1)
+    df1['var_obj'] = df1[var_obj].shift(-1)
+    #df1['ocu+1'] = df1.ocu_mean.shift(-1)
 
     """Quito la última fila..."""
 
@@ -203,6 +203,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
 
 def main():
+
     entrenar_cluster(42)
     entrenar_cluster(43)
 

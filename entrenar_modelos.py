@@ -187,6 +187,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         # crear el df
         resultado_df = pd.DataFrame(columns=['cluster', 'label', 'keep', 'model_name', 'training_var'
                                              'epochs', 'stopped_epoch', 'rmse'])
+        print('Resultado.csv no encontrado')
         resultado_df.append(row, ignore_index=True)
 
     resultado_df.to_csv('resultado.csv')

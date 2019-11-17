@@ -8,6 +8,8 @@ import pandas as pd
 
 from secret import *
 
+# Todo Quitar 99999
+
 DEBUG = True
 LOCAL = False
 

@@ -224,7 +224,7 @@ def main():
     variables_objetivo = ['ocu_mean', 'ocu_median', 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75']
     for cl in range(initial, final):
         for vobj in variables_objetivo:
-            now = datetime.now
+            now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
             entrenar_cluster(cl, var_obj=vobj)
             time.sleep(10)

@@ -205,6 +205,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
 
 def main():
+    descripcion = 'Esta es la descripcion'
     parser = argparse.ArgumentParser(description=descripcion)
     parser.add_argument("-i", "--i", help="initial cluster", action="store_true")
     parser.add_argument("-e", "--e", help="final cluster", action="store_true")

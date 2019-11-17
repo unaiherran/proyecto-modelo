@@ -167,9 +167,29 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     print(f'RMSE: {rmse}')
 
     # TODO Guardar resultados
-    stopped_epoch = es.stopped_epoch
     model_name = f'{label}_cluster_{num_cluster}_obj_{var_obj}'
-    resultado_df = pd.read_csv('resultado.csv')
+
+    row = {}
+    row['cluster'] = num_cluster
+    row['label'] = label
+    row['keep'] = keep
+    row['model_name'] = model_name
+    row['epochs'] = epochs
+    row['stopped_epoch'] = es.stopped_epoch
+    row['rmse'] = rmse
+    row['training_var'] = var_obj
+
+    try:
+        resultado_df = pd.read_csv('resultado.csv')
+        resultado_df.append(row, ignore_index=True)
+        print(resultado_df.columns)
+    except FileNotFoundError:
+        # crear el df
+        resultado_df = pd.DataFrame(columns=['cluster', 'label', 'keep', 'model_name', 'training_var'
+                                             'epochs', 'stopped_epoch', 'rmse'])
+        resultado_df.append(row, ignore_index=True)
+
+    resultado_df.to_csv('resultado.csv')
 
     # TODO Guardar modelo
 

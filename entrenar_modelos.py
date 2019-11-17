@@ -139,8 +139,8 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     model.compile(loss='mae', optimizer='adam')
 
     # Entrenar modelo
-    history = model.fit(train_X, train_y, epochs=epochs, batch_size=72, validation_data=(test_X, test_y), verbose=2,
-                        shuffle=False, callbacks=[es])
+    history = model.fit(train_X, train_y, epochs=epochs, batch_size=72, validation_data=(test_X, test_y),
+                        shuffle=False, verbose=1, callbacks=[es])
 
     # evaluar modelo
 

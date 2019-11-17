@@ -180,3 +180,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
 def main():
     entrenar_cluster(42)
+
+
+if __name__ == '__main__':
+    main()

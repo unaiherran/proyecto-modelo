@@ -204,10 +204,10 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
 def main():
 
-    entrenar_cluster(42)
-    entrenar_cluster(43)
-    entrenar_cluster(42, var_obj='num_cars_mean')
-
+    variables_objetivo = ['ocu_mean', 'ocu_median', 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75']
+    for vobj in variables_objetivo:
+        for cl in range(0,200):
+            entrenar_cluster(cl, var_obj=vobj)
 
 if __name__ == '__main__':
     main()

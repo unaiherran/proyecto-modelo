@@ -140,7 +140,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     # Entrenar modelo
     history = model.fit(train_X, train_y, epochs=epochs, batch_size=72, validation_data=(test_X, test_y),
-                        shuffle=False, verbose=2, callbacks=[es])
+                        shuffle=False, verbose=0, callbacks=[es])
 
     # evaluar modelo
 

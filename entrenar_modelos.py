@@ -19,6 +19,7 @@ import mysql.connector
 from sqlalchemy import create_engine
 
 import time
+import argparse
 
 from math import sqrt
 
@@ -204,11 +205,27 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
 
 def main():
+    parser = argparse.ArgumentParser(description=descripcion)
+    parser.add_argument("-i", "--i", help="initial cluster", action="store_true")
+    parser.add_argument("-e", "--e", help="final cluster", action="store_true")
+
+    args = parser.parse_args()
+
+    if args.i:
+        initial = args.i
+    else:
+        initial = 0
+
+    if args.e:
+        final = args.e
+    else:
+        final = 200
+    print(initial, final)
 
     variables_objetivo = ['ocu_mean', 'ocu_median', 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75']
     for cl in range(0, 10):
         for vobj in variables_objetivo:
-            entrenar_cluster(cl, var_obj=vobj)
+            #entrenar_cluster(cl, var_obj=vobj)
             time.sleep(10)
 
 if __name__ == '__main__':

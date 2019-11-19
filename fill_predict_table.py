@@ -88,7 +88,8 @@ def predict(num_cluster, table='predict'):
     df = df.dropna()
 
     ocu_mean = df['ocu_mean'].values
-    rmse = sqrt(mean_squared_error(ocu_mean, inv_yhat_1))
+    predict = df['predict'].values
+    rmse = sqrt(mean_squared_error(ocu_mean, predict))
     print(f'RMSE {rmse}')
     df.to_csv('evaluar.csv')
 

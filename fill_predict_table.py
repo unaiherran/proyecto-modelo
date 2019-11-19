@@ -60,13 +60,13 @@ def predict(num_cluster, table='predict'):
     # sacar values
     values = df1.values
     values = values.astype('float32')
-    print(values.shape)
 
     # escalar
     zeros = np.zeros((values.shape[0], 1))  # 2 is a number of rows in your array.
-    print(zeros)
     values = np.hstack((values, zeros))
     scaled = scaler.transform(values)
+
+    scaled = np.delete(scaled, -1,1)
 
     # predecir
     scaled = scaled.reshape((scaled.shape[0], 1, scaled.shape[1]))

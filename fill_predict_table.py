@@ -100,7 +100,7 @@ def main():
         final = 200
     print(initial, final)
 
-
+    predict(42)
 
 
 if __name__ == '__main__':

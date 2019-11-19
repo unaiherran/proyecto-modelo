@@ -44,7 +44,6 @@ def predict(num_cluster, table='predict'):
     # cargar datos
     df = pd.read_sql(sql, con=connection)
 
-    df.drop('cluster', axis=1, inplace=True)
     df.drop('index', axis=1, inplace=True)
 
     df = df.sort_values(['fecha'], ascending=1)
@@ -54,7 +53,7 @@ def predict(num_cluster, table='predict'):
                   'int_min', 'int_max', 'ocu_min', 'ocu_max',
                   'car_min', 'car_max', 'int_min_woo', 'int_max_woo',
                   'ocu_min_woo', 'ocu_max_woo',
-                  'car_min_woo', 'car_max_woo'], axis=1)
+                  'car_min_woo', 'car_max_woo', 'cluster'], axis=1)
 
     df1 = df1.apply(pd.to_numeric)
 
@@ -83,15 +82,11 @@ def predict(num_cluster, table='predict'):
     # escribir en tabla predict
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
-    df = df[['fecha', 'ocu_mean', 'predict']]
-    df['predict'] = df['predict'].shift(-1)
-    df = df.dropna()
+    df = df[['cliuster', 'fecha', 'ocu_mean', 'predict']]
+    df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
+    df['predict'] = df['predict'].shift(1)
 
-    ocu_mean = df['ocu_mean'].values
-    predict = df['predict'].values
-    rmse = sqrt(mean_squared_error(ocu_mean, predict))
-    print(f'RMSE {rmse}')
-    df.to_csv('evaluar.csv')
+    df.to_sql(name=table, con=engine, if_exists='append', index=True)
 
 
 def main():

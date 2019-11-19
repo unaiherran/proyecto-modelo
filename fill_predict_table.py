@@ -86,8 +86,9 @@ def predict(num_cluster, table='predict'):
     df = df[['fecha', 'ocu_mean', 'predict']]
     df['predict'] = df['predict'].shift(-1)
 
-    rmse = sqrt(mean_squared_error(inv_y, inv_yhat_1))
-
+    ocu_mean = df['ocu_mean'].values
+    rmse = sqrt(mean_squared_error(ocu_mean, inv_yhat_1))
+    print(f'RMSE {rmse}')
     df.to_csv('evaluar.csv')
 
 

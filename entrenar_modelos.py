@@ -31,6 +31,7 @@ from keras.callbacks import EarlyStopping
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
+from sklearn.externals import joblib
 
 DEBUG = True
 LOCAL = False
@@ -50,7 +51,7 @@ if not LOCAL:
 
 
 def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], label='label',
-                     var_obj='ocu_mean'):
+                     var_obj='ocu_mean', save=False):
 
     sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
@@ -59,7 +60,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     df.drop('cluster', axis=1, inplace=True)
     df.drop('index', axis=1, inplace=True)
 
-    """Fecha al principio y ordenado por fecha (esto lo oharé en la consulta SQL)"""
+    """Fecha al principio y ordenado por fecha (esto lo haré en la consulta SQL)"""
 
     df.insert(0, 'fecha', df.pop("fecha"))
 
@@ -193,7 +194,11 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     resultado_df.to_csv('resultado.csv')
 
-    # TODO Guardar modelo
+    if save:
+        model.save(f'models/model_{num_cluster}.h5')
+        # grabar scaler
+        joblib.dump(scaler, f'models/scaler_{num_cluster}.job')
+
 
     # Dataframe para evaluar
     df_y = pd.DataFrame(data=inv_y.tolist(), columns=['y'])
@@ -221,13 +226,15 @@ def main():
         final = 200
     print(initial, final)
 
-    variables_objetivo = ['ocu_mean', 'ocu_median', 'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75']
+    variables_objetivo = ['ocu_mean', 'ocu_median']
+
     for cl in range(initial, final):
         for vobj in variables_objetivo:
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
-            entrenar_cluster(cl, var_obj=vobj)
+            entrenar_cluster(cl, var_obj=vobj, save=True)
             time.sleep(1)
+
 
 if __name__ == '__main__':
     main()

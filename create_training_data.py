@@ -471,12 +471,12 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     insert_en_train_1_db(tb, df)
 
 
-def bucle(fecha_ini, fecha_fin, tb):
+def bucle(fecha_ini, fecha_fin, tb, inc_minutes=15):
     fecha = fecha_ini
     while fecha <= fecha_fin:
         calculo_parametros_un_train(fecha, tb)
 
-        fecha = fecha + timedelta(minutes=15)
+        fecha = fecha + timedelta(minutes=inc_minutes)
 
 
 def main():

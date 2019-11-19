@@ -16,6 +16,8 @@ from sklearn.externals import joblib
 import pandas as pd
 import numpy as np
 
+import argparse
+
 
 connection = mysql.connector.connect(
         host=db_host,
@@ -32,8 +34,8 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
 def predict(num_cluster, table='predict'):
 
     # cargar modelo
-    model = load_model(f'models/model_{num_cluster}.h5')
-    scaler = joblib.load(f'models/scaler_{num_cluster}.job')
+    model = load_model(f'models/model_{num_cluster}_ocu_mean.h5')
+    scaler = joblib.load(f'models/scaler_{num_cluster}_ocu_mean.job')
 
     sql = f"SELECT * FROM train_1 where cluster={num_cluster}"
 
@@ -74,7 +76,33 @@ def predict(num_cluster, table='predict'):
 
     # escribir en tabla predict
     df['predict'] = inv_yhat_1.tolist()
+    df=df['fecha', 'ocu_mean','predict']
 
     df.to_csv('evaluar.csv')
 
+
+def main():
+    descripcion = 'Esta es la descripcion'
+    parser = argparse.ArgumentParser(description=descripcion)
+    parser.add_argument("-i", "--i", help="initial cluster")
+    parser.add_argument("-e", "--e", help="final cluster")
+
+    args = parser.parse_args()
+
+    if args.i:
+        initial = int(args.i)
+    else:
+        initial = 0
+
+    if args.e:
+        final = int(args.e)
+    else:
+        final = 200
+    print(initial, final)
+
+
+
+
+if __name__ == '__main__':
+    main()
 

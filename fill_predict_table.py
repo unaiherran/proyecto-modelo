@@ -82,7 +82,7 @@ def predict(num_cluster, table='predict'):
     # escribir en tabla predict
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
-    df = df[['cliuster', 'fecha', 'ocu_mean', 'predict']]
+    df = df[['cluster', 'fecha', 'ocu_mean', 'predict']]
     df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
     df['predict'] = df['predict'].shift(1)
 

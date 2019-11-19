@@ -84,7 +84,7 @@ def predict(num_cluster, table='predict'):
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
     df = df[['fecha', 'ocu_mean', 'predict']]
-    df['predict'] = df['predict'].shift(1)
+    df['predict'] = df['predict'].shift(-1)
     df = df.dropna()
 
     ocu_mean = df['ocu_mean'].values

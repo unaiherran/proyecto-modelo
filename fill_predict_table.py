@@ -83,8 +83,11 @@ def predict(num_cluster, table='predict'):
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
     df = df[['cluster', 'fecha', 'ocu_mean', 'predict']]
-    df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
+
     df['predict'] = df['predict'].shift(1)
+
+    df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
+    print(df.columns)
 
     df.to_sql(name=table, con=engine, if_exists='append', index=False)
 

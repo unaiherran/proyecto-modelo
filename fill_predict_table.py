@@ -69,6 +69,7 @@ def predict(num_cluster, table='predict'):
     scaled = scaler.transform(values)
 
     # predecir
+    scaled = scaled.reshape((scaled.shape[0], 1, scaled.shape[1]))
     yhat = model.predict(scaled)
 
     # desescalar

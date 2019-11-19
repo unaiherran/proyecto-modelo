@@ -60,6 +60,7 @@ def predict(num_cluster, table='predict'):
     # sacar values
     values = df1.values
     values = values.astype('float32')
+    print(values.shape)
 
     # escalar
     scaled = scaler.transform(values)

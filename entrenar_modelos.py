@@ -72,7 +72,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     df = df.apply(pd.to_numeric)
 
-    # df = df.dropna()
+    # de vez en cuando hay medidas de intensidad, ocu y carga muy malas que desvirtuan completamente el entrenamiento
     df = df.drop(df[df.int_min < -1000].index)
 
     """Me cargo las columans que no me valen"""
@@ -86,8 +86,6 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     """# Entrenando con menos datos, y guardandome otros para validzr al final"""
 
-
-
     if keep == ['all']:
         df1 = df
     else:
@@ -95,10 +93,8 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     """Campo objetivo es OCU+1"""
     df1['var_obj'] = df1[var_obj].shift(-1)
-    #df1['ocu+1'] = df1.ocu_mean.shift(-1)
 
-    """Quito la última fila..."""
-
+    """Quito la última fila, ya que no se puede usar para entrenar."""
     df1 = df1.drop([df1.shape[0] - 1])
 
     # Quito desconocidos
@@ -172,7 +168,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     print(f'RMSE: {rmse}')
 
-    # TODO Guardar resultados
+    # Guardar resultados
     model_name = f'{label}_cluster_{num_cluster}_obj_{var_obj}'
 
     row = {}
@@ -200,9 +196,9 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     resultado_df.to_csv('resultado.csv')
 
     if save:
-        model.save(f'models/model_{num_cluster}.h5')
+        model.save(f'models/model_{num_cluster}_{var_obj}.h5')
         # grabar scaler
-        joblib.dump(scaler, f'models/scaler_{num_cluster}.job')
+        joblib.dump(scaler, f'models/scaler_{num_cluster}_{var_obj}.job')
 
 
     # Dataframe para evaluar

@@ -206,8 +206,6 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     df_y['y_pred'] = inv_yhat_1
 
 
-
-
 def main():
     descripcion = 'Esta es la descripcion'
     parser = argparse.ArgumentParser(description=descripcion)

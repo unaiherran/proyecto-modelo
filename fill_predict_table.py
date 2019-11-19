@@ -29,19 +29,13 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
                         echo=False)
 
 
-def predict(num_cluster, fecha_ini, fecha_fin):
+def predict(num_cluster, table='predict'):
+
     # cargar modelo
     model = load_model(f'models/model_{num_cluster}.h5')
     scaler = joblib.load(f'models/scaler_{num_cluster}.job')
 
-    format = '%Y-%m-%d %H:%M'
-
-    fecha_ini_str = fecha.strftime(format)
-    fecha_fin_str = fecha.strftime(format)
-
-    sql = f"SELECT * FROM train_1 where cluster={num_cluster} and " \
-          f"fecha between str_to_date({fecha_ini_str}, '%Y-%m-%d %H:%i') " \
-          f"and str_to_date({fecha_fin_str}', '%Y-%m-%d %H:%i');"
+    sql = f"SELECT * FROM train_1 where cluster={num_cluster}"
 
     # cargar datos
     df = pd.read_sql(sql, con=connection)
@@ -73,9 +67,14 @@ def predict(num_cluster, fecha_ini, fecha_fin):
 
     # desescalar
 
+    val_X_1 = scaled.reshape((scaled.shape[0], scaled.shape[2]))
+    inv_yhat = np.concatenate((val_X_1, yhat), axis=1)
+    inv_yhat_1 = scaler.inverse_transform(inv_yhat)
+    inv_yhat_1 = inv_yhat_1[:, -1]
 
     # escribir en tabla predict
+    df['predict'] = inv_yhat_1.tolist()
 
-    #
+    df.to_csv('evaluar.csv')
 
 

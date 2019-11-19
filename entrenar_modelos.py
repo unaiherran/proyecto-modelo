@@ -72,6 +72,8 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     df = df.apply(pd.to_numeric)
 
+    # df = df.dropna()
+    df = df.drop(df[df.int_min < -1000].index)
 
     """Me cargo las columans que no me valen"""
 
@@ -84,7 +86,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     """# Entrenando con menos datos, y guardandome otros para validzr al final"""
 
-    df = df.dropna()
+
 
     if keep == ['all']:
         df1 = df

@@ -72,6 +72,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     df = df.apply(pd.to_numeric)
 
+
     """Me cargo las columans que no me valen"""
 
     df = df.drop(['fecha', 'num_cars_min', 'num_cars_max',
@@ -82,6 +83,8 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
                   'car_min_woo', 'car_max_woo'], axis=1)
 
     """# Entrenando con menos datos, y guardandome otros para validzr al final"""
+
+    df = df.dropna()
 
     if keep == ['all']:
         df1 = df

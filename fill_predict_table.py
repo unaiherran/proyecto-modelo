@@ -18,6 +18,8 @@ import numpy as np
 
 import argparse
 
+from math import sqrt
+from sklearn.metrics import mean_squared_error
 
 connection = mysql.connector.connect(
         host=db_host,
@@ -83,6 +85,8 @@ def predict(num_cluster, table='predict'):
     print(df.columns)
     df = df[['fecha', 'ocu_mean', 'predict']]
     df['predict'] = df['predict'].shift(-1)
+
+    rmse = sqrt(mean_squared_error(inv_y, inv_yhat_1))
 
     df.to_csv('evaluar.csv')
 

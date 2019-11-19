@@ -47,8 +47,6 @@ def predict(num_cluster, table='predict'):
 
     df = df.sort_values(['fecha'], ascending=1)
 
-    df = df.apply(pd.to_numeric)
-
     df1 = df.drop(['fecha', 'num_cars_min', 'num_cars_max',
                   'num_cars_min_woo', 'num_cars_max_woo',
                   'int_min', 'int_max', 'ocu_min', 'ocu_max',
@@ -56,6 +54,7 @@ def predict(num_cluster, table='predict'):
                   'ocu_min_woo', 'ocu_max_woo',
                   'car_min_woo', 'car_max_woo'], axis=1)
 
+    df1 = df1.apply(pd.to_numeric)
 
     # sacar values
     values = df1.values
@@ -83,6 +82,7 @@ def predict(num_cluster, table='predict'):
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
     df = df[['fecha', 'ocu_mean', 'predict']]
+    df1['predict'] = df1['predict'].shift(1)
 
     df.to_csv('evaluar.csv')
 

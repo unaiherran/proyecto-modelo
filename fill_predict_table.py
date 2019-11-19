@@ -82,7 +82,7 @@ def predict(num_cluster, table='predict'):
     # escribir en tabla predict
     df['predict'] = inv_yhat_1.tolist()
     print(df.columns)
-    df = df['fecha', 'ocu_mean', 'predict']
+    df = df[['fecha', 'ocu_mean', 'predict']]
 
     df.to_csv('evaluar.csv')
 

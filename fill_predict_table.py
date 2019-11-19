@@ -63,9 +63,9 @@ def predict(num_cluster, table='predict'):
     print(values.shape)
 
     # escalar
-    zeros = np.zeros((2, 1))  # 2 is a number of rows in your array.
+    zeros = np.zeros((values.shape[0], 1))  # 2 is a number of rows in your array.
     print(zeros)
-    b = np.hstack((a, zeros))
+    values = np.hstack((values, zeros))
     scaled = scaler.transform(values)
 
     # predecir

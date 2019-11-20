@@ -113,7 +113,7 @@ def main():
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl)
+        predict(cl, in_table='test_data_1')
 
 
 if __name__ == '__main__':

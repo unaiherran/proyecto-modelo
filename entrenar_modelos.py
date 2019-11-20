@@ -50,8 +50,8 @@ if not LOCAL:
                            echo=False)
 
 
-def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], label='label',
-                     var_obj='ocu_mean', save=False):
+def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], drop=['none'],
+                     label='label', var_obj='ocu_mean', save=False):
 
     sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
@@ -90,6 +90,9 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         df1 = df
     else:
         df1 = df[keep]
+
+    if drop != ['none']:
+        pass
 
     """Campo objetivo es OCU+1"""
     df1['var_obj'] = df1[var_obj].shift(-1)
@@ -231,7 +234,7 @@ def main():
         for vobj in variables_objetivo:
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
-            entrenar_cluster(cl, var_obj=vobj, save=True)
+            entrenar_cluster(cl, var_obj=vobj, save=True, )
             time.sleep(1)
 
 

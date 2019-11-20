@@ -122,7 +122,7 @@ def main():
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl, in_table='test_data_1', out_table='predict_median', modelo='ocu_median')
+        predict(cl, in_table='test_data_1', out_table='predict_ocu_median', modelo='ocu_median')
 
 
 if __name__ == '__main__':

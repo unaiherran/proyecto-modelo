@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 
 from keras.models import load_model
 from sklearn.externals import joblib
+import keras
 
 import pandas as pd
 import numpy as np
@@ -33,11 +34,11 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
                         echo=False)
 
 
-def predict(num_cluster, in_table='train_1', out_table='predict'):
+def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'], modelo='ocu_mean'):
 
     # cargar modelo
-    model = load_model(f'models/model_{num_cluster}_ocu_mean.h5')
-    scaler = joblib.load(f'models/scaler_{num_cluster}_ocu_mean.job')
+    model = load_model(f'models/model_{num_cluster}_{modelo}.h5')
+    scaler = joblib.load(f'models/scaler_{num_cluster}_{modelo}.job')
 
     sql = f"SELECT * FROM {in_table} where cluster={num_cluster}"
 
@@ -56,6 +57,8 @@ def predict(num_cluster, in_table='train_1', out_table='predict'):
                   'car_min_woo', 'car_max_woo', 'cluster'], axis=1)
 
     df1 = df1.apply(pd.to_numeric)
+    if drop != ['none']:
+        df1 = df1(drop, axis=1)
 
     # sacar values
     values = df1.values
@@ -91,6 +94,8 @@ def predict(num_cluster, in_table='train_1', out_table='predict'):
 
     df.to_sql(name=out_table, con=engine, if_exists='append', index=False)
 
+    keras.backend.clear_session()
+
 
 def main():
     descripcion = 'Esta es la descripcion'
@@ -110,10 +115,11 @@ def main():
     else:
         final = 200
     print(initial, final)
+    # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl, in_table='test_data_1')
+        predict(cl, in_table='test_data_1', out_table='predict_median', modelo='ocu_median')
 
 
 if __name__ == '__main__':

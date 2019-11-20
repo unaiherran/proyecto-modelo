@@ -92,7 +92,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         df1 = df[keep]
 
     if drop != ['none']:
-        pass
+        df1 = df1(drop, axis=1)
 
     """Campo objetivo es OCU+1"""
     df1['var_obj'] = df1[var_obj].shift(-1)
@@ -199,9 +199,9 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     resultado_df.to_csv('resultado.csv')
 
     if save:
-        model.save(f'models/model_{num_cluster}_{var_obj}.h5')
+        model.save(f'models/model_{num_cluster}_{var_obj}_{label}.h5')
         # grabar scaler
-        joblib.dump(scaler, f'models/scaler_{num_cluster}_{var_obj}.job')
+        joblib.dump(scaler, f'models/scaler_{num_cluster}_{var_obj}_{label}.job')
 
 
     # Dataframe para evaluar
@@ -234,7 +234,9 @@ def main():
         for vobj in variables_objetivo:
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
-            entrenar_cluster(cl, var_obj=vobj, save=True, )
+
+            drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label='sin_num_cars')
             time.sleep(1)
 
 

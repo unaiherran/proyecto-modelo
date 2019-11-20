@@ -54,7 +54,7 @@ if not LOCAL:
 def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], drop=['none'],
                      label='label', var_obj='ocu_mean', save=False):
 
-    sql = f"SELECT * FROM train_1 where cluster={num_cluster};"
+    sql = f"SELECT * FROM train_data_1 where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
     """Cluster e index no me aportan nada"""
 

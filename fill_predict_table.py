@@ -85,7 +85,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict'):
     df = df[['cluster', 'fecha', 'ocu_mean', 'ocu_pred']]
 
     #la prediccion se tiene que guardar en la siguiente fila.
-    df['predict'] = df['predict'].shift(1)
+    df['ocu_pred'] = df['ocu_pred'].shift(1)
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
 

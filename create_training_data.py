@@ -483,10 +483,15 @@ def main():
     # COge todos los datos desde el 12/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
-    fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("17-11-2019 23:59", "%d-%m-%Y %H:%M")
+    #Train Data
+    #fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
+    #fecha_fin = datetime.strptime("17-11-2019 23:59", "%d-%m-%Y %H:%M")
 
-    tb = 'train_1'
+    #Test Data
+    fecha_ini = datetime.strptime("18-11-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("20-11-2019 18:59", "%d-%m-%Y %H:%M")
+
+    tb = 'test_data_1'
 
     bucle(fecha_ini, fecha_fin, tb)
 

@@ -33,13 +33,13 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
                         echo=False)
 
 
-def predict(num_cluster, table='predict'):
+def predict(num_cluster, in_table='train_1', out_table='predict'):
 
     # cargar modelo
     model = load_model(f'models/model_{num_cluster}_ocu_mean.h5')
     scaler = joblib.load(f'models/scaler_{num_cluster}_ocu_mean.job')
 
-    sql = f"SELECT * FROM train_1 where cluster={num_cluster}"
+    sql = f"SELECT * FROM {in_table} where cluster={num_cluster}"
 
     # cargar datos
     df = pd.read_sql(sql, con=connection)
@@ -84,11 +84,12 @@ def predict(num_cluster, table='predict'):
 
     df = df[['cluster', 'fecha', 'ocu_mean', 'ocu_pred']]
 
+    #la prediccion se tiene que guardar en la siguiente fila.
     df['predict'] = df['predict'].shift(1)
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
 
-    df.to_sql(name=table, con=engine, if_exists='append', index=False)
+    df.to_sql(name=out_table, con=engine, if_exists='append', index=False)
 
 
 def main():

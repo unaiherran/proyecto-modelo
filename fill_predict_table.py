@@ -124,16 +124,18 @@ def main():
     out_table = 'predict_ocu_mean_no_cars'
 
     # Para usar los modelos sin numcars (MEDIAN)
-    drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
-    modelo = 'ocu_median_sin_num_cars'
-    target_var = 'ocu_median'
-    out_table = 'predict_ocu_median_no_cars'
+    # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+    # modelo = 'ocu_median_sin_num_cars'
+    # target_var = 'ocu_median'
+    # out_table = 'predict_ocu_median_no_cars'
 
     for cl in range(initial, final):
-        print(f'Prediciendo cluster {cl}')
+        print(f'Prediciendo cluster {cl} - Train data')
+        predict(cl, in_table='train_data_1', out_table=out_table, modelo=modelo, drop=drop,
+                target_var=target_var)
+        print(f'Prediciendo cluster {cl} - Test data')
         predict(cl, in_table='test_data_1', out_table=out_table, modelo=modelo, drop=drop,
                 target_var=target_var)
-
 
 if __name__ == '__main__':
     main()

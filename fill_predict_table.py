@@ -85,7 +85,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
     # escribir en tabla predict
     df['ocu_pred'] = inv_yhat_1.tolist()
 
-    df = df[['cluster', 'fecha', 'ocu_mean', 'ocu_pred']]
+    df = df[['cluster', 'fecha', 'ocu_median', 'ocu_pred']]
 
     #la prediccion se tiene que guardar en la siguiente fila.
     df['ocu_pred'] = df['ocu_pred'].shift(1)
@@ -115,7 +115,10 @@ def main():
     else:
         final = 200
     print(initial, final)
+
+    # Para usar los modelos sin num_cars
     # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+    # modelo =
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')

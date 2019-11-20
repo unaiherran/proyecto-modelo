@@ -204,6 +204,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         # grabar scaler
         joblib.dump(scaler, f'models/scaler_{num_cluster}_{var_obj}_{label}.job')
 
+    # para no llenar la memoria liberamos la sesion de Keras en Tensor Flow
     clear_session()
 
 

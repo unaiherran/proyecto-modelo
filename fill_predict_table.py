@@ -84,7 +84,7 @@ def predict(num_cluster, table='predict'):
     print(df.columns)
     df = df[['cluster', 'fecha', 'ocu_mean', 'predict']]
 
-    df['predict'] = df['predict'].shift(1)
+    #df['predict'] = df['predict'].shift(1)
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
     print('-----------------------')

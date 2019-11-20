@@ -34,7 +34,8 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
                         echo=False)
 
 
-def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'], modelo='ocu_mean'):
+def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'], modelo='ocu_mean',
+            target_var='ocu_mean'):
 
     # cargar modelo
     model = load_model(f'models/model_{num_cluster}_{modelo}.h5')
@@ -58,7 +59,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
 
     df1 = df1.apply(pd.to_numeric)
     if drop != ['none']:
-        df1 = df1(drop, axis=1)
+        df1 = df1.drop(drop, axis=1)
 
     # sacar values
     values = df1.values
@@ -85,7 +86,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
     # escribir en tabla predict
     df['ocu_pred'] = inv_yhat_1.tolist()
 
-    df = df[['cluster', 'fecha', 'ocu_median', 'ocu_pred']]
+    df = df[['cluster', 'fecha', target_var, 'ocu_pred']]
 
     #la prediccion se tiene que guardar en la siguiente fila.
     df['ocu_pred'] = df['ocu_pred'].shift(1)
@@ -116,14 +117,22 @@ def main():
         final = 200
     print(initial, final)
 
-    # Para usar los modelos sin num_cars
-    #
+    # Para usar los modelos sin num_cars (MEAN)
     drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
-    modelo = 'feilu'
+    modelo = 'ocu_mean_sin_num_cars'
+    target_var = 'ocu_mean'
+    out_table = 'predict_ocu_mean_no_cars'
+
+    # Para usar los modelos sin numcars (MEDIAN)
+    drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+    modelo = 'ocu_median_sin_num_cars'
+    target_var = 'ocu_median'
+    out_table = 'predict_ocu_median_no_cars'
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl, in_table='test_data_1', out_table='predict_ocu_median', modelo=modelo)
+        predict(cl, in_table='test_data_1', out_table=out_table, modelo=modelo, drop=drop,
+                target_var=target_var)
 
 
 if __name__ == '__main__':

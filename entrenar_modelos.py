@@ -28,6 +28,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.callbacks import EarlyStopping
+from keras.backend import clear_session
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
@@ -203,10 +204,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         # grabar scaler
         joblib.dump(scaler, f'models/scaler_{num_cluster}_{var_obj}_{label}.job')
 
-
-    # Dataframe para evaluar
-    df_y = pd.DataFrame(data=inv_y.tolist(), columns=['y'])
-    df_y['y_pred'] = inv_yhat_1
+    clear_session()
 
 
 def main():
@@ -235,8 +233,11 @@ def main():
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
 
+            #para entrenar sin tener en cuenta num_cars
             drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
-            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label='sin_num_cars')
+            label = 'sin_num_cars'
+
+            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label)
             time.sleep(1)
 
 

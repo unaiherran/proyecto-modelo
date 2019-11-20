@@ -117,12 +117,13 @@ def main():
     print(initial, final)
 
     # Para usar los modelos sin num_cars
-    # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
-    # modelo =
+    #
+    drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+    modelo = 'feilu'
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl, in_table='test_data_1', out_table='predict_ocu_median', modelo='ocu_median')
+        predict(cl, in_table='test_data_1', out_table='predict_ocu_median', modelo=modelo)
 
 
 if __name__ == '__main__':

@@ -131,7 +131,7 @@ def main():
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl}')
-        predict(cl, in_table='train_data_1', out_table=out_table, modelo=modelo, drop=drop,
+        predict(cl, in_table='test_data_1', out_table=out_table, modelo=modelo, drop=drop,
                 target_var=target_var)
 
 

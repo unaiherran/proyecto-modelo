@@ -80,16 +80,13 @@ def predict(num_cluster, table='predict'):
     inv_yhat_1 = inv_yhat_1[:, -1]
 
     # escribir en tabla predict
-    df['predict'] = inv_yhat_1.tolist()
-    print(df.columns)
-    df = df[['cluster', 'fecha', 'ocu_mean', 'predict']]
+    df['ocu_pred'] = inv_yhat_1.tolist()
+
+    df = df[['cluster', 'fecha', 'ocu_mean', 'ocu_pred']]
 
     #df['predict'] = df['predict'].shift(1)
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
-    print('-----------------------')
-    print(df.columns)
-    print('-----------------------')
 
     df.to_sql(name=table, con=engine, if_exists='append', index=False)
 
@@ -113,7 +110,9 @@ def main():
         final = 200
     print(initial, final)
 
-    predict(42)
+    for cl in range(initial, final):
+        print(f'Prediciendo cluster {cl}')
+        predict(cl)
 
 
 if __name__ == '__main__':

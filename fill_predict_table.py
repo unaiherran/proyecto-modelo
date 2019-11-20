@@ -87,7 +87,9 @@ def predict(num_cluster, table='predict'):
     df['predict'] = df['predict'].shift(1)
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
+    print('-----------------------')
     print(df.columns)
+    print('-----------------------')
 
     df.to_sql(name=table, con=engine, if_exists='append', index=False)
 

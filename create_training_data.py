@@ -526,7 +526,6 @@ def bucle(fecha_ini, fecha_fin, tb, inc_minutes=15):
     fecha = fecha_ini
     while fecha <= fecha_fin:
         calculo_parametros_un_train(fecha, tb)
-        print(last_good_traffic_reads.head(5))
 
         fecha = fecha + timedelta(minutes=inc_minutes)
 

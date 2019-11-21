@@ -144,6 +144,8 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
 
 
 def fill_with_last_good_read(df):
+    global last_good_traffic_reads
+
     # para cada columna
     columns = df.columns
     for col in columns:

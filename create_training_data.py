@@ -156,11 +156,23 @@ def calcular_de_datos_trafico(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
-            df.to_csv('prueba.csv')
+            # Quitamos medidas incorrectas
+            # Todas las negativas han de ser incorrectas por deficinicon
+            # Además, tanto carga como intensidad son valores de 0 a 100
 
-            a = b
+            index_names = df[(df['intensidad'] < 0)].index
+
+            df.drop(index_names, inplace=True)
+
+            index_names = df[(df['ocupacion'] < 0) | (df['ocupacion'] >= 100)].index
+            df.drop(index_names, inplace=True)
+
+            index_names = df[(df['carga'] < 0) | (df['carga'] >= 100)].index
+            df.drop(index_names, inplace=True)
 
             df = df.dropna(how='any', axis=0)
+
+            # Agrupamos y sacamos medias
 
             if not df.empty:
                 df_grouped_int = df.groupby('cluster').intensidad.agg(['min', 'max', 'mean', 'median'])

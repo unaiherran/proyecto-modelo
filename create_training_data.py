@@ -535,10 +535,10 @@ def main():
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     #Train Data
-    tb = 'train_data_0'
+    tb = 'grouped_data_0'
 
     fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("17-11-2019 23:59", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("21-11-2019 23:59", "%d-%m-%Y %H:%M")
 
     #Test Data
     # tb = 'test_data_0'

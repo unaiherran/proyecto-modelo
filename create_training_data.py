@@ -461,6 +461,7 @@ def calcular_de_gran_evento(fecha):
                     try:
                         clusters_afectados_lts_str = row['clusters_cercanos'].split(' ')
                         clusters_afectados_lts_str.append(row['cluster'])
+                        print(clusters_afectados_lts_str)
                         for clu in clusters_afectados_lts_str:
                             df3.iloc[int(clu)]['gran_evento'] += 1
                     except AttributeError:
@@ -537,7 +538,7 @@ def main():
     #Train Data
     tb = 'grouped_data_0'
 
-    fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("22-10-2019 17:15", "%d-%m-%Y %H:%M")
     fecha_fin = datetime.strptime("21-11-2019 23:59", "%d-%m-%Y %H:%M")
 
     #Test Data

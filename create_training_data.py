@@ -467,6 +467,7 @@ def calcular_de_gran_evento(fecha):
                         print('----------------\n')
                         print(clusters_afectados_lts_str)
                         for clu in clusters_afectados_lts_str:
+                            if clu == '': continue
                             df3.iloc[int(clu)]['gran_evento'] += 1
                     except AttributeError:
                         print('Cliuster no tiene eventos')

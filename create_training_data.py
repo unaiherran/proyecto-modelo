@@ -156,6 +156,10 @@ def calcular_de_datos_trafico(fecha):
 
             df = pd.read_sql(sql, con=connection)
 
+            df.to_csv('prueba.csv')
+
+            a = b
+
             df = df.dropna(how='any', axis=0)
 
             if not df.empty:

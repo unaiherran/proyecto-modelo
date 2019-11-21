@@ -190,7 +190,7 @@ def calcular_de_datos_trafico(fecha):
                 df_grouped_car['cluster'] = list(df_grouped_car.index.values)
                 df_grouped_car = df_grouped_car.rename_axis(None)
 
-                # Calculo de la carga para valores de + del 25% de la normal
+                # Calculo de la ocupacion para valores de + del 25% de la normal
                 variable = 'ocupacion'
                 medidas = ['mean']
                 etiqueta = ['ocu_mean_25']
@@ -199,14 +199,14 @@ def calcular_de_datos_trafico(fecha):
 
                 df_ocu_mean_25 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
-                # Calculo de la carga para valores de + del 50% de la normal
+                # Calculo de la ocupacion para valores de + del 50% de la normal
                 etiqueta = ['ocu_mean_50']
                 low = 0.5
                 high = 1.
 
                 df_ocu_mean_50 = calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, high)
 
-                # Calculo de la carga para valores de + del 75% de la normal
+                # Calculo de la ocupacion para valores de + del 75% de la normal
                 etiqueta = ['ocu_mean_75']
                 low = 0.75
                 high = 1.
@@ -255,7 +255,10 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
 
+                print(df3.columns)
+                a = c
                 df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
+
                 df3 = df3.fillna(0)
 
     return df3
@@ -500,14 +503,15 @@ def main():
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     #Train Data
-    #fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
-    #fecha_fin = datetime.strptime("17-11-2019 23:59", "%d-%m-%Y %H:%M")
+    tb = 'train_data_0'
+
+    fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("17-11-2019 23:59", "%d-%m-%Y %H:%M")
 
     #Test Data
-    fecha_ini = datetime.strptime("18-11-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("20-11-2019 18:59", "%d-%m-%Y %H:%M")
-
-    tb = 'test_data_1'
+    # tb = 'test_data_0'
+    # fecha_ini = datetime.strptime("18-11-2019 00:00", "%d-%m-%Y %H:%M")
+    # fecha_fin = datetime.strptime("21-11-2019 21:59", "%d-%m-%Y %H:%M")
 
     bucle(fecha_ini, fecha_fin, tb)
 

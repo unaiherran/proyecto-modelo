@@ -234,8 +234,11 @@ def main():
             now = datetime.now()
             print(f'{now} - Entrenando cluster {cl} para target: {vobj}')
 
-            #para entrenar sin tener en cuenta num_cars
-            drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo']
+            #para entrenar sin tener en cuenta num_cars y carga (hemos visto que no tienen mucho valor)
+            drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'
+                    'car_min', 'car_max', 'car_mean', 'car_median', 'car_min_woo', 'car_max_woo', 'car_mean_woo',
+                    'car_median_woo']
+
             label = 'sin_num_cars'
 
             entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label)

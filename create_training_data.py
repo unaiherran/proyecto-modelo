@@ -14,6 +14,28 @@ LOCAL = False
 
 outliers = 0.02
 
+#dataframe auxiliar que guarda las ultimas medidas de trafico validas
+
+cluster = list(range(200))
+zeros = [0] * 200
+
+last_good_traffic_reads = pd.DataFrame(list(zip(cluster, zeros, zeros, zeros, zeros,    # INT
+                                                zeros, zeros, zeros, zeros,             # OCU
+                                                zeros, zeros, zeros, zeros,             # CAR
+                                                zeros, zeros, zeros, zeros,             # INT WOO
+                                                zeros, zeros, zeros, zeros,             # OCU WOO
+                                                zeros, zeros, zeros, zeros,             # CAR WOO
+                                                zeros, zeros, zeros)),                  # OCU_MEAN(25,50,75)
+                                       columns=['cluster', 'int_min', 'int_max', 'int_mean', 'int_median',
+                                                'ocu_min', 'ocu_max', 'ocu_mean', 'ocu_median',
+                                                'car_min', 'car_max', 'car_mean', 'car_median',
+                                                'int_min_woo', 'int_max_woo', 'int_mean_woo', 'int_median_woo',
+                                                'ocu_min_woo', 'ocu_max_woo', 'ocu_mean_woo', 'ocu_median_woo',
+                                                'car_min_woo', 'car_max_woo', 'car_mean_woo', 'car_median_woo',
+                                                'ocu_mean_25', 'ocu_mean_50', 'ocu_mean_75'])
+
+
+
 # Conectarse a la base de datos
 if not LOCAL:
     connection = mysql.connector.connect(
@@ -119,6 +141,16 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
     df_respuesta = df_respuesta.rename_axis(None)
 
     return df_respuesta
+
+
+def fill_with_last_good_read(df):
+    # para cada columna
+    columns = df.columns
+    for col in columns:
+        df[col].fillna(last_good_traffic_reads[col])
+
+    last_good_traffic_reads = df.copy()
+    return df
 
 
 def calcular_de_datos_trafico(fecha):
@@ -255,11 +287,9 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
 
-                print(df3.columns)
-                a = c
                 df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
 
-                df3 = df3.fillna(0)
+                df3 = fill_with_last_good_read(df3)
 
     return df3
 

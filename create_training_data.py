@@ -463,7 +463,8 @@ def calcular_de_gran_evento(fecha):
                         clusters_afectados_lts_str.append(row['cluster'])
                         print('----------------\n')
                         print('----------------\n')
-                        print(row['clusters_cercanos'])
+                        print('ROW: ', row)
+                        print('----------------\n')
                         print(clusters_afectados_lts_str)
                         for clu in clusters_afectados_lts_str:
                             df3.iloc[int(clu)]['gran_evento'] += 1

@@ -239,7 +239,7 @@ def main():
                     'car_min', 'car_max', 'car_mean', 'car_median', 'car_min_woo', 'car_max_woo', 'car_mean_woo',
                     'car_median_woo']
 
-            label = 'sin_num_cars'
+            label = 'no_cars_no_car'
 
             entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label)
             time.sleep(1)

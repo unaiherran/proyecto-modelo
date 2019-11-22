@@ -59,7 +59,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
 
     df1 = df1.apply(pd.to_numeric)
     if drop != ['none']:
-        df1 = df1.drop(drop, axis=1)
+        df1 = df1.drop(drop, axis=1, errors='ignore')
 
     # sacar values
     values = df1.values

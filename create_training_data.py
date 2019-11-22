@@ -154,8 +154,6 @@ def fill_with_last_good_read(df):
 
     last_good_traffic_reads = df.copy()
 
-    print(df)
-    input('Press enter...')
     return df
 
 
@@ -544,10 +542,10 @@ def main():
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     #Train Data
-    tb = 'grouped_data_1'
+    tb = 'grouped_data_0'
 
     fecha_ini = datetime.strptime("22-10-2019 12:45", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("22-10-2019 13:45", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("22-11-2019 19:30", "%d-%m-%Y %H:%M")
 
     #Test Data
     # tb = 'test_data_0'

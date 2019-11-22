@@ -152,6 +152,7 @@ def fill_with_last_good_read(df):
         df[col].fillna(last_good_traffic_reads[col])
 
     last_good_traffic_reads = df.copy()
+    print(last_good_traffic_reads)
     print(df)
     input('Press enter...')
     return df
@@ -162,6 +163,7 @@ def calcular_de_datos_trafico(fecha):
     empty_df = dataframe_vacio_de_cluster()
 
     # preparar respuesta si no funciona la consulta
+
     cluster = list(range(200))
     lst0 = [0] * 200
     df3 = pd.DataFrame(list(zip(cluster, lst0, lst0, lst0, lst0, lst0, lst0, lst0, lst0,lst0, lst0, lst0, lst0,

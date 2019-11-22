@@ -145,7 +145,7 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
 
 def fill_with_last_good_read(df):
     global last_good_traffic_reads
-    print(last_good_traffic_reads)
+
     # para cada columna
     columns = df.columns
 
@@ -494,7 +494,6 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     print(datetime.now(), ' Calculando datos trafico ', end='\r')
     df_trafico = calcular_de_datos_trafico(fecha)
 
-
     #calculo de db_festivos
     print(datetime.now(), 'Calculando festivos       ', end='\r')
     df_fecha = calcular_de_fecha(fecha)
@@ -543,7 +542,7 @@ def main():
     #Train Data
     tb = 'grouped_data_0'
 
-    fecha_ini = datetime.strptime("22-10-2019 12:45", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("22-10-2019 00:00", "%d-%m-%Y %H:%M")
     fecha_fin = datetime.strptime("22-11-2019 19:30", "%d-%m-%Y %H:%M")
 
     #Test Data

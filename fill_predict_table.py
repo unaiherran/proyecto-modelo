@@ -55,7 +55,7 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
                   'int_min', 'int_max', 'ocu_min', 'ocu_max',
                   'car_min', 'car_max', 'int_min_woo', 'int_max_woo',
                   'ocu_min_woo', 'ocu_max_woo',
-                  'car_min_woo', 'car_max_woo', 'cluster'], axis=1)
+                  'car_min_woo', 'car_max_woo', 'cluster'], axis=1, errors='ignore')
 
     df1 = df1.apply(pd.to_numeric)
     if drop != ['none']:

@@ -206,6 +206,7 @@ def calcular_de_datos_trafico(fecha):
 
             df = df.dropna(how='any', axis=0)
 
+
             # Agrupamos y sacamos medias
 
             if not df.empty:
@@ -289,7 +290,7 @@ def calcular_de_datos_trafico(fecha):
                 df3 = pd.merge(df3, df_ocu_mean_50, on='cluster', how='outer')
                 df3 = pd.merge(df3, df_ocu_mean_75, on='cluster', how='outer')
 
-                df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
+                # df3 = df3.dropna(subset=['int_mean', 'car_mean', 'ocu_mean'])
 
                 df3 = fill_with_last_good_read(df3)
 

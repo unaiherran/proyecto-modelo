@@ -145,14 +145,15 @@ def calculo_de_variable_quitando_outliers(df, variable, medidas, etiqueta, low, 
 
 def fill_with_last_good_read(df):
     global last_good_traffic_reads
-
+    print(last_good_traffic_reads)
     # para cada columna
     columns = df.columns
+
     for col in columns:
-        df[col].fillna(last_good_traffic_reads[col])
+        df[col] = df[col].fillna(last_good_traffic_reads[col])
 
     last_good_traffic_reads = df.copy()
-    print(last_good_traffic_reads)
+
     print(df)
     input('Press enter...')
     return df

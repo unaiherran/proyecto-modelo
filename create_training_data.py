@@ -152,6 +152,8 @@ def fill_with_last_good_read(df):
         df[col].fillna(last_good_traffic_reads[col])
 
     last_good_traffic_reads = df.copy()
+    print(df)
+    input('Press enter...')
     return df
 
 
@@ -481,11 +483,12 @@ def insert_en_train_1_db(tb, df):
 def calculo_parametros_un_train(fecha, tb='train_1'):
     # Fecha es datetime
     # Cluster es int
+    empty_df = dataframe_vacio_de_cluster()
 
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
     print(datetime.now(), 'Calculando imagenes     ',end='\r')
-    df_coches = calcular_de_imagenes_camara(fecha)
+    # df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico
     print(datetime.now(), ' Calculando datos trafico ', end='\r')
@@ -513,7 +516,7 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     df_tiempo = calcular_de_tiempo(fecha)
 
     # merge de todos los dataframes
-    df = pd.merge(df_coches, df_trafico, on='cluster', how='outer')
+    df = pd.merge(empty_df, df_trafico, on='cluster', how='outer')
     df = pd.merge(df, df_fecha, on='cluster', how='outer')
     df = pd.merge(df, df_eventos, on='cluster', how='outer')
     df = pd.merge(df, df_tiempo, on='cluster', how='outer')

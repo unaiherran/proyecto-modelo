@@ -209,7 +209,6 @@ def calcular_de_datos_trafico(fecha):
 
             df = df.dropna(how='any', axis=0)
 
-
             # Agrupamos y sacamos medias
 
             if not df.empty:

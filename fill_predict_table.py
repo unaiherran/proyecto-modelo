@@ -133,9 +133,9 @@ def main():
             'car_min_woo', 'car_max_woo', 'car_mean_woo',
             'car_median_woo']
 
-    # modelo = 'ocu_median_no_cars_no_car'
-    # target_var = 'ocu_median'
-    # out_table = 'predict_ocu_median_no_cars'
+    modelo = 'ocu_median_no_cars_no_car'
+    target_var = 'ocu_median'
+    out_table = 'predict_ocu_median_no_cars'
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl} - Train data')

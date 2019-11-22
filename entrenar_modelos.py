@@ -78,12 +78,13 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     """Me cargo las columans que no me valen"""
 
+
     df = df.drop(['fecha', 'num_cars_min', 'num_cars_max',
                   'num_cars_min_woo', 'num_cars_max_woo',
                   'int_min', 'int_max', 'ocu_min', 'ocu_max',
                   'car_min', 'car_max', 'int_min_woo', 'int_max_woo',
                   'ocu_min_woo', 'ocu_max_woo',
-                  'car_min_woo', 'car_max_woo'], axis=1)
+                  'car_min_woo', 'car_max_woo'], axis=1, errors='ignore')
 
     """# Entrenando con menos datos, y guardandome otros para validzr al final"""
 
@@ -93,7 +94,7 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         df1 = df[keep]
 
     if drop != ['none']:
-        df1 = df1.drop(drop, axis=1)
+        df1 = df1.drop(drop, axis=1, errors='ignore')
 
     """Campo objetivo es OCU+1"""
     df1['var_obj'] = df1[var_obj].shift(-1)

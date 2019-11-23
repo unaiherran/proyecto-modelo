@@ -124,7 +124,7 @@ def main():
             'car_median_woo']
 
     modelo = 'ocu_mean_no_cars_no_car'
-    target_var = 'ocu_mean_cluster_0'
+    target_var = 'ocu_mean'
     out_table = 'predict_ocu_mean_no_cars'
 
     # Para usar los modelos sin numcars (MEDIAN)

@@ -190,9 +190,11 @@ def calcular_de_datos_trafico(fecha):
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
                   f"tra.error = 'N';"
+            print(sql)
 
             df = pd.read_sql(sql, con=connection)
-
+            print(df)
+            input("enter...")
             # Quitamos medidas incorrectas
             # Todas las negativas han de ser incorrectas por deficinicon
             # Además, tanto carga como intensidad son valores de 0 a 100
@@ -542,8 +544,8 @@ def main():
     #Train Data
     tb = 'grouped_data_1'
 
-    fecha_ini = datetime.strptime("18-11-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("22-11-2019 23:59", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("18-11-2019 10:15", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("22-11-2019 12:15", "%d-%m-%Y %H:%M")
 
     #Test Data
     # tb = 'test_data_0'

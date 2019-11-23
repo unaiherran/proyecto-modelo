@@ -124,23 +124,22 @@ def main():
             'car_median_woo']
 
     modelo = 'ocu_mean_no_cars_no_car'
-    target_var = 'ocu_mean'
+    target_var = 'ocu_mean_cluster_0'
     out_table = 'predict_ocu_mean_no_cars'
 
     # Para usar los modelos sin numcars (MEDIAN)
-    drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'
-            'car_min', 'car_max', 'car_mean', 'car_median',
-            'car_min_woo', 'car_max_woo', 'car_mean_woo',
-            'car_median_woo']
+    # # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'
+    #         'car_min', 'car_max', 'car_mean', 'car_median',
+    #         'car_min_woo', 'car_max_woo', 'car_mean_woo',
+    #         'car_median_woo']
 
-    modelo = 'ocu_median_no_cars_no_car'
-    target_var = 'ocu_median'
-    out_table = 'predict_ocu_median_no_cars'
+    # modelo = 'ocu_median_no_cars_no_car'
+    # target_var = 'ocu_median'
+    # out_table = 'predict_ocu_median_no_cars'
 
     for cl in range(initial, final):
         print(f'Prediciendo cluster {cl} - Train data')
-        predict(cl, in_table='0_train_data', out_table=out_table, modelo=modelo, drop=drop,
-                target_var=target_var)
+        predict(cl, in_table='0_train_data', out_table=out_table, modelo=modelo, drop=drop, target_var=target_var)
         print(f'Prediciendo cluster {cl} - Test data')
         predict(cl, in_table='0_test_data', out_table=out_table, modelo=modelo, drop=drop,
                 target_var=target_var)

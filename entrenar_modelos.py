@@ -74,10 +74,10 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
     df = df.apply(pd.to_numeric)
 
     # de vez en cuando hay medidas de intensidad, ocu y carga muy malas que desvirtuan completamente el entrenamiento
-    df = df.drop(df[df.int_min < -1000].index)
+    # Se soluciona en el procesado
+    # df = df.drop(df[df.int_min < -1000].index)
 
     """Me cargo las columans que no me valen"""
-
 
     df = df.drop(['fecha', 'num_cars_min', 'num_cars_max',
                   'num_cars_min_woo', 'num_cars_max_woo',
@@ -113,6 +113,9 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled = scaler.fit_transform(values)
+
+    # Realmente es entrenamiento, validacion y test, pero me equivoque al nombrar las variables, y por no meter bugs en
+    # el código lo dejo así.
 
     n_train = int(scaled.shape[0] * 0.65)
     n_test = int(scaled.shape[0] * 0.25)

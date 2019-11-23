@@ -125,7 +125,7 @@ def main():
 
     modelo = 'ocu_mean_no_cars_no_car'
     target_var = 'ocu_mean'
-    out_table = 'predict_ocu_mean_no_cars'
+    out_table = 'predict_ocu_mean_no_cars_0'
 
     # Para usar los modelos sin numcars (MEDIAN)
     # # drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'

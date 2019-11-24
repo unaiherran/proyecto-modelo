@@ -25,7 +25,6 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
     df = data_to_predict
     print(df.columns)
 
-    df.drop('index', axis=1, inplace=True)
     df1 = df.drop(['fecha', 'num_cars_min', 'num_cars_max',
                   'num_cars_min_woo', 'num_cars_max_woo',
                   'int_min', 'int_max', 'ocu_min', 'ocu_max',

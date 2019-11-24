@@ -1,6 +1,5 @@
 from secret import *
 
-from fill_predict_table import predict
 from create_training_data import calculo_parametros_un_train
 from datetime import datetime
 import pandas as pd

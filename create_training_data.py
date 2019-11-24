@@ -485,8 +485,9 @@ def calculo_parametros_un_train(fecha, tb='train_1', save_in_db=True):
     empty_df = dataframe_vacio_de_cluster()
 
     # calculo de db_imagenes_camara
-    print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
+
     if save_in_db:
+        print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
         print(datetime.now(), 'Calculando imagenes     ',end='\r')
     # df_coches = calcular_de_imagenes_camara(fecha)
 

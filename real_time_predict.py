@@ -83,21 +83,25 @@ def main():
     while True:
         ahora = datetime.now()
         hora_de_calculo = ahora - timedelta(minutes=15)
+
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
+
         # predecir
         modelo = 'ocu_mean_no_cars_no_car'
+
         bar = progressbar.ProgressBar(maxval=200,
                                       widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
         bar.start()
+
         for cl in range(0,200):
             bar.update(cl + 1)
             data_to_predict = df.loc[df.cluster == cl]
             ocu_real = data_to_predict.iloc[0][target_var]
 
-            prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
+            prediction = predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
+
             # Escribir en BDD
-            values = f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
             sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) ' \
                   f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
 
@@ -105,8 +109,9 @@ def main():
                 cursor = connection.cursor()
                 cursor.execute(sql)
                 connection.commit()
-        bar.finish()
 
+        bar.finish()
+        sleep(1)
 
 if __name__ == '__main__':
     main()

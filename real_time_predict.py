@@ -1,7 +1,7 @@
 from secret import *
 
 import fill_predict_table
-import create_training_data
+from create_training_data import calculo_parametros_un_train
 from datetime import datetime
 import pandas as pd
 from time import sleep

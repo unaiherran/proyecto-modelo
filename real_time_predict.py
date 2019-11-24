@@ -1,6 +1,7 @@
 from secret import *
 import mysql.connector
-from sqlalchemy import create_engine
+
+import progressbar
 
 from create_training_data import calculo_parametros_un_train
 from datetime import datetime
@@ -78,16 +79,19 @@ def main():
         passwd=db_passwd,
         database=db_database,
         port=db_port)
-    i = 0
+
     while True:
         ahora = datetime.now()
-        print(ahora, i)
         hora_de_calculo = ahora - timedelta(minutes=15)
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
         # predecir
         modelo = 'ocu_mean_no_cars_no_car'
+        bar = progressbar.ProgressBar(maxval=200,
+                                      widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
+        bar.start()
         for cl in range(0,200):
+            bar.update(cl + 1)
             data_to_predict = df.loc[df.cluster == cl]
             ocu_real = data_to_predict.iloc[0][target_var]
 
@@ -101,9 +105,7 @@ def main():
                 cursor = connection.cursor()
                 cursor.execute(sql)
                 connection.commit()
-
-        sleep(15)
-        i += 1
+        bar.finish()
 
 
 if __name__ == '__main__':

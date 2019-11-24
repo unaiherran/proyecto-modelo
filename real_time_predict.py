@@ -14,13 +14,6 @@ from keras.models import load_model
 from sklearn.externals import joblib
 import keras
 
-connection = mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        passwd=db_passwd,
-        database=db_database,
-        port=db_port
-    )
 
 drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'
         'car_min', 'car_max', 'car_mean', 'car_median',
@@ -86,31 +79,28 @@ def main():
         database=db_database,
         port=db_port)
 
+    while True:
+        ahora = datetime.now()
+        fecha_ahora= 'STR_TO_DATE("{}", "%Y%m%d_%H%i.jpg")'.format(ahora)
+        hora_de_calculo = ahora - timedelta(minutes=15)
+        # calcular dataset para el ultimo 15 min
+        df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
+        # predecir
+        modelo = 'ocu_mean_no_cars_no_car'
+        for cl in range(0,200):
+            data_to_predict = df.loc[df.cluster == cl]
+            ocu_real = data_to_predict.iloc[0][target_var]
 
-    #aqui iria el loop
+            prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
+            # Escribir en BDD
+            values = f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
+            sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) ' \
+                  f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
 
-    ahora = datetime.now()
-    fecha_ahora= 'STR_TO_DATE("{}", "%Y%m%d_%H%i.jpg")'.format(ahora)
-    hora_de_calculo = ahora - timedelta(minutes=15)
-    # calcular dataset para el ultimo 15 min
-    df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
-    # predecir
-    modelo = 'ocu_mean_no_cars_no_car'
-    for cl in range(0,200):
-        data_to_predict = df.loc[df.cluster == cl]
-        ocu_real = data_to_predict.iloc[0][target_var]
-
-        prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
-        print(f"Cluster: {cl} Prediccion: {prediction}")
-
-        # Escribir en BDD
-        values = f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
-        sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) {values};'
-        print(values)
-        if connection.is_connected():
-            cursor = connection.cursor()
-            cursor.execute(sql)
-            connection.commit()
+            if connection.is_connected():
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                connection.commit()
 
 
 

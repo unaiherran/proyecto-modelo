@@ -521,9 +521,10 @@ def calculo_parametros_un_train(fecha, tb='train_1', save_in_db=True):
     df = pd.merge(df, df_grandes_eventos, on='cluster', how='outer')
 
     # escribir en bdd train_1
-    print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
+
 
     if save_in_db:
+        print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
         insert_en_train_1_db(tb, df)
     else:
         return df

@@ -85,7 +85,9 @@ def main():
     # predecir
     modelo = 'ocu_mean_no_cars_no_car'
     for cl in range(0,200):
-        data_to_predict = df.iloc[cl]
+        print(df)
+        select_color = df.loc[df.Color == 'Green']
+        data_to_predict = df.loc[df.cluster == cl]
         print(f"Cluster: {cl}")
         print (data_to_predict)
         prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)

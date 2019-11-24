@@ -84,13 +84,9 @@ def main():
     # predecir
     modelo = 'ocu_mean_no_cars_no_car'
     for cl in range(0,200):
-        print(df)
         data_to_predict = df.loc[df.cluster == cl]
-
-        print(f"Cluster: {cl}")
-        print (data_to_predict)
         prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
-        print(prediction)
+        print(f"Cluster: {cl} Prediccion: {prediction}")
     # Escribir en BDD
     pass
 

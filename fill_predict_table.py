@@ -44,7 +44,10 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
     sql = f"SELECT * FROM {in_table} where cluster={num_cluster}"
 
     # cargar datos
-    df = pd.read_sql(sql, con=connection)
+    if data_to_predict:
+        df=data_to_predict
+    else:
+        df = pd.read_sql(sql, con=connection)
 
     df.drop('index', axis=1, inplace=True)
 

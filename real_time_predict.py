@@ -87,9 +87,9 @@ def main():
         print(f"Cluster: {cl} Prediccion: {prediction}")
 
         # Escribir en BDD
-        sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) values ' \
-              f'({cl}, "{ahora}", {ocu_real}, {prediction});'
-        print(sql)
+        values = f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
+        sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) {values};'
+        print(values)
     pass
 
 

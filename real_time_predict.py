@@ -20,7 +20,11 @@ def main():
     print(df)
     # predecir
     pass
-    predict(42, drop=drop, save_in_db=False, data_to_predict=[1,2])
+    for cl in range(0,200):
+        data_to_predict = df.iloc[cl]
+        print(data_to_predict)
+        prediction=predict(cl, drop=drop, save_in_db=False, data_to_predict=data_to_predict)
+        print(prediction)
     # Escribir en BDD
     pass
 

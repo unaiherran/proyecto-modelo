@@ -23,6 +23,7 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
     scaler = joblib.load(f'models/scaler_{num_cluster}_{modelo}.job')
 
     df = data_to_predict
+    print(df.columns)
 
     df.drop('index', axis=1, inplace=True)
     df1 = df.drop(['fecha', 'num_cars_min', 'num_cars_max',

@@ -486,31 +486,41 @@ def calculo_parametros_un_train(fecha, tb='train_1', save_in_db=True):
 
     # calculo de db_imagenes_camara
     print(f'{datetime.now()} -> Realizando cálculos fecha:{fecha}')
-    print(datetime.now(), 'Calculando imagenes     ',end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando imagenes     ',end='\r')
     # df_coches = calcular_de_imagenes_camara(fecha)
 
     # calculo de db_datos_trafico
-    print(datetime.now(), ' Calculando datos trafico ', end='\r')
+    if save_in_db:
+        print(datetime.now(), ' Calculando datos trafico ', end='\r')
+
     df_trafico = calcular_de_datos_trafico(fecha)
 
     #calculo de db_festivos
-    print(datetime.now(), 'Calculando festivos       ', end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando festivos       ', end='\r')
+
     df_fecha = calcular_de_fecha(fecha)
 
     # calculo de db_eventos
-    print(datetime.now(), 'Calculando eventos        ', end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando eventos        ', end='\r')
     df_eventos = calcular_de_eventos(fecha)
 
     # calculo de db_grandes_Eventos
-    print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando Grandes Eventos', end='\r')
     df_grandes_eventos = calcular_de_gran_evento(fecha)
 
     # calculo de db_contaminacion
-    print(datetime.now(), 'Calculando contaminacion  ', end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando contaminacion  ', end='\r')
     # df_contaminacion = calcular_de_contaminacion(fecha)
 
     # calculo de db_tiempo
-    print(datetime.now(), 'Calculando tiempo         ', end='\r')
+    if save_in_db:
+        print(datetime.now(), 'Calculando tiempo         ', end='\r')
+
     df_tiempo = calcular_de_tiempo(fecha)
 
     # merge de todos los dataframes
@@ -521,7 +531,6 @@ def calculo_parametros_un_train(fecha, tb='train_1', save_in_db=True):
     df = pd.merge(df, df_grandes_eventos, on='cluster', how='outer')
 
     # escribir en bdd train_1
-
 
     if save_in_db:
         print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')

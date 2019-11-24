@@ -1,4 +1,6 @@
 from secret import *
+import mysql.connector
+from sqlalchemy import create_engine
 
 from create_training_data import calculo_parametros_un_train
 from datetime import datetime
@@ -12,6 +14,13 @@ from keras.models import load_model
 from sklearn.externals import joblib
 import keras
 
+connection = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        passwd=db_passwd,
+        database=db_database,
+        port=db_port
+    )
 
 drop = ['num_cars_mean', 'num_cars_median', 'num_cars_mean_woo', 'num_cars_median_woo'
         'car_min', 'car_max', 'car_mean', 'car_median',
@@ -70,6 +79,14 @@ def main():
     modelo = 'ocu_mean_no_cars_no_car'
     target_var ='ocu_mean'
 
+    connection = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        passwd=db_passwd,
+        database=db_database,
+        port=db_port)
+
+
     #aqui iria el loop
 
     ahora = datetime.now()
@@ -90,7 +107,11 @@ def main():
         values = f'values ({cl}, "{ahora}", {ocu_real}, {prediction});'
         sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) {values};'
         print(values)
-    pass
+        if connection.is_connected():
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            connection.commit()
+
 
 
 if __name__ == '__main__':

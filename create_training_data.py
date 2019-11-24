@@ -475,14 +475,13 @@ def calcular_de_gran_evento(fecha):
     return df3
 
 
-
 def insert_en_train_1_db(tb, df):
     if not LOCAL:
         if connection.is_connected():
             df.to_sql(name=tb, con=engine, if_exists='append', index=True)
 
 
-def calculo_parametros_un_train(fecha, tb='train_1'):
+def calculo_parametros_un_train(fecha, tb='train_1', save_in_db=True):
     # Fecha es datetime
     # Cluster es int
     empty_df = dataframe_vacio_de_cluster()
@@ -526,7 +525,10 @@ def calculo_parametros_un_train(fecha, tb='train_1'):
     # escribir en bdd train_1
     print(datetime.now(), 'Escribiendo en dbb       \r', end='\r')
 
-    insert_en_train_1_db(tb, df)
+    if save_in_db:
+        insert_en_train_1_db(tb, df)
+    else:
+        return df
 
 
 def bucle(fecha_ini, fecha_fin, tb, inc_minutes=15):

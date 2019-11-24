@@ -174,4 +174,4 @@ tiempo real para mostrar en la visualización.
 
 El código es practicamente igual que el de predicción, pero en lugar de
 evaluar una matriz enorme con todas los datos, se hace con una pequeña
-con sólo los datos del último cuarto de hora
+con sólo los datos del último cuarto de hora. E

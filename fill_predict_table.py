@@ -35,7 +35,7 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
 
 
 def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'], modelo='ocu_mean',
-            target_var='ocu_mean'):
+            target_var='ocu_mean', save_in_db=True):
 
     # cargar modelo
     model = load_model(f'models/model_{num_cluster}_{modelo}.h5')
@@ -93,9 +93,12 @@ def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'],
 
     df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
 
-    df.to_sql(name=out_table, con=engine, if_exists='append', index=False)
-
     keras.backend.clear_session()
+
+    if save_in_db:
+        df.to_sql(name=out_table, con=engine, if_exists='append', index=False)
+    else:
+        return inv_yhat_1
 
 
 def main():

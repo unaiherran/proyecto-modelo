@@ -193,8 +193,7 @@ def calcular_de_datos_trafico(fecha):
             print(sql)
 
             df = pd.read_sql(sql, con=connection)
-            print(df)
-            input("enter...")
+
             # Quitamos medidas incorrectas
             # Todas las negativas han de ser incorrectas por deficinicon
             # Además, tanto carga como intensidad son valores de 0 a 100

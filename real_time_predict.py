@@ -81,7 +81,9 @@ def main():
     modelo = 'ocu_mean_no_cars_no_car'
     for cl in range(0,200):
         data_to_predict = df.loc[df.cluster == cl]
-        ocu_real = data_to_predict[target_var][0]
+        ocu_real = data_to_predict[target_var]
+        data_to_predict.to_csv('test.csv')
+
 
         prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
         print(f"Cluster: {cl} Prediccion: {prediction}")

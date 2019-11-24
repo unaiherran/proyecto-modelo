@@ -539,14 +539,14 @@ def bucle(fecha_ini, fecha_fin, tb, inc_minutes=15):
 
 
 def main():
-    # COge todos los datos desde el 12/10 hasta hoy
+    # COge todos los datos desde el 20/10 hasta hoy
     # SI NO HAY DATOS DE COCHES NO GRABA NADA
 
     #Train Data
-    tb = 'grouped_data_1'
+    tb = 'grouped_data_0'
 
-    fecha_ini = datetime.strptime("18-11-2019 10:15", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("22-11-2019 12:15", "%d-%m-%Y %H:%M")
+    fecha_ini = datetime.strptime("20-10-2019 00:00", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("24-11-2019 19:45", "%d-%m-%Y %H:%M")
 
     #Test Data
     # tb = 'test_data_0'

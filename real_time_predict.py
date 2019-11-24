@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 from time import sleep
 
+from datetime import timedelta
+
 from keras.models import load_model
 from sklearn.externals import joblib
 import keras
@@ -68,6 +70,7 @@ def main():
     hora_de_calculo = pd.Timestamp.now().floor('15min').to_pydatetime()
 
     ahora = datetime.now()
+    hora_de_calculo = ahora - timedelta(minutes=15)
     print(hora_de_calculo, ahora)
     # calcular dataset para el ultimo 15 min
     df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)

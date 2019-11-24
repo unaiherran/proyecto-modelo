@@ -11,9 +11,12 @@ def main():
     hora_de_calculo = pd.Timestamp.now().floor('15min').to_pydatetime()
 
     # calcular dataset para el ultimo 15 min
-    calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
-
+    df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
+    print(df)
     # predecir
+    pass
+
+    # Escribir en BDD
     pass
 
 

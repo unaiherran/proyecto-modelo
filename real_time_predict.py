@@ -66,12 +66,14 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
 
 def main():
     hora_de_calculo = pd.Timestamp.now().floor('15min').to_pydatetime()
+
     ahora = datetime.now()
     print(hora_de_calculo, ahora)
     # calcular dataset para el ultimo 15 min
     df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
     # predecir
     modelo = 'ocu_mean_no_cars_no_car'
+    print(df)
     for cl in range(0,200):
         data_to_predict = df.loc[df.cluster == cl]
         prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)

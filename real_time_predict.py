@@ -78,10 +78,10 @@ def main():
         passwd=db_passwd,
         database=db_database,
         port=db_port)
-
+    i = 0
     while True:
         ahora = datetime.now()
-        fecha_ahora= 'STR_TO_DATE("{}", "%Y%m%d_%H%i.jpg")'.format(ahora)
+        print(ahora, i)
         hora_de_calculo = ahora - timedelta(minutes=15)
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
@@ -102,6 +102,8 @@ def main():
                 cursor.execute(sql)
                 connection.commit()
 
+        sleep(15)
+        i += 1
 
 
 if __name__ == '__main__':

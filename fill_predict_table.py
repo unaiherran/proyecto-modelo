@@ -35,7 +35,7 @@ engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:
 
 
 def predict(num_cluster, in_table='train_1', out_table='predict', drop=['none'], modelo='ocu_mean',
-            target_var='ocu_mean', save_in_db=True):
+            target_var='ocu_mean', save_in_db=True, data_to_predict=None):
 
     # cargar modelo
     model = load_model(f'models/model_{num_cluster}_{modelo}.h5')

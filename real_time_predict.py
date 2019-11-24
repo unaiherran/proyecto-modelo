@@ -58,16 +58,6 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
     inv_yhat_1 = scaler.inverse_transform(inv_yhat)
     inv_yhat_1 = inv_yhat_1[:, -1]
 
-    # escribir en tabla predict
-    df['ocu_pred'] = inv_yhat_1.tolist()
-
-    df = df[['cluster', 'fecha', target_var, 'ocu_pred']]
-
-    #la prediccion se tiene que guardar en la siguiente fila.
-    df['ocu_pred'] = df['ocu_pred'].shift(1)
-
-    df = df.rename(columns={"ocu_mean": "ocu_real", "predict": "ocu_pred"})
-
     keras.backend.clear_session()
 
     return inv_yhat_1

@@ -73,6 +73,7 @@ def main():
     #aqui iria el loop
 
     ahora = datetime.now()
+    fecha_ahora= 'STR_TO_DATE("{}", "%Y%m%d_%H%i.jpg")'.format(ahora)
     hora_de_calculo = ahora - timedelta(minutes=15)
     # calcular dataset para el ultimo 15 min
     df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
@@ -80,12 +81,15 @@ def main():
     modelo = 'ocu_mean_no_cars_no_car'
     for cl in range(0,200):
         data_to_predict = df.loc[df.cluster == cl]
-        ocu_real = data_to_predict['ocu_mean']
+        ocu_real = data_to_predict[target_var]
 
         prediction=predict(cl, drop=drop, save_in_db=False, modelo=modelo, data_to_predict=data_to_predict)
         print(f"Cluster: {cl} Prediccion: {prediction}")
 
         # Escribir en BDD
+        sql = f'INSERT INTO predict(cluster,fecha,ocu_real,ocu_pred) values ' \
+              f'({cl}, "{ahora}", {ocu_real}, {prediction});'
+        print(sql)
     pass
 
 

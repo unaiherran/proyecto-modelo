@@ -62,7 +62,7 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
 
     keras.backend.clear_session()
 
-    return inv_yhat_1
+    return inv_yhat_1[0]
 
 
 

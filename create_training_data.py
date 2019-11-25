@@ -404,7 +404,7 @@ def calcular_de_fecha(fecha):
 
 def calcular_de_tiempo(fecha):
     fecha_anterior = fecha - timedelta(hours=3)
-
+    fecha_posterior = fecha + timedelta(minutes=15)
     format = '%Y-%m-%d %H:00'
     fecha_str = fecha.strftime(format)
 
@@ -413,11 +413,19 @@ def calcular_de_tiempo(fecha):
             sql = f"SELECT tie.fecha, vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
                   f"WHERE tie.fecha between '{fecha_anterior}' and '{fecha}' order by tie.fecha desc;"
-            print(sql)
+
 
             df = pd.read_sql(sql, con=connection)
-            df.to_csv('tiempo__.csv')
-            a = b
+
+            # las lecturas de tiempo se publican cada hora. Cuando generamos el training dataset bastaría con sacar
+            # la lectura de esa hora, pero cuando estás haciendo predicciones en tiempo real, puede que los parametros
+            # meteorologicos no esten aun disponibles, con lo que hacemos una query mas ancha y nos quedamos con el
+            # valor más reciente
+            fecha_mas_reciente = df.iloc[0]['fecha']
+            filtro_fecha = df['fecha'] == fecha_mas_reciente
+            df = df[filtro_fecha]
+
+
             df = df.dropna()
             # rename column id_cluster a cluster
             df = df.rename(columns={"id_cluster": "cluster"})

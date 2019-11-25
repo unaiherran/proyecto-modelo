@@ -52,7 +52,7 @@ if not LOCAL:
 
 
 def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, keep=['all'], drop=['none'],
-                     label='label', var_obj='ocu_mean', save=False):
+                     label='label', var_obj='ocu_mean', save=False, final=False):
 
     sql = f"SELECT * FROM 0_train_data where cluster={num_cluster};"
     df = pd.read_sql(sql, con=connection)
@@ -116,10 +116,20 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
 
     # Realmente es entrenamiento, validacion y test, pero me equivoque al nombrar las variables, y por no meter bugs en
     # el código lo dejo así.
+    train_percent = 0.65
+    test_percent = 0.25
+    val_percent = 0.1
 
-    n_train = int(scaled.shape[0] * 0.65)
-    n_test = int(scaled.shape[0] * 0.25)
-    n_val = int(scaled.shape[0] * 0.10) #no vale para nada, sólo lo dejo para saber que el conjunto de Val es un 10%
+    #final será True cuando tengamos que entrenar finalmente el modelo
+    if final:
+        train_percent = 0.8
+        test_percent = 0.19
+        val_percent = 0.01
+
+
+    n_train = int(scaled.shape[0] * train_percent)
+    n_test = int(scaled.shape[0] * test_percent)
+    # no vale para nada, sólo lo dejo para saber que el conjunto de Val es un 10%
 
     train = scaled[:n_train, :]
     resto = scaled[n_train:, :]
@@ -231,7 +241,7 @@ def main():
         final = 200
     print(initial, final)
 
-    variables_objetivo = ['ocu_mean', 'ocu_median']
+    variables_objetivo = ['ocu_mean']
 
     for cl in range(initial, final):
         for vobj in variables_objetivo:
@@ -243,9 +253,9 @@ def main():
                     'car_min', 'car_max', 'car_mean', 'car_median', 'car_min_woo', 'car_max_woo', 'car_mean_woo',
                     'car_median_woo']
 
-            label = 'no_cars_no_car'
+            label = 'production'
 
-            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label)
+            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label, final=True)
             time.sleep(1)
 
 

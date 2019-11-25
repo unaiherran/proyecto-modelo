@@ -82,7 +82,7 @@ def main():
 
     while True:
         ahora = datetime.now()
-        hora_de_calculo = ahora - timedelta(minutes=15)
+        hora_de_calculo = ahora - timedelta(minutes=20)
 
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)

@@ -404,7 +404,7 @@ def calcular_de_fecha(fecha):
 
 def calcular_de_tiempo(fecha):
     format = '%Y-%m-%d %H:00'
-    fecha_str= fecha.strftime(format)
+    fecha_str = fecha.strftime(format)
 
     print(fecha)
 

@@ -86,7 +86,7 @@ def main():
 
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
-
+        print(df)
         # predecir
         modelo = 'ocu_mean_no_cars_no_car'
 

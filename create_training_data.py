@@ -423,6 +423,7 @@ def calcular_de_tiempo(fecha):
             filtro_fecha = df['fecha'] == fecha_mas_reciente
             df = df[filtro_fecha]
 
+            df = df.drop(['fecha'], axis=1)
 
             df = df.dropna()
             # rename column id_cluster a cluster

@@ -91,7 +91,7 @@ def main():
         if df['ocu_mean'].mean() == 0.0:
             # comprobar que hay datos de trafico
             # si no los hay esperar un rato y volver a lanazar la consulta
-
+            print('Dataset sin informacion.... esperando')
             minutes += 1
             sleep(30)
             continue

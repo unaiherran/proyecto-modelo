@@ -412,7 +412,7 @@ def calcular_de_tiempo(fecha):
         if connection.is_connected():
             sql = f"SELECT vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
-                  f"WHERE between {fecha_anterior} and {fecha} order by tie.fecha desc;"
+                  f"WHERE between '{fecha_anterior}' and '{fecha}' order by tie.fecha desc;"
             print(sql)
 
             df = pd.read_sql(sql, con=connection)

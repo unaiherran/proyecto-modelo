@@ -79,14 +79,25 @@ def main():
         passwd=db_passwd,
         database=db_database,
         port=db_port)
+    minutes = 15
 
     while True:
         ahora = datetime.now()
-        hora_de_calculo = ahora - timedelta(minutes=20)
+        hora_de_calculo = ahora - timedelta(minutes=minutes)
 
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
         print(df)
+        if df['num_cars_mean'].mean() == 0.0:
+            # comprobar que hay datos de trafico
+            # si no los hay esperar un rato y volver a lanazar la consulta
+
+            minutes += 1
+            sleep(30)
+            continue
+        else:
+            minutes = 15
+
         # predecir
         modelo = 'ocu_mean_no_cars_no_car'
 

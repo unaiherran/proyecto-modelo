@@ -413,8 +413,10 @@ def calcular_de_tiempo(fecha):
             sql = f"SELECT vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
                   f"WHERE tie.fecha = str_to_date('{fecha_str}', '%Y-%m-%d %H:%i');"
+            print(sql)
 
             df = pd.read_sql(sql, con=connection)
+            df.to_csv('tiempo__.csv')
             df = df.dropna()
             # rename column id_cluster a cluster
             df = df.rename(columns={"id_cluster": "cluster"})

@@ -566,7 +566,7 @@ def main():
     tb = 'grouped_data_0'
 
     fecha_ini = datetime.strptime("20-10-2019 00:00", "%d-%m-%Y %H:%M")
-    fecha_fin = datetime.strptime("24-11-2019 19:45", "%d-%m-%Y %H:%M")
+    fecha_fin = datetime.strptime("25-11-2019 00:00", "%d-%m-%Y %H:%M")
 
     #Test Data
     # tb = 'test_data_0'

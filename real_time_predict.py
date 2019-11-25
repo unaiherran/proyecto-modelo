@@ -87,7 +87,7 @@ def main():
 
         # calcular dataset para el ultimo 15 min
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
-        print(df)
+
         if df['ocu_mean'].mean() == 0.0:
             # comprobar que hay datos de trafico
             # si no los hay esperar un rato y volver a lanazar la consulta

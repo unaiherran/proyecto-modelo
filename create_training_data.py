@@ -419,9 +419,12 @@ def calcular_de_tiempo(fecha):
             # la lectura de esa hora, pero cuando estás haciendo predicciones en tiempo real, puede que los parametros
             # meteorologicos no esten aun disponibles, con lo que hacemos una query mas ancha y nos quedamos con el
             # valor más reciente
-            fecha_mas_reciente = df.iloc[0]['fecha']
-            filtro_fecha = df['fecha'] == fecha_mas_reciente
-            df = df[filtro_fecha]
+            try:
+                fecha_mas_reciente = df.iloc[0]['fecha']
+                filtro_fecha = df['fecha'] == fecha_mas_reciente
+                df = df[filtro_fecha]
+            except IndexError:
+                print('Dataframe de tiempo vacio')
 
             df = df.drop(['fecha'], axis=1)
 

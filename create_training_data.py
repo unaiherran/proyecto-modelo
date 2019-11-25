@@ -417,6 +417,7 @@ def calcular_de_tiempo(fecha):
 
             df = pd.read_sql(sql, con=connection)
             df.to_csv('tiempo__.csv')
+            a = b
             df = df.dropna()
             # rename column id_cluster a cluster
             df = df.rename(columns={"id_cluster": "cluster"})

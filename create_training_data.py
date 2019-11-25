@@ -410,7 +410,7 @@ def calcular_de_tiempo(fecha):
 
     if not LOCAL:
         if connection.is_connected():
-            sql = f"SELECT vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
+            sql = f"SELECT tie.fecha, vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
                   f"WHERE between '{fecha_anterior}' and '{fecha}' order by tie.fecha desc;"
             print(sql)

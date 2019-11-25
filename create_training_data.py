@@ -403,16 +403,16 @@ def calcular_de_fecha(fecha):
 
 
 def calcular_de_tiempo(fecha):
+    fecha_anterior = fecha - timedelta(hours=3)
+
     format = '%Y-%m-%d %H:00'
     fecha_str = fecha.strftime(format)
-
-    print(fecha)
 
     if not LOCAL:
         if connection.is_connected():
             sql = f"SELECT vmax, vv,dv,dmax, ta, tamin, tamax, prec, clu.id_cluster FROM " \
                   f"proyecto.MedidaTiempo2 tie inner join Cluster clu on clu.meteo = estacion_id " \
-                  f"WHERE tie.fecha = str_to_date('{fecha_str}', '%Y-%m-%d %H:%i');"
+                  f"WHERE between {fecha_anterior} and {fecha} order by tie.fecha desc;"
             print(sql)
 
             df = pd.read_sql(sql, con=connection)

@@ -405,8 +405,6 @@ def calcular_de_fecha(fecha):
 def calcular_de_tiempo(fecha):
     fecha_anterior = fecha - timedelta(hours=3)
     fecha_posterior = fecha + timedelta(minutes=15)
-    format = '%Y-%m-%d %H:00'
-    fecha_str = fecha.strftime(format)
 
     if not LOCAL:
         if connection.is_connected():

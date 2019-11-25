@@ -93,6 +93,7 @@ def main():
             # si no los hay esperar un rato y volver a lanazar la consulta
             print(f'Dataset sin informacion.... comprobando query para {minutes} minutes')
             minutes += 1
+            sleep(15)
             continue
         else:
             minutes = 15

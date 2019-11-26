@@ -23,10 +23,10 @@ def main():
             cur.execute(sql)
 
             consulta = cur.fetchall()
-
-            fecha_a_buscar = consulta[1]
-            print(fecha_a_buscar)
-            print(consulta)
+            if consulta:
+                fecha_a_buscar = consulta[0]
+                print(fecha_a_buscar)
+                print(consulta)
 
             sleep(60)
 

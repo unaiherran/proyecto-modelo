@@ -1,6 +1,10 @@
 from secret import *
 import mysql.connector
 
+import pandas as pd
+
+from create_training_data import calculo_parametros_un_train
+
 from datetime import datetime
 from datetime import timedelta
 from time import sleep
@@ -22,11 +26,20 @@ def main():
 
             cur.execute(sql)
 
-            consulta = cur.fetchall()
-            if consulta:
-                fecha_a_buscar = consulta[0][2]
-                print(fecha_a_buscar)
-                print(consulta)
+            primer_reg_vacio = cur.fetchall()
+
+            if primer_reg_vacio:
+                fecha_a_buscar = primer_reg_vacio[0][2]
+                df = calculo_parametros_un_train(fecha_a_buscar, save_in_db=False)
+
+                sql = f'SELECT id_pred, cluster FROM predict where fecha="{fecha_a_buscar}"'
+                cur.execute(sql)
+
+                lista_de_reg_a_actualizar = cur.fetchall()
+
+                print(df)
+                print(lista_de_reg_a_actualizar)
+
 
             sleep(60)
 

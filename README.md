@@ -175,3 +175,10 @@ tiempo real para mostrar en la visualización.
 El código es practicamente igual que el de predicción, pero en lugar de
 evaluar una matriz enorme con todas los datos, se hace con una pequeña
 con sólo los datos del último cuarto de hora. E
+
+## Comprobación de predicción
+
+`sacar_medidas_reales_para_predict.py`
+
+Cuando se hace la predicción aun no tenemos acceso a los datos futuros,
+por ello, una vez

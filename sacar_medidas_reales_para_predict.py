@@ -41,9 +41,9 @@ def main():
 
                 for reg in lista_de_reg_a_actualizar:
                     cluster = reg[1]
-                    row = df.loc[df['cluster'] == cluster].values
+                    ocu_medida = df.loc[df['cluster'] == cluster].values[0][1]
 
-                    print(row)
+                    print(ocu_medida)
                     sleep(60)
 
                 print(df)

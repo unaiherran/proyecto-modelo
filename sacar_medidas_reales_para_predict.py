@@ -24,7 +24,7 @@ def main():
 
             consulta = cur.fetchall()
             if consulta:
-                fecha_a_buscar = consulta[0]
+                fecha_a_buscar = consulta[0][2]
                 print(fecha_a_buscar)
                 print(consulta)
 

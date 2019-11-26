@@ -42,8 +42,8 @@ def main():
                 for reg in lista_de_reg_a_actualizar:
                     cluster = reg[1]
                     row = df.loc[df['cluster'] == cluster]
-                    print(row)
-                print(df['ocu_mean'][0])
+                    print(row['ocu_mean'][0])
+                print(df)
 
                 #print(lista_de_reg_a_actualizar)
 

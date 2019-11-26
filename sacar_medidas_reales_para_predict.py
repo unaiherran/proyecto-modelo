@@ -30,6 +30,8 @@ def main():
 
             if primer_reg_vacio:
                 fecha_a_buscar = primer_reg_vacio[0][2]
+                print(f'Rellenando para fecha {fecha_a_buscar}')
+
                 df = calculo_parametros_un_train(fecha_a_buscar, save_in_db=False)
 
                 df = df[['cluster', 'ocu_mean']]
@@ -49,7 +51,8 @@ def main():
                 connection.commit()
 
 
-            sleep(60)
+            print('Esperando...')
+            sleep(1)
 
 if __name__ == '__main__':
     main()

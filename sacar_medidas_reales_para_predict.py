@@ -32,6 +32,8 @@ def main():
                 fecha_a_buscar = primer_reg_vacio[0][2]
                 df = calculo_parametros_un_train(fecha_a_buscar, save_in_db=False)
 
+                df = df[['cluster', 'ocu_mean']]
+
                 sql = f'SELECT id_pred, cluster FROM predict where fecha="{fecha_a_buscar}"'
                 cur.execute(sql)
 

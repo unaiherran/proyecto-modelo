@@ -21,7 +21,9 @@ def main():
         ahora = datetime.now()
         if connection.is_connected():
             cur = connection.cursor()
-            hora_maxima_consulta = ahora - timedelta(minutes=60)
+
+            # actualizamos hasta hace hora y media
+            hora_maxima_consulta = ahora - timedelta(minutes=90)
             sql = f"SELECT * FROM proyecto.predict where fecha < '{hora_maxima_consulta}' and ocu_medida is null limit 1;"
 
             cur.execute(sql)

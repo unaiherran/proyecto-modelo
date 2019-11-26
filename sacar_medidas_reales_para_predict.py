@@ -17,7 +17,8 @@ def main():
         database=db_database,
         port=db_port)
 
-    queda_trabajo = False
+    queda_trabajo = True
+
     while queda_trabajo:
         ahora = datetime.now()
         if connection.is_connected():
@@ -58,10 +59,9 @@ def main():
             else:
                 # No hay registros vacios
                 print('No hay registros vacios. Paro')
-                queda_trabajo = True
+                queda_trabajo = False
         else:
             print('No hay conexion con la base de datos. Paro')
-
 
 
 

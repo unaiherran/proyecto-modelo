@@ -17,7 +17,8 @@ def main():
         database=db_database,
         port=db_port)
 
-    while True:
+    queda_trabajo = False
+    while queda_trabajo:
         ahora = datetime.now()
         if connection.is_connected():
             cur = connection.cursor()
@@ -51,14 +52,19 @@ def main():
                     sql = f'UPDATE predict SET ocu_medida = {ocu_medida} where id_pred = {id_pred}'
                     cur.execute(sql)
                 connection.commit()
+                print('Esperando un poco para no sobrecargar la base de datos')
+                sleep(5)
+
             else:
                 # No hay registros vacios
-                print('No hay registros vacios. Espero 10 minutos')
-                sleep(600)
+                print('No hay registros vacios. Paro')
+                queda_trabajo = True
+        else:
+            print('No hay conexion con la base de datos. Paro')
 
 
-            print('Esperando un poco para no sobrecargar la base de datos')
-            sleep(5)
+
+
 
 if __name__ == '__main__':
     main()

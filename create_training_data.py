@@ -46,7 +46,7 @@ if not LOCAL:
         port=db_port
     )
 
-    connection.autocommit(True)
+
     engine = create_engine(f'mysql+mysqlconnector://{db_user}:{db_passwd}@{db_host}:{db_port}/{db_database}',
                            echo=False)
 

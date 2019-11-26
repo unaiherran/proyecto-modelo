@@ -191,7 +191,6 @@ def calcular_de_datos_trafico(fecha):
                   f"str_to_date('{fecha_str}', '%Y-%m-%d %H:%i') AND " \
                   f"str_to_date('{sig_fecha_str}','%Y-%m-%d %H:%i')) AND " \
                   f"tra.error = 'N';"
-            print(sql)
 
             df = pd.read_sql(sql, con=connection)
             connection.commit()

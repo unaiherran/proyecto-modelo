@@ -49,9 +49,13 @@ def main():
                     sql = f'UPDATE predict SET ocu_medida = {ocu_medida} where id_pred = {id_pred}'
                     cur.execute(sql)
                 connection.commit()
+            else:
+                # No hay registros vacios
+                print('No hay registros vacios. Espero 10 minutos')
+                sleep(600)
 
 
-            print('Esperando...')
+            print('Esperando... (para no sobrecargar la base de datos.')
             sleep(1)
 
 if __name__ == '__main__':

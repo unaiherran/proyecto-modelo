@@ -40,15 +40,13 @@ def main():
                 lista_de_reg_a_actualizar = cur.fetchall()
 
                 for reg in lista_de_reg_a_actualizar:
+                    id_pred = reg[0]
                     cluster = reg[1]
+
                     ocu_medida = df.loc[df['cluster'] == cluster].values[0][1]
-
-                    print(ocu_medida)
-                    sleep(60)
-
-                print(df)
-
-                #print(lista_de_reg_a_actualizar)
+                    sql = f'UPDATE predict SET ocu_medida = {ocu_medida} where id_pred = {id_pred}'
+                    cur.execute(sql)
+                connection.commit()
 
 
             sleep(60)

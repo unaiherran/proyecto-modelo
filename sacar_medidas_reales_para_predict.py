@@ -39,6 +39,9 @@ def main():
 
                 lista_de_reg_a_actualizar = cur.fetchall()
 
+                for reg in lista_de_reg_a_actualizar:
+                    print(reg)
+
                 print(df)
                 print(lista_de_reg_a_actualizar)
 

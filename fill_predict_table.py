@@ -129,7 +129,7 @@ def main():
             'car_min_woo', 'car_max_woo', 'car_mean_woo',
             'car_median_woo']
 
-    modelo = 'ocu_mean_no_cars_no_car'
+    modelo = 'ocu_mean_production'
     target_var = 'ocu_mean'
     out_table = 'predict_ocu_mean_no_cars_0'
 

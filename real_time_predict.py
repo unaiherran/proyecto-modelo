@@ -99,7 +99,7 @@ def main():
             minutes = 15
 
         # predecir
-        modelo = 'ocu_mean_no_cars_no_car'
+        modelo = 'ocu_mean_production'
 
         bar = progressbar.ProgressBar(maxval=200,
                                       widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])

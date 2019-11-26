@@ -85,6 +85,7 @@ def main():
         hora_de_calculo = ahora - timedelta(minutes=minutes)
 
         # calcular dataset para el ultimo 15 min
+
         df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
 
         if df['ocu_mean'].mean() == 0.0:

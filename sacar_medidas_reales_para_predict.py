@@ -22,8 +22,10 @@ def main():
 
             cur.execute(sql)
 
-            cluster = cur.fetchall()
+            consulta = cur.fetchall()
 
+            fecha_a_buscar = consulta[1][3]
+            print(fecha_a_buscar)
             print(cluster)
 
             sleep(60)

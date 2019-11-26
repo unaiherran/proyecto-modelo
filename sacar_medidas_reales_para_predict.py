@@ -24,9 +24,9 @@ def main():
 
             consulta = cur.fetchall()
 
-            fecha_a_buscar = consulta[1][3]
+            fecha_a_buscar = consulta[1]
             print(fecha_a_buscar)
-            print(cluster)
+            print(consulta)
 
             sleep(60)
 

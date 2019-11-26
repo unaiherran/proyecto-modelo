@@ -40,10 +40,11 @@ def main():
                 lista_de_reg_a_actualizar = cur.fetchall()
 
                 for reg in lista_de_reg_a_actualizar:
-                    print(reg)
-
+                    cluster = reg[1]
+                    row = df.loc[df['cluster'] == cluster]
+                    print(row)
                 print(df)
-                print(lista_de_reg_a_actualizar)
+                #print(lista_de_reg_a_actualizar)
 
 
             sleep(60)

@@ -70,7 +70,6 @@ def predict(num_cluster, data_to_predict, drop=['none'], modelo='ocu_mean', targ
 
 
 def main():
-    modelo = 'ocu_mean_no_cars_no_car'
     target_var ='ocu_mean'
 
     connection = mysql.connector.connect(
@@ -93,7 +92,9 @@ def main():
             # si no los hay esperar un rato y volver a lanazar la consulta
             print(f'Dataset sin informacion.... comprobando query para {minutes} minutes')
             minutes += 1
-            sleep(15)
+            if minutes > 20:
+                minutes = 20
+            sleep(60)
             continue
         else:
             minutes = 15

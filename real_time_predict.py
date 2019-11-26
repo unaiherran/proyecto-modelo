@@ -80,27 +80,25 @@ def main():
         port=db_port)
     minutes = 15
 
-    while True:
-        ahora = datetime.now()
-        hora_de_calculo = ahora - timedelta(minutes=minutes)
 
-        # calcular dataset para el ultimo 15 min
+    ahora = datetime.now()
+    hora_de_calculo = ahora - timedelta(minutes=minutes)
 
-        df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
+    # calcular dataset para el ultimo 15 min
 
-        if df['ocu_mean'].mean() == 0.0:
-            # comprobar que hay datos de trafico
-            # si no los hay esperar un rato y volver a lanazar la consulta
+    df = calculo_parametros_un_train(hora_de_calculo, save_in_db=False)
 
-            print(f'Dataset sin informacion.... comprobando query para {minutes} minutes')
-            minutes += 1
-            if minutes > 20:
-                minutes = 20
-            sleep(60)
-            continue
-        else:
-            minutes = 15
+    if df['ocu_mean'].mean() == 0.0:
+        # comprobar que hay datos de trafico
+        # si no los hay esperar un rato y volver a lanazar la consulta
 
+        print(f'Dataset sin informacion.... comprobando query para {minutes} minutes')
+        minutes += 1
+        if minutes > 20:
+            minutes = 20
+        sleep(60)
+
+    else:
         # predecir
         modelo = 'ocu_mean_production'
 

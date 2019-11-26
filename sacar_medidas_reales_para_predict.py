@@ -55,8 +55,8 @@ def main():
                 sleep(600)
 
 
-            print('Esperando... (para no sobrecargar la base de datos.')
-            sleep(1)
+            print('Esperando un poco para no sobrecargar la base de datos')
+            sleep(5)
 
 if __name__ == '__main__':
     main()

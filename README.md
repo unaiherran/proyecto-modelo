@@ -176,7 +176,8 @@ El código es practicamente igual que el de predicción, pero en lugar de
 evaluar una matriz enorme con todas los datos, se hace con una matriz 
 pequeña con sólo los datos del último cuarto de hora.
 
-Se ejecuta mediante un cronjob cada 5 minutos.
+Se ejecuta mediante un cronjob cada 5 minutos, en el servidor de
+predicciones.
 
 ## Comprobación de predicción
 
@@ -185,5 +186,6 @@ Se ejecuta mediante un cronjob cada 5 minutos.
 Cuando se hace la predicción aun no tenemos acceso a los datos futuros,
 por ello, una vez ya tenemos lecturas de los sensores actualizamos los
 registros con la lectura real. Sirve para comparar la prediccion con la
-realidad. Se ejecuta con un cronjob cada 10 minutos
+realidad. Se ejecuta con un cronjob cada 10 minutos en el servidor de
+predicciones
 

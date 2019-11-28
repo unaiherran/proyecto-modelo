@@ -256,7 +256,8 @@ def main():
 
             label = 'production'
 
-            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label, final=True)
+            entrenar_cluster(cl, var_obj=vobj, save=True, drop=drop, label=label, final=True, patience=50,
+                             epochs=500, num_celdas_LSTM=100)
             time.sleep(1)
 
 

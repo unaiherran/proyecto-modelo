@@ -97,7 +97,9 @@ def entrenar_cluster(num_cluster, num_celdas_LSTM=50, epochs=200, patience=10, k
         df1 = df1.drop(drop, axis=1, errors='ignore')
 
     """Campo objetivo es OCU+1"""
-    df1['var_obj'] = df1[var_obj].shift(-1)
+    # La variable objetivo es el trafico en 30 minutos, como el training dataset es cada 5, hay que desplazar las
+    # lecturas 6 posiciones para arriba
+    df1['var_obj'] = df1[var_obj].shift(-6)
 
     """Quito la última fila, ya que no se puede usar para entrenar."""
     df1 = df1.drop([df1.shape[0] - 1])
